@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_drivetrain;
   private PilotController m_pilotController;
+  private Intake m_intake;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
 
     m_drivetrain = new Drivetrain();
     m_pilotController = new PilotController();
+    m_intake = new Intake();
 
     m_drivetrain.initDrivetrain();
   }
@@ -93,13 +95,17 @@ public class Robot extends TimedRobot {
     double curSpeed = 0.0;
     double curTurn = 0.0;
 
+    boolean intakeOn = false;
+
+    double intakeSpeed = RobotMap.IntakeConstants.SPEED;
+
     PilotController.DesiredDirection desiredDirection = PilotController.DesiredDirection.NoChange;
 
     curSpeed = m_pilotController.getDriverSpeed();
     curTurn = m_pilotController.getDriverTurn();
 
     desiredDirection = m_pilotController.getPilotChangeControls();
-
+    intakeOn = m_pilotController.getIntakeButton();
     m_drivetrain.setDesiredDirection(desiredDirection);
 
     m_drivetrain.arcadeDrive(curSpeed, curTurn);

@@ -31,7 +31,7 @@ public class RobotMap {
     /**
      * All Pilot Controller constants.
      */
-    public static class PilotController {
+    public static class PilotControllerConstants {
 
         /**
          * USB port number of the xbox controller.
@@ -52,5 +52,21 @@ public class RobotMap {
          * Rate limit for acceleration to prevent brownouts.
          */
         public static final double ACCEL_SLEW_RATE = 1.6;
+    }
+
+    /**
+     * All intake constants.
+     */
+    public static class IntakeConstants {
+
+        /**
+         * CAN ID of the intake motor.
+         */
+        public static final int INTAKE_CAN_ID = 19;
+
+        /**
+         * Speed set to the intake motor when button is pressed.
+         */
+        public static final double SPEED = 0.5;
     }
 }

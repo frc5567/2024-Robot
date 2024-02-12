@@ -24,10 +24,10 @@ public class PilotController {
      * Contructor for the pilot controller. Instantiates the xbox controller and slew rate limiters.
      */
     public PilotController() {
-        m_controller = new XboxController(RobotMap.PilotController.XBOX_CONTROLLER_USB_PORT);
-        m_accelFilter = new SlewRateLimiter(RobotMap.PilotController.ACCEL_SLEW_RATE);
-        m_accelLTFilter = new SlewRateLimiter(RobotMap.PilotController.ACCEL_SLEW_RATE);
-        m_accelRTFilter = new SlewRateLimiter(RobotMap.PilotController.ACCEL_SLEW_RATE);
+        m_controller = new XboxController(RobotMap.PilotControllerConstants.XBOX_CONTROLLER_USB_PORT);
+        m_accelFilter = new SlewRateLimiter(RobotMap.PilotControllerConstants.ACCEL_SLEW_RATE);
+        m_accelLTFilter = new SlewRateLimiter(RobotMap.PilotControllerConstants.ACCEL_SLEW_RATE);
+        m_accelRTFilter = new SlewRateLimiter(RobotMap.PilotControllerConstants.ACCEL_SLEW_RATE);
     }
 
     /**
@@ -52,9 +52,18 @@ public class PilotController {
         double squaredTurnInput = turnInput * turnInput;
         squaredTurnInput = Math.copySign(squaredTurnInput, turnInput);
 
-        double scaledTurnInput = (squaredTurnInput * RobotMap.PilotController.TURN_SCALAR);
+        double scaledTurnInput = (squaredTurnInput * RobotMap.PilotControllerConstants.TURN_SCALAR);
 
         return adjustForDeadband(scaledTurnInput);
+    }
+
+    /**
+     * Method used to obtain the pilot input.
+     * @return The state of the x button. True if pressed, false if not pressed
+     */
+    public boolean getIntakeButton() {
+        boolean intakeInput = m_controller.getXButton();
+        return intakeInput;
     }
 
     /**
@@ -83,7 +92,7 @@ public class PilotController {
      */
     private double adjustForDeadband(double stickInput) {
         double retVal = 0.0;
-        double deadband = RobotMap.PilotController.STICK_DEADBAND;
+        double deadband = RobotMap.PilotControllerConstants.STICK_DEADBAND;
 
         // Takes the absolute value of stick input for simplification.
         double absStickInput = Math.abs(stickInput);
