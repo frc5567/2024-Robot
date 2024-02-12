@@ -20,6 +20,9 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  private Drivetrain m_drivetrain;
+  private PilotController m_pilotController;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -29,6 +32,11 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    m_drivetrain = new Drivetrain();
+    m_pilotController = new PilotController();
+
+    m_drivetrain.initDrivetrain();
   }
 
   /**
@@ -70,6 +78,9 @@ public class Robot extends TimedRobot {
         // Put default auto code here
         break;
     }
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
   }
 
   /** This function is called once when teleop is enabled. */
@@ -78,7 +89,21 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+
+    PilotController.DesiredDirection desiredDirection = PilotController.DesiredDirection.NoChange;
+
+    curSpeed = m_pilotController.getDriverSpeed();
+    curTurn = m_pilotController.getDriverTurn();
+
+    desiredDirection = m_pilotController.getPilotChangeControls();
+
+    m_drivetrain.setDesiredDirection(desiredDirection);
+
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
@@ -86,7 +111,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
@@ -94,7 +123,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
@@ -102,5 +135,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
+  }
 }
