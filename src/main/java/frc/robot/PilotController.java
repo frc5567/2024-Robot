@@ -67,6 +67,24 @@ public class PilotController {
     }
 
     /**
+     * Method used to obtain pilot input for launching to the amp.
+     * @return the state of the A button as a boolean. True if pressed, false if not pressed.
+     */
+    public boolean getAmpLaunchButton() {
+        boolean ampLauncherInput = m_controller.getAButton();
+        return ampLauncherInput;
+    }
+
+    /**
+     * Method used to obtain pilot input for launching to the speaker.
+     * @return the state of the B button as a boolean. True if pressed, false if not pressed.
+     */
+    public boolean getSpeakerLaunchButton() {
+        boolean speakerLauncherInput = m_controller.getBButton();
+        return speakerLauncherInput;
+    }
+
+    /**
      * Sets the desired direction of the drivetrain. The desired direction defaults to NoChange.
      * When the right bumper is pressed the desired direction is set to the initial direction.
      * When the left bumper is pressed the desired direction is set to the opposite direction.

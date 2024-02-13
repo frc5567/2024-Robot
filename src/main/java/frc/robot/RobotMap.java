@@ -69,4 +69,40 @@ public class RobotMap {
          */
         public static final double SPEED = 0.5;
     }
+
+    /**
+     * All launcher constants.
+     */
+    public static class LauncherConstants {
+
+        /**
+         * CAN ID of the left launcher motor
+         */
+        public static final int LEFT_LAUNCHER_CAN_ID = 17;
+
+        /**
+         * CAN ID of the right launcher motor
+         */
+        public static final int RIGHT_LAUNCHER_CAN_ID = 18;
+
+        /**
+         * Speed set to the left launcher motor when launching to the amp.
+         */
+        public static final double LEFT_AMP_SPEED = 0.4;
+
+        /**
+         * Speed set to the right launcher motor when launching to the amp.
+         */
+        public static final double RIGHT_AMP_SPEED = 0.4;
+
+        /**
+         * Speed set to the left launcher motor when launching to the speaker. TODO: make sure this value is up to date with testing changes.
+         */
+        public static final double LEFT_SPEAKER_SPEED = 0.8;
+
+        /**
+         * Speed set to the right launcher motor when launching to the speaker.TODO: make sure this value is up to date with testing changes.
+         */
+        public static final double RIGHT_SPEAKER_SPEED = 0.95;
+    }
 }

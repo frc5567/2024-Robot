@@ -23,6 +23,11 @@ public class Robot extends TimedRobot {
   private Drivetrain m_drivetrain;
   private PilotController m_pilotController;
   private Intake m_intake;
+  private Launcher m_launcher;
+
+  private boolean m_currentlyLaunching;
+
+  private int m_launchCounter = 0;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,6 +42,9 @@ public class Robot extends TimedRobot {
     m_drivetrain = new Drivetrain();
     m_pilotController = new PilotController();
     m_intake = new Intake();
+    m_launcher = new Launcher();
+
+    m_currentlyLaunching = false;
 
     m_drivetrain.initDrivetrain();
   }
@@ -96,8 +104,17 @@ public class Robot extends TimedRobot {
     double curTurn = 0.0;
 
     boolean intakeOn = false;
+    boolean ampLauncherOn = false;
+    boolean speakerLauncherOn = false;
 
     double intakeSpeed = RobotMap.IntakeConstants.SPEED;
+
+    double leftLauncherAmpSpeed = RobotMap.LauncherConstants.LEFT_AMP_SPEED;
+    double rightLauncherAmpSpeed = RobotMap.LauncherConstants.RIGHT_AMP_SPEED;
+
+    // Speaker speeds are offset for a more predictable flight pattern.
+    double leftLauncherSpeakerSpeed = RobotMap.LauncherConstants.LEFT_SPEAKER_SPEED;
+    double rightLauncherSpeakerSpeed = RobotMap.LauncherConstants.RIGHT_SPEAKER_SPEED;
 
     PilotController.DesiredDirection desiredDirection = PilotController.DesiredDirection.NoChange;
 
@@ -106,6 +123,9 @@ public class Robot extends TimedRobot {
 
     desiredDirection = m_pilotController.getPilotChangeControls();
     intakeOn = m_pilotController.getIntakeButton();
+    ampLauncherOn = m_pilotController.getAmpLaunchButton();
+    speakerLauncherOn = m_pilotController.getSpeakerLaunchButton();
+    
     m_drivetrain.setDesiredDirection(desiredDirection);
 
     m_drivetrain.arcadeDrive(curSpeed, curTurn);
