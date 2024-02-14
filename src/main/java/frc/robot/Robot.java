@@ -20,6 +20,15 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  private Drivetrain m_drivetrain;
+  private PilotController m_pilotController;
+  private Intake m_intake;
+  private Launcher m_launcher;
+
+  private boolean m_currentlyLaunching;
+
+  private int m_launchCounter = 0;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -29,6 +38,15 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    m_drivetrain = new Drivetrain();
+    m_pilotController = new PilotController();
+    m_intake = new Intake();
+    m_launcher = new Launcher();
+
+    m_currentlyLaunching = false;
+
+    m_drivetrain.initDrivetrain();
   }
 
   /**
@@ -70,6 +88,9 @@ public class Robot extends TimedRobot {
         // Put default auto code here
         break;
     }
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
   }
 
   /** This function is called once when teleop is enabled. */
@@ -78,7 +99,37 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+
+    boolean intakeOn = false;
+    boolean ampLauncherOn = false;
+    boolean speakerLauncherOn = false;
+
+    double intakeSpeed = RobotMap.IntakeConstants.SPEED;
+
+    double leftLauncherAmpSpeed = RobotMap.LauncherConstants.LEFT_AMP_SPEED;
+    double rightLauncherAmpSpeed = RobotMap.LauncherConstants.RIGHT_AMP_SPEED;
+
+    // Speaker speeds are offset for a more predictable flight pattern.
+    double leftLauncherSpeakerSpeed = RobotMap.LauncherConstants.LEFT_SPEAKER_SPEED;
+    double rightLauncherSpeakerSpeed = RobotMap.LauncherConstants.RIGHT_SPEAKER_SPEED;
+
+    PilotController.DesiredDirection desiredDirection = PilotController.DesiredDirection.NoChange;
+
+    curSpeed = m_pilotController.getDriverSpeed();
+    curTurn = m_pilotController.getDriverTurn();
+
+    desiredDirection = m_pilotController.getPilotChangeControls();
+    intakeOn = m_pilotController.getIntakeButton();
+    ampLauncherOn = m_pilotController.getAmpLaunchButton();
+    speakerLauncherOn = m_pilotController.getSpeakerLaunchButton();
+    
+    m_drivetrain.setDesiredDirection(desiredDirection);
+
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
@@ -86,7 +137,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
@@ -94,7 +149,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
@@ -102,5 +161,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    double curSpeed = 0.0;
+    double curTurn = 0.0;
+    m_drivetrain.arcadeDrive(curSpeed, curTurn);
+  }
 }
