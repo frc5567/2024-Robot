@@ -104,5 +104,35 @@ public class RobotMap {
          * Speed set to the right launcher motor when launching to the speaker.TODO: make sure this value is up to date with testing changes.
          */
         public static final double RIGHT_SPEAKER_SPEED = 0.95;
+
+        
+    }
+
+    /**
+     * All indexer constants.
+     */
+    public static class IndexerConstants {
+
+        /**
+         * CAN ID of the index motor.
+         */
+        public static final int INDEXER_CAN_ID = 10;
+
+        /**
+         * DIO port of the index sensor.
+         */
+        public static final int SENSOR_PORT = 0;
+
+        /**
+         * Speed set to index motor for loading note to intake.
+         */
+        public static final double LOAD_SPEED = 0.5;
+
+        /**
+         * Speed set to the index motor for feeding note into launcher.
+         */
+        public static final double FEED_SPEED = 1.0;
+
+    
     }
 }
