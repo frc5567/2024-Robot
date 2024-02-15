@@ -26,6 +26,16 @@ public class RobotMap {
          * CAN ID of the right follower motor controller
          */
         public static final int RIGHT_FOLLOWER_CAN_ID = 6;
+
+        /**
+         * CAN ID of the Pigeon
+         */
+        public static final int PIGEON_CAN_ID = 3;
+
+        /**
+         * The timeout in milliseconds of the CTRE methods.
+         */
+        public static final int TIMEOUT_MS = 30;
     }
 
     /**
