@@ -1,7 +1,10 @@
 package frc.robot;
 
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -14,6 +17,8 @@ public class Drivetrain {
     private TalonFX m_leftFollower;
     private TalonFX m_rightFollower;
 
+    private Pigeon2 m_pigeon;
+
     private DifferentialDrive m_drive;
 
     /**
@@ -25,12 +30,14 @@ public class Drivetrain {
     /**
      * Constructor for the drivetrain class 
      */
-    public Drivetrain() {
+    public Drivetrain(Pigeon2 pigeon) {
         // Sets the corresponding CAN IDs to each of the drivetrain motors.
         m_leftLeader = new TalonFX(RobotMap.DrivetrainConstants.LEFT_LEADER_CAN_ID);
         m_rightLeader = new TalonFX(RobotMap.DrivetrainConstants.RIGHT_LEADER_CAN_ID);
         m_leftFollower = new TalonFX(RobotMap.DrivetrainConstants.LEFT_FOLLOWER_CAN_ID);
         m_rightFollower = new TalonFX(RobotMap.DrivetrainConstants.RIGHT_FOLLOWER_CAN_ID);
+
+        m_pigeon = pigeon;
 
         m_drive = new DifferentialDrive(m_leftLeader, m_rightLeader);
 
@@ -45,6 +52,8 @@ public class Drivetrain {
         TalonFXConfiguration leftConfiguration = new TalonFXConfiguration();
         TalonFXConfiguration rightConfiguration = new TalonFXConfiguration();
 
+        Pigeon2Configuration pigeonConfiguration = new Pigeon2Configuration();
+
         // Sets brake mode to the left and right configurations.
         leftConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         rightConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -53,11 +62,12 @@ public class Drivetrain {
         leftConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         rightConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-        // Applies the corresponding configurations to each drivetrain motor.
+        // Applies the corresponding configurations to each drivetrain motor and the Pigeon.
         m_leftLeader.getConfigurator().apply(leftConfiguration);
         m_leftFollower.getConfigurator().apply(leftConfiguration);
         m_rightLeader.getConfigurator().apply(rightConfiguration);
         m_rightFollower.getConfigurator().apply(rightConfiguration);
+        m_pigeon.getConfigurator().apply(pigeonConfiguration);
 
         // Sets the Followers to follow the Leaders.
         m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
@@ -68,6 +78,8 @@ public class Drivetrain {
         m_rightLeader.setSafetyEnabled(true);
 
         m_isDrivetrainForward = true;
+
+        this.zeroSensors();
     }
 
     /**
@@ -82,6 +94,39 @@ public class Drivetrain {
         else {
             m_drive.arcadeDrive(-speed, turn);
         }
+    }
+
+    /**
+     * Zeros out the encoder positions and the Pigeon.
+     */
+    public void zeroSensors() {
+        m_leftLeader.setPosition(0.0, RobotMap.DrivetrainConstants.TIMEOUT_MS);
+        m_rightLeader.setPosition(0.0, RobotMap.DrivetrainConstants.TIMEOUT_MS);
+        m_pigeon.setYaw(0.0, RobotMap.DrivetrainConstants.TIMEOUT_MS);
+    }
+
+    /**
+     * Used to zero integrated sensors position.
+     */
+    public void zeroDistance() {
+        m_leftLeader.setPosition(0.0, RobotMap.DrivetrainConstants.TIMEOUT_MS);
+        m_rightLeader.setPosition(.0, RobotMap.DrivetrainConstants.TIMEOUT_MS);
+    }
+
+    /**
+     * Gets the encoder positions of the left drivetrain motors. Units are rotations.
+     */
+    public double getLeftDrivePos() {
+        double leftPos = m_leftLeader.getPosition().getValueAsDouble();
+        return leftPos;
+    }
+
+    /**
+     * Gets the encoder positions of the right drivetrain motors. Units are rotations.
+     */
+    public double getRightDrivePos() {
+        double rightPos = m_rightLeader.getPosition().getValueAsDouble();
+        return rightPos;
     }
 
     /**
