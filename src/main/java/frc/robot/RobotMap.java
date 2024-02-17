@@ -36,6 +36,28 @@ public class RobotMap {
          * The timeout in milliseconds of the CTRE methods.
          */
         public static final int TIMEOUT_MS = 30;
+
+        /**
+         * Drive Straight PID constants
+         */
+        public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.70 );
+        
+        /**
+         * Turn to Angle PID constants
+         */
+        public final static Gains TURNING_GAINS = new Gains( 0.5, 0.0,  4.0, 0.0,            200,  0.5 );
+
+        public final static int PID_PRIMARY = 0;
+        public final static int PID_TURN = 1;
+
+        public final static int GEAR_RATIO = 15;
+
+        /**
+         * This is a property of the Pigeon IMU, and should not be changed.
+         */
+        public final static int PIGEON_UNITS_PER_ROTATION = 8192;
+
+        public final static int SENSOR_UNITS_PER_ROTATION = 2048;
     }
 
     /**
