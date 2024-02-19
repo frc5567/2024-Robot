@@ -40,7 +40,7 @@ public class RobotMap {
         /**
          * Drive Straight PID constants
          */
-        public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.70 );
+        public final static Gains DISTANCE_GAINS = new Gains( 50.0, 0.0,  0.0, 0.1,            100,  0.70 );
         
         /**
          * Turn to Angle PID constants
@@ -58,6 +58,11 @@ public class RobotMap {
         public final static int PIGEON_UNITS_PER_ROTATION = 8192;
 
         public final static int SENSOR_UNITS_PER_ROTATION = 2048;
+
+        /**
+         * Encoder deadband used in driveStraight.
+         */
+        public static final int DRIVE_STRAIGHT_DEADBAND = 5000;
     }
 
     /**

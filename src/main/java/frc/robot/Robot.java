@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_drivetrain;
   private PilotController m_pilotController;
+  private CopilotController m_copilotController;
   private Intake m_intake;
   private Launcher m_launcher;
   private Indexer m_indexer;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
 
     m_drivetrain = new Drivetrain(m_pigeon);
     m_pilotController = new PilotController();
+    m_copilotController = new CopilotController();
     m_intake = new Intake();
     m_launcher = new Launcher();
     m_indexer = new Indexer();
@@ -241,8 +243,21 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     double curSpeed = 0.0;
     double curTurn = 0.0;
-    m_drivetrain.arcadeDrive(curSpeed, curTurn);
-    m_launcher.setSpeed(0.0, 0.0);
+    boolean driveForward = false;
+    //m_drivetrain.arcadeDrive(curSpeed, curTurn);
+    //m_launcher.setSpeed(0.0, 0.0);
+    driveForward = m_copilotController.driveForward();
+
+    System.out.print("Right Encoder Pos [ " + m_drivetrain.getRightDrivePos() + " ]");
+
+    if (driveForward) {
+      System.out.print("A BUTTON PRESSED");
+      m_drivetrain.driveStraight(10.0);
+    }
+    else {
+      m_drivetrain.driveStraight(0.0);
+    }
+    
   }
 
   /** This function is called once when the robot is first started up. */

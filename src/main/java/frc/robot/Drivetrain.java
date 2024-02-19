@@ -1,8 +1,15 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -28,6 +35,8 @@ public class Drivetrain {
 
     private TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
     private TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
+
+    final MotionMagicVoltage m_motmag = new MotionMagicVoltage(0.0);
 
     /**
      * Constructor for the drivetrain class 
@@ -145,40 +154,82 @@ public class Drivetrain {
     }
 
     /**
+     * Drive straight forward (or backward for negative distance) a set number of inches
+     * @param distance a double passed for setting what magnitude of distance the robot must travel in inches
+     * @return a boolean designating whether the target has been reached
+     */
+    public boolean driveStraight(double distance) {
+        boolean reachedTarget = false;
+        // 6" wheels means 18.85" per rotation
+        double rotations = distance; // 18.85;
+        //double target_sensorUnits = (RobotMap.DrivetrainConstants.SENSOR_UNITS_PER_ROTATION * rotations) * RobotMap.DrivetrainConstants.GEAR_RATIO;
+        //double target_turn = 0.0; // don't turn
+
+        //if((m_outputCounter % 100) == 0) {
+        //    System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
+        //    System.out.println("output [" + m_rightLeader.getMotorOutputPercent() + "] velocity [" + m_rightLeader.getSelectedSensorVelocity() + "]");
+        //}
+
+        /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+        //m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
+        //m_leftLeader.follow(m_rightLeader, FollowerType.AuxOutput1);
+        //m_rightFollower.follow(m_rightLeader);
+        //m_leftFollower.follow(m_leftLeader);
+
+        m_rightLeader.setControl(m_motmag.withPosition(rotations).withSlot(0));
+
+        if ((Math.abs(m_rightLeader.getPosition().getValueAsDouble() - rotations) < RobotMap.DrivetrainConstants.DRIVE_STRAIGHT_DEADBAND) && m_rightLeader.getPosition().getValueAsDouble() < 100) {
+            reachedTarget = true;
+        }
+
+        return reachedTarget;
+    }
+
+    /**
      * Sets up the PID configuration for drive straight (or turn)
      */
     public void configPID() {
 
 		/* FPID for Distance */
-		m_rightConfig.Slot0.kV = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kV;
-		m_rightConfig.Slot0.kP = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kP;
-		m_rightConfig.Slot0.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
-		m_rightConfig.Slot0.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
+        Slot0Configs slot0 = m_rightConfig.Slot0;
+		slot0.kV = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kV;
+		slot0.kP = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kP;
+		slot0.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
+		slot0.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
+        slot0.kS = 0.0;
 
         //m_rightConfig.motionCurveStrength = 4;
 
 		/* FPID for Heading */
         //TODO: figure out if kV is the correct feedforward gain.
-		m_rightConfig.Slot1.kV = RobotMap.DrivetrainConstants.TURNING_GAINS.kV;
-		m_rightConfig.Slot1.kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
-		m_rightConfig.Slot1.kI = RobotMap.DrivetrainConstants.TURNING_GAINS.kI;
-		m_rightConfig.Slot1.kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
+		//m_rightConfig.Slot1.kV = RobotMap.DrivetrainConstants.TURNING_GAINS.kV;
+		//m_rightConfig.Slot1.kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
+		//m_rightConfig.Slot1.kI = RobotMap.DrivetrainConstants.TURNING_GAINS.kI;
+		//m_rightConfig.Slot1.kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
 		
 		/* Config the neutral deadband. */
 		//m_leftConfig.neutralDeadband = RobotMap.DrivetrainConstants.NEUTRAL_DEADBAND;
 		//m_rightConfig.neutralDeadband = RobotMap.DrivetrainConstants.NEUTRAL_DEADBAND;
 
 		/* Motion Magic Configs */
-        var motionMagicConfigs = m_rightConfig.MotionMagic;
+        //var motionMagicConfigs = m_rightConfig.MotionMagic;
 		//m_rightConfig.motionAcceleration = 9000; //(distance units per 100 ms) per second
 		//m_rightConfig.motionCruiseVelocity = 12000; //distance units per 100 ms
-        motionMagicConfigs.MotionMagicCruiseVelocity = 12000; 
-        motionMagicConfigs.MotionMagicAcceleration = 9000;
+        MotionMagicConfigs mm = m_rightConfig.MotionMagic;
+
+        mm.MotionMagicCruiseVelocity = 7.0; 
+        mm.MotionMagicAcceleration = 10.0;
+        mm.MotionMagicJerk = 50.0;
+
+        
+
+        FeedbackConfigs fdb = m_rightConfig.Feedback;
+        fdb.SensorToMechanismRatio = 9.82;
 
 		/* APPLY the config settings */
 		//m_leftLeader.configAllSettings(m_leftConfig);
 		//m_rightLeader.configAllSettings(m_rightConfig);
-        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        //m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_rightLeader.getConfigurator().apply(m_rightConfig);
 
         /* Determine which slot affects which PID */
