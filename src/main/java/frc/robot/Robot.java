@@ -252,7 +252,7 @@ public class Robot extends TimedRobot {
 
     if (driveForward) {
       System.out.print("A BUTTON PRESSED");
-      m_drivetrain.driveStraight(10.0);
+      m_drivetrain.driveStraight(5.0);
     }
     else {
       m_drivetrain.driveStraight(0.0);
