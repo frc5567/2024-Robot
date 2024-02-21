@@ -66,7 +66,10 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+        m_drivetrain.drivetrainPeriodic();
+
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -245,6 +248,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+
     double curSpeed = 0.0;
     double curTurn = 0.0;
     boolean driveForward = false;

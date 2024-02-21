@@ -17,7 +17,9 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.compound.Diff_DutyCycleOut_Position;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.mechanisms.MechanismState;
 import com.ctre.phoenix6.mechanisms.SimpleDifferentialMechanism;
+import com.ctre.phoenix6.mechanisms.SimpleDifferentialMechanism.DisabledReason;
 import com.ctre.phoenix6.signals.DifferentialSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -104,6 +106,17 @@ public class Drivetrain {
         this.zeroSensors();
 
         this.configPID();
+    }
+
+    public void drivetrainPeriodic() {
+        m_diffMechanism.periodic();
+
+        MechanismState mechState = m_diffMechanism.getMechanismState();
+
+        if (mechState == MechanismState.Disabled) {
+            DisabledReason disabledReason = m_diffMechanism.getDisabledReason();
+            System.out.println("Disabled reason [" + disabledReason + "]");
+        }
     }
 
     /**
@@ -193,9 +206,16 @@ public class Drivetrain {
         //m_rightLeader.setControl(m_motmag.withPosition(rotations).withSlot(0));
         //m_leftLeader.setControl(new Follower(m_rightLeader.getDeviceID(), true));
         StatusCode myStatus = m_diffMechanism.setControl(m_diffMM.withTargetPosition(rotations));
+        var mechState = m_diffMechanism.getMechanismState();
+
+        if (mechState == MechanismState.Disabled) {
+            var disabledReason = m_diffMechanism.getDisabledReason();
+            System.out.println("Disabled reason [" + disabledReason + "]");
+        }
+
         double left = m_leftLeader.get();
         double right = m_rightLeader.get();
-        System.out.println("Status[" + myStatus + "][" + left + "][" + right + "]"); 
+        System.out.println("Status[" + myStatus + "][" + left + "][" + right + "] mechanism state [" + mechState + "]"); 
         // if ((Math.abs(m_rightLeader.getPosition().getValueAsDouble() - rotations) < RobotMap.DrivetrainConstants.DRIVE_STRAIGHT_DEADBAND) && m_rightLeader.getPosition().getValueAsDouble() < 100) {
         //     reachedTarget = true;
         // }
@@ -274,12 +294,14 @@ public class Drivetrain {
 
 
         //Left side!
-        DifferentialSensorsConfigs sensLeft = m_leftConfig.DifferentialSensors;
+        // DifferentialSensorsConfigs sensLeft = m_leftConfig.DifferentialSensors;
 
-        sensLeft.withDifferentialSensorSource(DifferentialSensorSourceValue.RemoteTalonFX_Diff);
-        sensLeft.withDifferentialTalonFXSensorID(m_rightLeader.getDeviceID());
+        // sensLeft.withDifferentialSensorSource(DifferentialSensorSourceValue.RemoteTalonFX_Diff);
+        // sensLeft.withDifferentialTalonFXSensorID(m_rightLeader.getDeviceID());
 
         m_leftLeader.getConfigurator().apply(m_leftConfig);
+
+        System.out.println("Left Leader ID [" + m_leftLeader.getDeviceID() + "] Right Leader ID [" + m_rightLeader.getDeviceID() + "]");
 
         /* Determine which slot affects which PID */
         //m_rightLeader.selectProfileSlot(0, RobotMap.DrivetrainConstants.PID_PRIMARY);
