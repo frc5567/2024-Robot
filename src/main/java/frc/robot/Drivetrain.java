@@ -34,7 +34,7 @@ public class Drivetrain {
 
     private Pigeon2 m_pigeon;
 
-    private DifferentialDrive m_drive;
+    //private DifferentialDrive m_drive;
 
     private SimpleDifferentialMechanism m_diffMechanism;
 
@@ -66,7 +66,7 @@ public class Drivetrain {
 
         m_pigeon = pigeon;
 
-        m_drive = new DifferentialDrive(m_leftLeader, m_rightLeader);
+        //m_drive = new DifferentialDrive(m_leftLeader, m_rightLeader);
 
         m_isDrivetrainForward = true;
     }
@@ -98,7 +98,7 @@ public class Drivetrain {
         m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
 
         // Enables safety mode which requires input to the motors every cycle or it will set them to 0.
-        m_leftLeader.setSafetyEnabled(true);
+        //m_leftLeader.setSafetyEnabled(true);
         m_rightLeader.setSafetyEnabled(true);
 
         m_isDrivetrainForward = true;
@@ -126,10 +126,10 @@ public class Drivetrain {
      */
     public void arcadeDrive(double speed, double turn) {
         if(m_isDrivetrainForward) {
-            m_drive.arcadeDrive(speed, turn);
+            //m_drive.arcadeDrive(speed, turn);
         }
         else {
-            m_drive.arcadeDrive(-speed, turn);
+            //m_drive.arcadeDrive(-speed, turn);
         }
     }
 
@@ -241,11 +241,11 @@ public class Drivetrain {
         slot0.kS = s;
 
         Slot1Configs slot1 = m_rightConfig.Slot1;
-		slot1.kV = v;
+		slot1.kV = 0.0;
 		slot1.kP = p;
-		slot1.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
-		slot1.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
-        slot1.kS = s;
+		slot1.kI = 0.0;
+		slot1.kD = 0.0;
+        slot1.kS = 0.0;
         //m_rightConfig.motionCurveStrength = 4;
 
 		/* Motion Magic Configs */
@@ -259,28 +259,28 @@ public class Drivetrain {
         rightFeedbackConfig.SensorToMechanismRatio = 9.82;
 
         //LEFT
-        Slot0Configs slot_0 = m_leftConfig.Slot0;
-		slot_0.kV = v;
-		slot_0.kP = p;
-		slot_0.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
-		slot_0.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
-        slot_0.kS = s;
+        // Slot0Configs slot_0 = m_leftConfig.Slot0;
+		// slot_0.kV = v;
+		// slot_0.kP = p;
+		// slot_0.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
+		// slot_0.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
+        // slot_0.kS = s;
 
-        Slot1Configs slot_1 = m_leftConfig.Slot1;
-		slot_1.kV = v;
-		slot_1.kP = p;
-		slot_1.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
-		slot_1.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
-        slot_1.kS = s;
+        // Slot1Configs slot_1 = m_leftConfig.Slot1;
+		// slot_1.kV = v;
+		// slot_1.kP = p;
+		// slot_1.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
+		// slot_1.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
+        // slot_1.kS = s;
 
-        MotionMagicConfigs motionMagLeft = m_leftConfig.MotionMagic;
+        // MotionMagicConfigs motionMagLeft = m_leftConfig.MotionMagic;
 
-        motionMagLeft.MotionMagicCruiseVelocity = 3.5; 
-        motionMagLeft.MotionMagicAcceleration = 5.0;
-        motionMagLeft.MotionMagicJerk = 50.0;
+        // motionMagLeft.MotionMagicCruiseVelocity = 3.5; 
+        // motionMagLeft.MotionMagicAcceleration = 5.0;
+        // motionMagLeft.MotionMagicJerk = 50.0;
 
-        FeedbackConfigs leftFeedbackConfig = m_leftConfig.Feedback;
-        leftFeedbackConfig.SensorToMechanismRatio = 9.82;
+        // FeedbackConfigs leftFeedbackConfig = m_leftConfig.Feedback;
+        // leftFeedbackConfig.SensorToMechanismRatio = 9.82;
 
         //Right side
         DifferentialSensorsConfigs sensRight = m_rightConfig.DifferentialSensors;
@@ -299,7 +299,7 @@ public class Drivetrain {
         // sensLeft.withDifferentialSensorSource(DifferentialSensorSourceValue.RemoteTalonFX_Diff);
         // sensLeft.withDifferentialTalonFXSensorID(m_rightLeader.getDeviceID());
 
-        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        //m_leftLeader.getConfigurator().apply(m_leftConfig);
 
         System.out.println("Left Leader ID [" + m_leftLeader.getDeviceID() + "] Right Leader ID [" + m_rightLeader.getDeviceID() + "]");
 
