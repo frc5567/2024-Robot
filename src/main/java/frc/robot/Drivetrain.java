@@ -7,11 +7,16 @@ import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DifferentialFollower;
+import com.ctre.phoenix6.controls.DifferentialMotionMagicDutyCycle;
+import com.ctre.phoenix6.controls.DifferentialMotionMagicVoltage;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.DifferentialSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -36,7 +41,7 @@ public class Drivetrain {
     private TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
     private TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
 
-    final MotionMagicVoltage m_motmag = new MotionMagicVoltage(0.0);
+    private DifferentialMotionMagicVoltage m_motmag;
 
     /**
      * Constructor for the drivetrain class 
@@ -51,6 +56,8 @@ public class Drivetrain {
         m_pigeon = pigeon;
 
         m_drive = new DifferentialDrive(m_leftLeader, m_rightLeader);
+
+        m_motmag = new DifferentialMotionMagicVoltage(0.0, 0.0, false, 0, 1, false, false, false );
 
         m_isDrivetrainForward = true;
     }
@@ -176,11 +183,20 @@ public class Drivetrain {
         //m_rightFollower.follow(m_rightLeader);
         //m_leftFollower.follow(m_leftLeader);
 
-        m_rightLeader.setControl(m_motmag.withPosition(rotations).withSlot(0));
+        //.withPosition(rotations).withSlot(0)
 
-        if ((Math.abs(m_rightLeader.getPosition().getValueAsDouble() - rotations) < RobotMap.DrivetrainConstants.DRIVE_STRAIGHT_DEADBAND) && m_rightLeader.getPosition().getValueAsDouble() < 100) {
+        var statusCodeRightLeader = m_rightLeader.setControl(m_motmag.withTargetPosition(rotations));
+        // var statusCodeLeftLeader = m_leftLeader.setControl(new DifferentialFollower(m_rightLeader.getDeviceID(), true));
+        var statusCodeLeftLeader = 0;
+
+        if ((Math.abs(m_rightLeader.getPosition().getValueAsDouble() - rotations) < 1)) {
             reachedTarget = true;
         }
+
+
+        var output = m_rightLeader.getClosedLoopOutput();
+        var target = m_rightLeader.getClosedLoopReference();
+        System.out.println("Status Right[" + statusCodeRightLeader + "] Status Left[" + statusCodeLeftLeader + "] Rotations[" + rotations + "] target?[" + target + "] Error[" + m_rightLeader.getClosedLoopError() + "] Output[" + output + "]");
 
         return reachedTarget;
     }
@@ -197,6 +213,13 @@ public class Drivetrain {
 		slot0.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
 		slot0.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
         slot0.kS = 0.0;
+
+        Slot1Configs slot1 = m_rightConfig.Slot1;
+		slot1.kV = 0.0;
+		slot1.kP = 50.0;
+		slot1.kI = 0.0;
+		slot1.kD = 0.0;
+        slot1.kS = 0.0;
 
         //m_rightConfig.motionCurveStrength = 4;
 
@@ -221,7 +244,9 @@ public class Drivetrain {
         mm.MotionMagicAcceleration = 10.0;
         mm.MotionMagicJerk = 50.0;
 
-        
+        // m_rightConfig.DifferentialSensors.DifferentialTalonFXSensorID = m_leftLeader.getDeviceID();        
+        // m_rightConfig.DifferentialSensors.DifferentialSensorSource = DifferentialSensorSourceValue.RemoteTalonFX_Diff;
+        // m_rightConfig.DifferentialSensors.DifferentialRemoteSensorID = m_leftLeader.getDeviceID();
 
         FeedbackConfigs fdb = m_rightConfig.Feedback;
         fdb.SensorToMechanismRatio = 9.82;
