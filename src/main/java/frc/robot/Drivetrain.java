@@ -50,8 +50,8 @@ public class Drivetrain {
         // Sets the corresponding CAN IDs to each of the drivetrain motors.
         m_leftLeader = new TalonFX(RobotMap.DrivetrainConstants.LEFT_LEADER_CAN_ID);
         m_rightLeader = new TalonFX(RobotMap.DrivetrainConstants.RIGHT_LEADER_CAN_ID);
-        m_leftFollower = new TalonFX(RobotMap.DrivetrainConstants.LEFT_FOLLOWER_CAN_ID);
-        m_rightFollower = new TalonFX(RobotMap.DrivetrainConstants.RIGHT_FOLLOWER_CAN_ID);
+        //m_leftFollower = new TalonFX(RobotMap.DrivetrainConstants.LEFT_FOLLOWER_CAN_ID);
+        //m_rightFollower = new TalonFX(RobotMap.DrivetrainConstants.RIGHT_FOLLOWER_CAN_ID);
 
         m_pigeon = pigeon;
 
@@ -79,14 +79,14 @@ public class Drivetrain {
 
         // Applies the corresponding configurations to each drivetrain motor and the Pigeon.
         m_leftLeader.getConfigurator().apply(m_leftConfig);
-        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        //m_leftFollower.getConfigurator().apply(m_leftConfig);
         m_rightLeader.getConfigurator().apply(m_rightConfig);
-        m_rightFollower.getConfigurator().apply(m_rightConfig);
+        //m_rightFollower.getConfigurator().apply(m_rightConfig);
         m_pigeon.getConfigurator().apply(pigeonConfiguration);
 
         // Sets the Followers to follow the Leaders.
-        m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
-        m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
+        //m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
+        //m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
 
         // Enables safety mode which requires input to the motors every cycle or it will set them to 0.
         m_leftLeader.setSafetyEnabled(true);
@@ -185,18 +185,19 @@ public class Drivetrain {
 
         //.withPosition(rotations).withSlot(0)
 
-        var statusCodeRightLeader = m_rightLeader.setControl(m_motmag.withTargetPosition(rotations));
-        // var statusCodeLeftLeader = m_leftLeader.setControl(new DifferentialFollower(m_rightLeader.getDeviceID(), true));
-        var statusCodeLeftLeader = 0;
+        var statusCodeLeftLeader = m_leftLeader.setControl(m_motmag.withTargetPosition(rotations));
+        // m_rightLeader.feed();
+        var statusCodeRightLeader = m_rightLeader.setControl(new DifferentialFollower(m_leftLeader.getDeviceID(), true));
+        //var statusCodeRightLeader = 0;
 
-        if ((Math.abs(m_rightLeader.getPosition().getValueAsDouble() - rotations) < 1)) {
+        if ((Math.abs(m_leftLeader.getPosition().getValueAsDouble() - rotations) < 1)) {
             reachedTarget = true;
         }
 
 
-        var output = m_rightLeader.getClosedLoopOutput();
-        var target = m_rightLeader.getClosedLoopReference();
-        System.out.println("Status Right[" + statusCodeRightLeader + "] Status Left[" + statusCodeLeftLeader + "] Rotations[" + rotations + "] target?[" + target + "] Error[" + m_rightLeader.getClosedLoopError() + "] Output[" + output + "]");
+        var output = m_leftLeader.getClosedLoopOutput();
+        var target = m_leftLeader.getClosedLoopReference();
+        System.out.println("Status Right[" + statusCodeRightLeader + "] Status Left[" + statusCodeLeftLeader + "] Rotations[" + rotations + "] target?[" + target + "] Error[" + m_leftLeader.getClosedLoopError() + "] Output[" + output + "]");
 
         return reachedTarget;
     }
@@ -207,18 +208,18 @@ public class Drivetrain {
     public void configPID() {
 
 		/* FPID for Distance */
-        Slot0Configs slot0 = m_rightConfig.Slot0;
+        Slot0Configs slot0 = m_leftConfig.Slot0;
 		slot0.kV = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kV;
 		slot0.kP = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kP;
 		slot0.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
 		slot0.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
         slot0.kS = 0.0;
 
-        Slot1Configs slot1 = m_rightConfig.Slot1;
-		slot1.kV = 0.0;
+        Slot1Configs slot1 = m_leftConfig.Slot1;
+		slot1.kV = 0.1;
 		slot1.kP = 50.0;
 		slot1.kI = 0.0;
-		slot1.kD = 0.0;
+		slot1.kD = 0.5;
         slot1.kS = 0.0;
 
         //m_rightConfig.motionCurveStrength = 4;
@@ -238,15 +239,15 @@ public class Drivetrain {
         //var motionMagicConfigs = m_rightConfig.MotionMagic;
 		//m_rightConfig.motionAcceleration = 9000; //(distance units per 100 ms) per second
 		//m_rightConfig.motionCruiseVelocity = 12000; //distance units per 100 ms
-        MotionMagicConfigs mm = m_rightConfig.MotionMagic;
+        MotionMagicConfigs mm = m_leftConfig.MotionMagic;
 
         mm.MotionMagicCruiseVelocity = 7.0; 
         mm.MotionMagicAcceleration = 10.0;
         mm.MotionMagicJerk = 50.0;
 
-        // m_rightConfig.DifferentialSensors.DifferentialTalonFXSensorID = m_leftLeader.getDeviceID();        
-        // m_rightConfig.DifferentialSensors.DifferentialSensorSource = DifferentialSensorSourceValue.RemoteTalonFX_Diff;
-        // m_rightConfig.DifferentialSensors.DifferentialRemoteSensorID = m_leftLeader.getDeviceID();
+        m_leftConfig.DifferentialSensors.DifferentialTalonFXSensorID = m_rightLeader.getDeviceID();        
+        m_leftConfig.DifferentialSensors.DifferentialSensorSource = DifferentialSensorSourceValue.RemoteTalonFX_Diff;
+        // m_leftConfig.DifferentialSensors.DifferentialRemoteSensorID = m_leftLeader.getDeviceID();
 
         FeedbackConfigs fdb = m_rightConfig.Feedback;
         fdb.SensorToMechanismRatio = 9.82;
@@ -255,11 +256,13 @@ public class Drivetrain {
 		//m_leftLeader.configAllSettings(m_leftConfig);
 		//m_rightLeader.configAllSettings(m_rightConfig);
         //m_leftLeader.getConfigurator().apply(m_leftConfig);
-        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
 
         /* Determine which slot affects which PID */
         //m_rightLeader.selectProfileSlot(0, RobotMap.DrivetrainConstants.PID_PRIMARY);
         //m_rightLeader.selectProfileSlot(1, RobotMap.DrivetrainConstants.PID_TURN);
+        m_leftLeader.clearStickyFault_MissingDifferentialFX();
+        m_rightLeader.clearStickyFault_MissingDifferentialFX();
 
     }
 }
