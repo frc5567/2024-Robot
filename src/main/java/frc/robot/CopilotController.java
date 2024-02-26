@@ -3,10 +3,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class CopilotController {
-    private XboxController m_controller;
+    //private XboxController m_controller;
+    private GamePad m_controller;
 
     public CopilotController() {
-        m_controller = new XboxController(1);
+        //m_controller = new XboxController(1);
+        m_controller = new GamePad(1);
     }
 
     /**
