@@ -24,10 +24,10 @@ public class GamePad extends Joystick{
         Right_Retract(4),
         Engage_Ratchet(5),
         Disengage_Ratchet(6),
-        Expel(7),
-        Intake(8),
-        Amp_Launch(9),
-        Speaker_Launch(10);
+        Expel(8),
+        Intake(12),
+        Amp_Launch(5),
+        Speaker_Launch(3);
         //Extra_Button(11),
         //Extra_Button2(12),
 

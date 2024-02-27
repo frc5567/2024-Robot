@@ -31,6 +31,8 @@ public class Robot extends TimedRobot {
   private Launcher m_launcher;
   private Indexer m_indexer;
   private UsbCamera m_camera;
+  private Climber m_climber;
+  private GamePad m_gamePad;
 
   private boolean m_currentlyLaunching;
 
@@ -54,6 +56,8 @@ public class Robot extends TimedRobot {
     m_intake = new Intake();
     m_launcher = new Launcher();
     m_indexer = new Indexer();
+    m_climber = new Climber();
+    m_gamePad = new GamePad(1);
 
     m_currentlyLaunching = false;
 
@@ -134,6 +138,10 @@ public class Robot extends TimedRobot {
     boolean speakerLauncherOn = false;
     boolean haveNote = false;
     boolean expelOn = false;
+    boolean leftClimberExtending = false;
+    boolean rightClimberExtending = false;
+    boolean leftClimberRetracting = false;
+    boolean rightClimberRetracting = false;
 
     PilotController.DesiredDirection desiredDirection = PilotController.DesiredDirection.NoChange;
 
@@ -141,11 +149,35 @@ public class Robot extends TimedRobot {
     curTurn = m_pilotController.getDriverTurn();
 
     desiredDirection = m_pilotController.getPilotChangeControls();
-    intakeOn = m_pilotController.getIntakeButton();
-    ampLauncherOn = m_pilotController.getAmpLaunchButton();
-    speakerLauncherOn = m_pilotController.getSpeakerLaunchButton();
+    intakeOn = m_gamePad.getIntake();
+    ampLauncherOn = m_gamePad.getAmpLaunch();
+    speakerLauncherOn = m_gamePad.getSpeakerLaunch();
     haveNote = m_indexer.readIndexSensor();
-    expelOn = m_indexer.readIndexSensor();
+    expelOn = m_gamePad.getExpel();
+    leftClimberExtending = m_gamePad.getLeftExtend();
+    rightClimberExtending = m_gamePad.getRightExtend();
+    leftClimberRetracting = m_gamePad.getLeftRetract();
+    rightClimberRetracting = m_gamePad.getRightRetract();
+
+    if (leftClimberExtending) {
+      m_climber.setLeftSpeed(coDriveInput.m_leftClimber);
+    }
+    else if (leftClimberRetracting) {
+      m_climber.setLeftSpeed(coDriveInput.m_leftClimber);
+    }
+    else {
+      m_climber.setLeftSpeed(0.0);
+    }
+
+    if (rightClimberExtending) {
+      m_climber.setRightSpeed(coDriveInput.m_rightClimber);
+    }
+    else if (rightClimberRetracting) {
+      m_climber.setRightSpeed(coDriveInput.m_rightClimber);
+    }
+    else {
+      m_climber.setRightSpeed(0.0);
+    }
 
     m_drivetrain.setDesiredDirection(desiredDirection);
 
