@@ -186,6 +186,15 @@ public class RobotMap {
 
         public static final int RIGHT_CLIMBER_CAN_ID = 9;
 
+        /**
+         * PWM Channel ID for the left climber servo.
+         */
+        public static final int LEFT_SERVO = 2;
+
+        /**
+        * PWM Channel ID for the right climber servo.
+        */
+        public static final int RIGHT_SERVO = 3;
     }
 
     public static class CopilotConstants {
