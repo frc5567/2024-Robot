@@ -5,6 +5,9 @@
 package frc.robot;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +30,7 @@ public class Robot extends TimedRobot {
   private Intake m_intake;
   private Launcher m_launcher;
   private Indexer m_indexer;
+  private UsbCamera m_camera;
 
   private boolean m_currentlyLaunching;
 
@@ -54,6 +58,18 @@ public class Robot extends TimedRobot {
     m_currentlyLaunching = false;
 
     m_drivetrain.initDrivetrain();
+    
+    try {
+      m_camera = CameraServer.startAutomaticCapture();
+
+      m_camera.setResolution(160,120);
+      m_camera.setFPS(10);
+
+    } 
+    catch (Exception e){
+      System.out.println("Camera failed to instantiate");
+    }
+
   }
 
   /**
