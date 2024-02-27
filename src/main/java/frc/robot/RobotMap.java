@@ -184,7 +184,60 @@ public class RobotMap {
          * CAN ID of the right climber motor.
          */
 
-         public static final int RIGHT_CLIMBER_CAN_ID = 9;
+        public static final int RIGHT_CLIMBER_CAN_ID = 9;
 
+    }
+
+    public static class CopilotConstants {
+
+        /**
+         * Speed of the left climber.
+         */
+        public static final double LEFT_CLIMBER_SPEED = 0.5;
+
+        /**
+         * Speed of the right climber.
+         */
+        public static final double RIGHT_CLIMBER_SPEED = 0.5;
+
+        /**
+         * Speed of the intake.
+         */
+        public static final double INTAKE_SPEED = 0.5;
+
+        /**
+         * Speed of the indexer while loading from the intake.
+         */
+        public static final double LOAD_SPEED = 0.5;
+
+        /**
+         * Speed of the indexer while feeding to the launcher for the amp.
+         */
+        public static final double AMP_FEED_SPEED = 0.8;
+
+        /**
+         * Speed of the indexer while feeding to the launcher for the speaker.
+         */
+        public static final double SPEAKER_FEED_SPEED = 0.7;
+
+        /**
+         * Speed of the right launcher for the amp.
+         */
+        public static final double RIGHT_AMP_LAUNCH_SPEED = 0.5;
+
+        /**
+         * Speed of the left launcher for the amp.
+         */
+        public static final double LEFT_AMP_LAUNCH_SPEED = 0.5;
+
+        /**
+         * Speed of the right launcher for the speaker.
+         */
+        public static final double RIGHT_SPEAKER_LAUNCH_SPEED = 0.95;
+
+        /**
+         * Speed of the left launcher for the speaker.
+         */
+        public static final double LEFT_SPEAKER_LAUNCH_SPEED = 0.95;
     }
 }

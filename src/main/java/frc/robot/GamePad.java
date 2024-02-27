@@ -17,6 +17,7 @@ public class GamePad extends Joystick{
      */
     public enum GamePadControls {
         
+        //TODO: update port numbers
         Left_Extend(1),
         Left_Retract(2),
         Right_Extend(3),
@@ -32,6 +33,9 @@ public class GamePad extends Joystick{
 
         public final int portNum;
 
+        GamePadControls(int newPortNum) {
+            this.portNum = newPortNum;
+        }
     }
 
     /**
