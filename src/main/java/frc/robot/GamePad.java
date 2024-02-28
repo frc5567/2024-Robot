@@ -18,12 +18,12 @@ public class GamePad extends Joystick{
     public enum GamePadControls {
         
         //TODO: update port numbers
-        Left_Extend(1),
-        Left_Retract(2),
-        Right_Extend(3),
-        Right_Retract(4),
-        Engage_Ratchet(5),
-        Disengage_Ratchet(6),
+        Left_Extend(10),
+        Left_Retract(11),
+        Right_Extend(1),
+        Right_Retract(2),
+        //Engage_Ratchet(5),
+        //Disengage_Ratchet(6),
         Expel(8),
         Intake(12),
         Amp_Launch(5),
@@ -70,21 +70,21 @@ public class GamePad extends Joystick{
         return super.getRawButton(GamePadControls.Right_Retract.portNum);
     }
 
-    /**
-     * Checks if the Engage Ratchet button is pressed.
-     * @return true if the Ratchet Engage button was pressed, false if not.
-     */
-    public boolean getEngageRatchet() {
-        return super.getRawButton(GamePadControls.Engage_Ratchet.portNum);
-    }
+    // /**
+    //  * Checks if the Engage Ratchet button is pressed.
+    //  * @return true if the Ratchet Engage button was pressed, false if not.
+    //  */
+    // public boolean getEngageRatchet() {
+    //     return super.getRawButton(GamePadControls.Engage_Ratchet.portNum);
+    // }
 
-    /**
-     * Checks if the Disengage Ratchet button is pressed.
-     * @return true if the Ratchet Disengage button was pressed, false if not.
-     */
-    public boolean getDisengageRatchet() {
-        return super.getRawButton(GamePadControls.Disengage_Ratchet.portNum);
-    }
+    // /**
+    //  * Checks if the Disengage Ratchet button is pressed.
+    //  * @return true if the Ratchet Disengage button was pressed, false if not.
+    //  */
+    // public boolean getDisengageRatchet() {
+    //     return super.getRawButton(GamePadControls.Disengage_Ratchet.portNum);
+    // }
 
     /**
      * Checks if the Expel button is pressed.
