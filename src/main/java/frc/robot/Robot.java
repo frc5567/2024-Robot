@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     AutonInput currentInput;
-    currentInput = m_auton.periodic();
+    currentInput = m_auton.periodic(m_launcher, m_indexer, m_drivetrain);
     
     if (currentInput.m_autonCompleted) {
       m_drivetrain.arcadeDrive(0.0, 0.0);

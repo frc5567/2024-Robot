@@ -9,10 +9,6 @@ public class Auton {
 
     private String m_currentPath = RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT;
 
-    private Launcher m_launcher;
-    private Indexer m_indexer;
-    public Drivetrain m_drivetrain;
-
     private int m_feedLoopCount = 0;
 
     private int m_launchLoopCount = 0;
@@ -28,6 +24,8 @@ public class Auton {
     public void init() {
         m_step = 0;
         m_autonStart = true;
+        m_feedLoopCount = 0;
+        m_launchLoopCount = 0;
     }
 
     /**
@@ -47,7 +45,7 @@ public class Auton {
 
     }
 
-    public AutonInput periodic() {
+    public AutonInput periodic(Launcher launcher, Indexer indexer, Drivetrain drivetrain) {
         AutonInput newInput = new AutonInput();
 
         if (m_autonStart) {
@@ -67,33 +65,37 @@ public class Auton {
                 switch(m_step) {
                     case 1:
                     {
-                        System.out.println("Step: " + m_step);
-                        m_launcher.speakerLaunch();
-                        if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                            m_indexer.feedNote();
+                        if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                            System.out.println("Step complete: " + m_step);
+                            m_launchLoopCount = 0;
+                            launcher.stop();
+                            indexer.stop();
+                            m_step += 1;
                         }
                         else {
-                            m_indexer.stop();
+                            launcher.speakerLaunch();
+                            if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                indexer.feedNote();
+                                System.out.println("Step feeding: " + m_step + " loopcount:" + m_feedLoopCount + " - " + m_launchLoopCount);
+                            }
+                            else {
+                                indexer.stop();
+                                System.out.println("Step not feeding: " + m_step + " loopcount:" + m_feedLoopCount + " - " + m_launchLoopCount);
+                            }
                         }
-                        
-                        m_launchLoopCount ++;
-                        if (m_launchLoopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT) {
-                            m_launchLoopCount = 0;
-                            m_launcher.stop();
-                            m_indexer.stop();
-                            m_step += 1;
-                            break;
-                        }
-                        
+                        drivetrain.arcadeDrive(0.0, 0.0);
+                        break;
                     }
                     case 2:
                     {
                         System.out.println("Step: " + m_step);
 
                         //newInput.m_driveTarget = RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST;
-                        if (m_drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST)) {
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST)) {
                             m_step += 1;
                         }
+                        launcher.stop();
+                        indexer.stop();
                         break;
                     }
                     case 3:
