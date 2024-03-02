@@ -241,11 +241,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    double curSpeed = 0.0;
-    double curTurn = 0.0;
     boolean driveForward = false;
-    //m_drivetrain.arcadeDrive(curSpeed, curTurn);
-    //m_launcher.setSpeed(0.0, 0.0);
+    
     driveForward = m_copilotController.driveForward();
 
     //System.out.print("Right Encoder Pos [ " + m_drivetrain.getRightDrivePos() + " ]");
@@ -267,9 +264,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    double curSpeed = 0.0;
-    double curTurn = 0.0;
-    m_drivetrain.arcadeDrive(curSpeed, curTurn);
-    //m_launcher.setSpeed(0.0, 0.0);
   }
 }

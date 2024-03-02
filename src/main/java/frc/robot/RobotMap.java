@@ -40,12 +40,12 @@ public class RobotMap {
         /**
          * Drive Straight PID constants
          */
-        public final static Gains DISTANCE_GAINS = new Gains( 50.0, 0.0,  0.0, 0.1,            100,  0.70 );
+        public final static Gains DISTANCE_GAINS = new Gains( 50.0, 0.0,  0.0, 0.1);
         
         /**
          * Turn to Angle PID constants
          */
-        public final static Gains TURNING_GAINS = new Gains( 0.5, 0.0,  4.0, 0.0,            200,  0.5 );
+        public final static Gains TURNING_GAINS = new Gains( 0.01, 0.0,  4.0, 0.0);
 
         public final static int PID_PRIMARY = 0;
         public final static int PID_TURN = 1;
@@ -63,6 +63,10 @@ public class RobotMap {
          * Encoder deadband used in driveStraight.
          */
         public static final int DRIVE_STRAIGHT_DEADBAND = 5000;
+
+        public static final double OPEN_RAMPS = 0.2;
+
+        public static final double UPDATE_FREQUENCY = 100;
     }
 
     /**

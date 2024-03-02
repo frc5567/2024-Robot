@@ -16,9 +16,13 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.mechanisms.SimpleDifferentialMechanism;
+import com.ctre.phoenix6.mechanisms.DifferentialMechanism.DifferentialPigeon2Source;
 import com.ctre.phoenix6.signals.DifferentialSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.hal.simulation.RoboRioDataJNI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Drivetrain {
@@ -43,6 +47,8 @@ public class Drivetrain {
 
     private DifferentialMotionMagicVoltage m_motmag;
 
+    private SimpleDifferentialMechanism m_diffMechanism;
+
     /**
      * Constructor for the drivetrain class 
      */
@@ -58,6 +64,8 @@ public class Drivetrain {
         m_drive = new DifferentialDrive(m_leftLeader, m_rightLeader);
 
         m_motmag = new DifferentialMotionMagicVoltage(0.0, 0.0, false, 0, 1, false, false, false );
+
+        m_diffMechanism = new SimpleDifferentialMechanism(m_rightLeader, m_leftLeader, false, m_pigeon, SimpleDifferentialMechanism.DifferentialPigeon2Source.Yaw);
 
         m_isDrivetrainForward = true;
     }
@@ -77,13 +85,6 @@ public class Drivetrain {
         m_leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         m_rightConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-        // Applies the corresponding configurations to each drivetrain motor and the Pigeon.
-        m_leftLeader.getConfigurator().apply(m_leftConfig);
-        m_leftFollower.getConfigurator().apply(m_leftConfig);
-        m_rightLeader.getConfigurator().apply(m_rightConfig);
-        m_rightFollower.getConfigurator().apply(m_rightConfig);
-        m_pigeon.getConfigurator().apply(pigeonConfiguration);
-
         // Sets the Followers to follow the Leaders.
         m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
         m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
@@ -94,9 +95,24 @@ public class Drivetrain {
 
         m_isDrivetrainForward = true;
 
+        m_rightConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = RobotMap.DrivetrainConstants.OPEN_RAMPS;
+        m_leftConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = RobotMap.DrivetrainConstants.OPEN_RAMPS;
+
         this.zeroSensors();
 
         this.configPID();
+
+        m_pigeon.getYaw().setUpdateFrequency(RobotMap.DrivetrainConstants.UPDATE_FREQUENCY);
+        m_rightLeader.getPosition().setUpdateFrequency(RobotMap.DrivetrainConstants.UPDATE_FREQUENCY);
+        m_leftLeader.getPosition().setUpdateFrequency(RobotMap.DrivetrainConstants.UPDATE_FREQUENCY);
+
+        // Applies the corresponding configurations to each drivetrain motor and the Pigeon.
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
+        m_pigeon.getConfigurator().apply(pigeonConfiguration);
+        m_diffMechanism.applyConfigs();
     }
 
     /**
@@ -165,38 +181,20 @@ public class Drivetrain {
      * @param distance a double passed for setting what magnitude of distance the robot must travel in inches
      * @return a boolean designating whether the target has been reached
      */
-    public boolean driveStraight(double distance) {
+    public boolean driveStraight(double rotations) {
         boolean reachedTarget = false;
-        // 6" wheels means 18.85" per rotation
-        double rotations = distance; // 18.85;
-        //double target_sensorUnits = (RobotMap.DrivetrainConstants.SENSOR_UNITS_PER_ROTATION * rotations) * RobotMap.DrivetrainConstants.GEAR_RATIO;
-        //double target_turn = 0.0; // don't turn
-
-        //if((m_outputCounter % 100) == 0) {
-        //    System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
-        //    System.out.println("output [" + m_rightLeader.getMotorOutputPercent() + "] velocity [" + m_rightLeader.getSelectedSensorVelocity() + "]");
-        //}
-
-        /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
-        //m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
-        //m_leftLeader.follow(m_rightLeader, FollowerType.AuxOutput1);
-        //m_rightFollower.follow(m_rightLeader);
-        //m_leftFollower.follow(m_leftLeader);
-
-        //.withPosition(rotations).withSlot(0)
-
-        var statusCodeRightLeader = m_rightLeader.setControl(m_motmag.withTargetPosition(rotations));
-        // var statusCodeLeftLeader = m_leftLeader.setControl(new DifferentialFollower(m_rightLeader.getDeviceID(), true));
-        var statusCodeLeftLeader = 0;
+  
+        var statusCode = m_diffMechanism.setControl(new DifferentialMotionMagicDutyCycle(rotations, 0.5));
+        m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
+        m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
 
         if ((Math.abs(m_rightLeader.getPosition().getValueAsDouble() - rotations) < 1)) {
             reachedTarget = true;
         }
 
-
         var output = m_rightLeader.getClosedLoopOutput();
         var target = m_rightLeader.getClosedLoopReference();
-        System.out.println("Status Right[" + statusCodeRightLeader + "] Status Left[" + statusCodeLeftLeader + "] Rotations[" + rotations + "] target?[" + target + "] Error[" + m_rightLeader.getClosedLoopError() + "] Output[" + output + "]");
+        System.out.println("Status code [" + statusCode + "] Rotations[" + rotations + "] target?[" + target + "] Error[" + m_rightLeader.getClosedLoopError() + "] Output[" + output + "]");
 
         return reachedTarget;
     }
@@ -215,51 +213,20 @@ public class Drivetrain {
         slot0.kS = 0.0;
 
         Slot1Configs slot1 = m_rightConfig.Slot1;
-		slot1.kV = 0.0;
-		slot1.kP = 50.0;
-		slot1.kI = 0.0;
-		slot1.kD = 0.0;
+		slot1.kV = RobotMap.DrivetrainConstants.TURNING_GAINS.kV;
+		slot1.kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
+		slot1.kI = RobotMap.DrivetrainConstants.TURNING_GAINS.kI;
+		slot1.kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
         slot1.kS = 0.0;
 
-        //m_rightConfig.motionCurveStrength = 4;
-
-		/* FPID for Heading */
-        //TODO: figure out if kV is the correct feedforward gain.
-		//m_rightConfig.Slot1.kV = RobotMap.DrivetrainConstants.TURNING_GAINS.kV;
-		//m_rightConfig.Slot1.kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
-		//m_rightConfig.Slot1.kI = RobotMap.DrivetrainConstants.TURNING_GAINS.kI;
-		//m_rightConfig.Slot1.kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
-		
-		/* Config the neutral deadband. */
-		//m_leftConfig.neutralDeadband = RobotMap.DrivetrainConstants.NEUTRAL_DEADBAND;
-		//m_rightConfig.neutralDeadband = RobotMap.DrivetrainConstants.NEUTRAL_DEADBAND;
-
-		/* Motion Magic Configs */
-        //var motionMagicConfigs = m_rightConfig.MotionMagic;
-		//m_rightConfig.motionAcceleration = 9000; //(distance units per 100 ms) per second
-		//m_rightConfig.motionCruiseVelocity = 12000; //distance units per 100 ms
         MotionMagicConfigs mm = m_rightConfig.MotionMagic;
 
         mm.MotionMagicCruiseVelocity = 7.0; 
         mm.MotionMagicAcceleration = 10.0;
-        mm.MotionMagicJerk = 50.0;
-
-        // m_rightConfig.DifferentialSensors.DifferentialTalonFXSensorID = m_leftLeader.getDeviceID();        
-        // m_rightConfig.DifferentialSensors.DifferentialSensorSource = DifferentialSensorSourceValue.RemoteTalonFX_Diff;
-        // m_rightConfig.DifferentialSensors.DifferentialRemoteSensorID = m_leftLeader.getDeviceID();
+        mm.MotionMagicJerk = 0.0;
 
         FeedbackConfigs fdb = m_rightConfig.Feedback;
         fdb.SensorToMechanismRatio = 9.82;
-
-		/* APPLY the config settings */
-		//m_leftLeader.configAllSettings(m_leftConfig);
-		//m_rightLeader.configAllSettings(m_rightConfig);
-        //m_leftLeader.getConfigurator().apply(m_leftConfig);
-        m_rightLeader.getConfigurator().apply(m_rightConfig);
-
-        /* Determine which slot affects which PID */
-        //m_rightLeader.selectProfileSlot(0, RobotMap.DrivetrainConstants.PID_PRIMARY);
-        //m_rightLeader.selectProfileSlot(1, RobotMap.DrivetrainConstants.PID_TURN);
 
     }
 }
