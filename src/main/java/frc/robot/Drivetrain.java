@@ -37,6 +37,8 @@ public class Drivetrain {
 
     private DifferentialDrive m_drive;
 
+    private MotionMagicVoltage m_mmVoltage;
+
     /**
      * The variable that keeps track of current drivetrain direction.
      * True is inital direction (forward). False is reversed control.
@@ -45,10 +47,6 @@ public class Drivetrain {
 
     private TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
     private TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
-
-    private DifferentialMotionMagicVoltage m_motmag;
-
-    private SimpleDifferentialMechanism m_diffMechanism;
 
     /**
      * Constructor for the drivetrain class 
@@ -64,9 +62,7 @@ public class Drivetrain {
 
         m_drive = new DifferentialDrive(m_leftLeader, m_rightLeader);
 
-        m_motmag = new DifferentialMotionMagicVoltage(0.0, 0.0, false, 0, 1, false, false, false );
-
-        m_diffMechanism = new SimpleDifferentialMechanism(m_rightLeader, m_leftLeader, false, m_pigeon, SimpleDifferentialMechanism.DifferentialPigeon2Source.Yaw);
+        m_mmVoltage = new MotionMagicVoltage(0.0);
 
         m_isDrivetrainForward = true;
     }
@@ -111,7 +107,6 @@ public class Drivetrain {
         m_rightLeader.getConfigurator().apply(m_rightConfig);
         m_rightFollower.getConfigurator().apply(m_rightConfig);
         m_pigeon.getConfigurator().apply(pigeonConfiguration);
-        m_diffMechanism.applyConfigs();
 
         this.zeroSensors();
     }
@@ -187,8 +182,10 @@ public class Drivetrain {
      */
     public boolean driveStraight(double rotations) {
         boolean reachedTarget = false;
+
+        m_rightLeader.setControl(m_mmVoltage.withPosition(rotations));
+        m_leftLeader.setControl(m_mmVoltage.withPosition(rotations));
   
-        var statusCode = m_diffMechanism.setControl(new DifferentialMotionMagicDutyCycle(rotations, 0.5));
         m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
         m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
 
@@ -198,7 +195,7 @@ public class Drivetrain {
 
         var output = m_rightLeader.getClosedLoopOutput();
         var target = m_rightLeader.getClosedLoopReference();
-        System.out.println("Status code [" + statusCode + "] Rotations[" + rotations + "] target?[" + target + "] Error[" + m_rightLeader.getClosedLoopError() + "] Output[" + output + "]");
+        System.out.println("Rotations[" + rotations + "] target?[" + target + "] Error[" + m_rightLeader.getClosedLoopError() + "] Output[" + output + "]");
 
         return reachedTarget;
     }
@@ -300,6 +297,8 @@ public class Drivetrain {
 		slot0.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
         slot0.kS = 0.0;
 
+        m_leftConfig.Slot0 = slot0;
+
         Slot1Configs slot1 = m_rightConfig.Slot1;
 		slot1.kV = RobotMap.DrivetrainConstants.TURNING_GAINS.kV;
 		slot1.kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
@@ -307,14 +306,20 @@ public class Drivetrain {
 		slot1.kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
         slot1.kS = 0.0;
 
+        m_leftConfig.Slot1 = slot1;
+
         MotionMagicConfigs mm = m_rightConfig.MotionMagic;
 
         mm.MotionMagicCruiseVelocity = 7.0; 
         mm.MotionMagicAcceleration = 10.0;
         mm.MotionMagicJerk = 0.0;
 
+        m_leftConfig.MotionMagic = mm;
+        
         FeedbackConfigs fdb = m_rightConfig.Feedback;
         fdb.SensorToMechanismRatio = 9.82;
+
+        m_leftConfig.Feedback = fdb;
 
     }
 }
