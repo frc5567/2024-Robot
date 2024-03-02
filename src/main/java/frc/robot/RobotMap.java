@@ -248,31 +248,31 @@ public class RobotMap {
         /**
          * PWM Channel ID for the left climber servo.
          */
-        public static final int LEFT_SERVO = 2;
+        public static final int LEFT_SERVO = 0;
 
         /**
         * PWM Channel ID for the right climber servo.
         */
-        public static final int RIGHT_SERVO = 3;
+        public static final int RIGHT_SERVO = 1;
 
         /**
          * The position of the right servo when unlocked.
          */
-        public static final double RIGHT_SERVO_UNLOCK_POS = 0.69;
+        public static final double RIGHT_SERVO_UNLOCK_POS = 0.0;
 
         /**
          * The position of the left servo when extended.
          */
-        public static final double LEFT_SERVO_UNLOCK_POS = 0.69;
+        public static final double LEFT_SERVO_UNLOCK_POS = 0.0;
 
         /**
          * The position of the right servo when retracted.
          */
-        public static final double RIGHT_SERVO_LOCK_POS = 0.3;
+        public static final double RIGHT_SERVO_LOCK_POS = 1.0;
 
         /**
          * The position of the left servo when retracted.
          */
-        public static final double LEFT_SERVO_LOCK_POS = 0.3;
+        public static final double LEFT_SERVO_LOCK_POS = 1.0;
     }
 }

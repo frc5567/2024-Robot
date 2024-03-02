@@ -26,7 +26,12 @@ public class Climber {
 
         m_leftClimber.setInverted(false);
         m_leftClimber.setInverted(false);
+
+        //2 mils on PWM is the max bound, 1 mils is the min bound, no deadband
+        m_leftServo.setBoundsMicroseconds(2000, 1500, 1500, 1500, 1000);
+        m_rightServo.setBoundsMicroseconds(2000, 1500, 1500, 1500, 1000);
     }
+
 
     /**
      * Sets the speed of the left motor.
@@ -42,14 +47,28 @@ public class Climber {
         m_rightClimber.set(TalonSRXControlMode.PercentOutput, speed);
     }
 
-    //TODO: Test servo values and java doc.
-    public void unlockClimb() {
-        m_leftServo.set(RobotMap.ClimberConstants.LEFT_SERVO_UNLOCK_POS);
-        m_rightServo.set(RobotMap.ClimberConstants.RIGHT_SERVO_UNLOCK_POS);
+    /**
+     * Method used to get the positions of the left and right servos.
+     */
+    public void getServo() {
+        double leftAngle = m_leftServo.getPosition();
+        double rightAngle = m_rightServo.getPosition();
+        System.out.println("left angle [" + leftAngle + "] Right angle [" + rightAngle + "]");
     }
 
+    /**
+     * Sets the servo positions to retract. This allows backfeed on the climber. 
+     */
+    public void unlockClimb() {
+        m_leftServo.setPosition(RobotMap.ClimberConstants.LEFT_SERVO_UNLOCK_POS);
+        m_rightServo.setPosition(RobotMap.ClimberConstants.RIGHT_SERVO_UNLOCK_POS);
+    }
+
+    /**
+     * Sets the servo positions to extend. This restricts backfeed on the climber. 
+     */
     public void lockClimb() {
-        m_leftServo.set(RobotMap.ClimberConstants.LEFT_SERVO_LOCK_POS);
-        m_rightServo.set(RobotMap.ClimberConstants.RIGHT_SERVO_LOCK_POS);
+        m_leftServo.setPosition(RobotMap.ClimberConstants.LEFT_SERVO_LOCK_POS);
+        m_rightServo.setPosition(RobotMap.ClimberConstants.RIGHT_SERVO_LOCK_POS);
     }
 }
