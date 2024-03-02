@@ -64,7 +64,10 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+
+    m_drivetrain.periodic();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -242,8 +245,10 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     boolean driveForward = false;
-    
+    boolean isTurning = false;
+
     driveForward = m_copilotController.driveForward();
+    isTurning = m_copilotController.turnToAngleButton();
 
     //System.out.print("Right Encoder Pos [ " + m_drivetrain.getRightDrivePos() + " ]");
 
@@ -251,9 +256,13 @@ public class Robot extends TimedRobot {
       //System.out.print("A BUTTON PRESSED");
       m_drivetrain.driveStraight(10.0);
     }
-    else {
-      m_drivetrain.driveStraight(0.0);
+    else if (isTurning) {
+      m_drivetrain.turnToAngle(-30.0);
     }
+    else {
+      m_drivetrain.arcadeDrive(0.0, 0.0);
+    }
+    
     
   }
 

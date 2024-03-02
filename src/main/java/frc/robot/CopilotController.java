@@ -17,4 +17,8 @@ public class CopilotController {
         boolean driveForward = m_controller.getAButton();
         return driveForward;
     }
+
+    public boolean turnToAngleButton() {
+        return m_controller.getBButton();
+    }
 }

@@ -67,6 +67,8 @@ public class RobotMap {
         public static final double OPEN_RAMPS = 0.2;
 
         public static final double UPDATE_FREQUENCY = 100;
+
+        public static final double DRIVE_ANGLE_DEADBAND = 0.8;
     }
 
     /**
