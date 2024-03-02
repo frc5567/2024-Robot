@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  // private static final String kDefaultAuto = "Default";
+  // private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
   private Indexer m_indexer;
   private GamePad m_gamePad;
   private Climber m_climber;
+  private Auton m_auton;
 
   private boolean m_currentlyLaunching;
 
@@ -40,9 +41,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.setDefaultOption(RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT, RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT);
+    //m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    m_autoSelected = m_chooser.getSelected();
 
     Pigeon2 m_pigeon = new Pigeon2(RobotMap.DrivetrainConstants.PIGEON_CAN_ID);
 
@@ -54,6 +56,7 @@ public class Robot extends TimedRobot {
     m_indexer = new Indexer();
     m_gamePad = new GamePad(1);
     m_climber = new Climber();
+    m_auton = new Auton();
 
     m_currentlyLaunching = false;
 
@@ -69,7 +72,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    m_autoSelected = m_chooser.getSelected();
     m_drivetrain.periodic();
   }
 
@@ -88,24 +91,19 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    m_auton.init();
+    m_auton.selectPath(m_autoSelected);
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    AutonInput currentInput;
+    currentInput = m_auton.periodic();
+    
+    if (currentInput.m_autonCompleted) {
+      m_drivetrain.arcadeDrive(0.0, 0.0);
     }
-    double curSpeed = 0.0;
-    double curTurn = 0.0;
-    m_drivetrain.arcadeDrive(curSpeed, curTurn);
-    //m_launcher.setSpeed(0.0, 0.0);
   }
 
   /** This function is called once when teleop is enabled. */

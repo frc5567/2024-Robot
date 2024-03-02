@@ -1,6 +1,15 @@
 package frc.robot;
 
 public class RobotMap {
+
+    public static final int LAUNCH_SPIN_UP_COUNT = 25;
+
+    public static final int ADDITIONAL_LAUNCH_COUNT = 25;
+
+    /**
+     * Constant for setting variables to 0 if there is not input value.
+     */
+    public static final double NO_INPUT = Double.NaN;
     
     /**
      * All drivetrain constants.
@@ -274,5 +283,20 @@ public class RobotMap {
          * The position of the left servo when retracted.
          */
         public static final double LEFT_SERVO_LOCK_POS = 1.0;
+    }
+
+
+    public static class AutonConstants {
+
+        /**
+         * Path used when starting directly in front of the subwoofer, launching one note, and exiting community.
+         */
+        public static final String FRONT_ONE_NOTE_EXIT = "Front One Note Exit";
+
+        /**
+         * The distance to exit the community when starting directly in front of the subwoofer. 
+         */
+        public static final double FRONT_SPEAKER_EXIT_DIST = 45.0;
+
     }
 }

@@ -180,7 +180,10 @@ public class Drivetrain {
      * @param distance a double passed for setting what magnitude of distance the robot must travel in inches
      * @return a boolean designating whether the target has been reached
      */
-    public boolean driveStraight(double rotations) {
+    public boolean driveStraight(double distance) {
+
+        double rotations = distance / 18.85;
+
         boolean reachedTarget = false;
 
         m_rightLeader.setControl(m_mmVoltage.withPosition(rotations));
