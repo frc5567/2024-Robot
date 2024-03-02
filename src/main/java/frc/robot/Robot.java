@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_drivetrain;
   private PilotController m_pilotController;
+  private CopilotController m_copilotController;
   private Intake m_intake;
   private Launcher m_launcher;
   private Indexer m_indexer;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
 
     m_drivetrain = new Drivetrain(m_pigeon);
     m_pilotController = new PilotController();
+    m_copilotController = new CopilotController();
     m_intake = new Intake();
     m_launcher = new Launcher();
     m_indexer = new Indexer();
@@ -62,7 +64,10 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+
+    m_drivetrain.periodic();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -96,7 +101,7 @@ public class Robot extends TimedRobot {
     double curSpeed = 0.0;
     double curTurn = 0.0;
     m_drivetrain.arcadeDrive(curSpeed, curTurn);
-    m_launcher.setSpeed(0.0, 0.0);
+    //m_launcher.setSpeed(0.0, 0.0);
   }
 
   /** This function is called once when teleop is enabled. */
@@ -152,7 +157,7 @@ public class Robot extends TimedRobot {
           m_indexer.feedNote();
         }
         else {
-          m_indexer.stop();
+        m_indexer.stop();
         }
         m_launcher.setSpeed(leftLauncherSpeakerSpeed, rightLauncherSpeakerSpeed);
       }
@@ -176,9 +181,13 @@ public class Robot extends TimedRobot {
         // If currentlyLaunching is false and we have a note we want to launch to the speaker,
         // set the launcher to speaker speed, feed a note from the the indexer, set the intake speed to 0, and set currentlyLaunching to true.
         else if (speakerLauncherOn) {
+          if (++m_launchCounter > 25) {
+            m_indexer.feedNote();
+          }
+          else {
+            m_indexer.stop();
+          }
           m_launcher.setSpeed(leftLauncherSpeakerSpeed, rightLauncherSpeakerSpeed);
-          m_indexer.feedNote();
-          m_intake.setSpeed(0.0);
           m_currentlyLaunching = true;
         }
         // If currentlyLaunching is false and we want to expel, set launcher, indexer, and intake to reversed speed.
@@ -239,10 +248,26 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    double curSpeed = 0.0;
-    double curTurn = 0.0;
-    m_drivetrain.arcadeDrive(curSpeed, curTurn);
-    m_launcher.setSpeed(0.0, 0.0);
+    boolean driveForward = false;
+    boolean isTurning = false;
+
+    driveForward = m_copilotController.driveForward();
+    isTurning = m_copilotController.turnToAngleButton();
+
+    //System.out.print("Right Encoder Pos [ " + m_drivetrain.getRightDrivePos() + " ]");
+
+    if (driveForward) {
+      //System.out.print("A BUTTON PRESSED");
+      m_drivetrain.driveStraight(10.0);
+    }
+    else if (isTurning) {
+      m_drivetrain.turnToAngle(-30.0);
+    }
+    else {
+      m_drivetrain.arcadeDrive(0.0, 0.0);
+    }
+    
+    
   }
 
   /** This function is called once when the robot is first started up. */
@@ -252,9 +277,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    double curSpeed = 0.0;
-    double curTurn = 0.0;
-    m_drivetrain.arcadeDrive(curSpeed, curTurn);
-    m_launcher.setSpeed(0.0, 0.0);
   }
 }
