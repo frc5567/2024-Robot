@@ -45,6 +45,7 @@ public class Indexer {
 
     /**
      * Helper method used to load a note from the intake.
+     * If there is a note loaded, sets the indexer to 0. If there is no note sensed, sets the index speed to the Load speed (0.5).
      * @return true if there is a note loaded, false if the note is not loaded.
      */
     public boolean loadNote() {
@@ -62,7 +63,7 @@ public class Indexer {
     }
 
     /**
-     * Helper method used to feed the note the launcher.
+     * Helper method used to feed the note the launcher. Feed speed is 1.0.
      */
     public void feedNote() {
         setIndexSpeed(RobotMap.IndexerConstants.FEED_SPEED);
@@ -70,7 +71,7 @@ public class Indexer {
 
     /**
      * Helper method used to expel the note.
-     * Sets the index motor to the negatrive value of LOAD_SPEED.
+     * Sets the index motor to the negative value of the load speed (-0.5).
      */
     public void expelNote() {
         setIndexSpeed(-RobotMap.IndexerConstants.LOAD_SPEED);

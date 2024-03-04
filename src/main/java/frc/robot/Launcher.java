@@ -12,6 +12,11 @@ public class Launcher {
 
     final DutyCycleOut m_motorOutput = new DutyCycleOut(0.0);
 
+    /**
+     * Constructor method for the launcher class. Sets the CAN IDs for both the launch motors, 
+     * configures the Talons, sets the brake and inversion mode on the motors,
+     * sets the motor safety on the talons.
+     */
     Launcher() {
         m_launcherLeft = new TalonFX(RobotMap.LauncherConstants.LEFT_LAUNCHER_CAN_ID);
         m_launcherRight = new TalonFX(RobotMap.LauncherConstants.RIGHT_LAUNCHER_CAN_ID);
@@ -48,23 +53,30 @@ public class Launcher {
     }
 
     /**
-     * Method that sets the launcher speeds to the amp speeds
+     * Method that sets the launcher speeds to the amp speeds (left 0.4, right 0.4)
      */
     public void ampLaunch() {
         this.setSpeed(RobotMap.LauncherConstants.LEFT_AMP_SPEED, RobotMap.LauncherConstants.RIGHT_AMP_SPEED);
     }
 
     /**
-     * Method that sets the launcher speeds to the speaker speeds
+     * Method that sets the launcher speeds to the speaker speeds (left 0.8, right 0.95)
      */
     public void speakerLaunch() {
         this.setSpeed(RobotMap.LauncherConstants.LEFT_SPEAKER_SPEED, RobotMap.LauncherConstants.RIGHT_SPEAKER_SPEED);
     }
 
     /**
-     * Method to stop both launch motors
+     * Method to stop both launch motors. Sets the speeds to 0.
      */
     public void stop() {
         this.setSpeed(0.0, 0.0);
+    }
+
+    /**
+     * Method to reverse both launch motors. Uses negative amp speeds (left -0.4, right -0.4)
+     */
+    public void expel() {
+        this.setSpeed(-RobotMap.LauncherConstants.LEFT_AMP_SPEED, -RobotMap.LauncherConstants.RIGHT_AMP_SPEED);
     }
 }

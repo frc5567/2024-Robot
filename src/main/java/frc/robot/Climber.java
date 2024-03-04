@@ -15,7 +15,7 @@ public class Climber {
     Servo m_rightServo;
 
     /**
-     * Constructor that instantiates and sets the inversion on the left and right climber motors.
+     * Constructor that instantiates and sets the inversion on the left and right climber motors. Instantiates the left and right servos and sets their bounds. 
      */
     Climber() {
         m_leftClimber = new TalonSRX(RobotMap.ClimberConstants.LEFT_CLIMBER_CAN_ID);
@@ -51,13 +51,13 @@ public class Climber {
      * Method used to get the positions of the left and right servos.
      */
     public void getServo() {
-        double leftAngle = m_leftServo.getPosition();
-        double rightAngle = m_rightServo.getPosition();
-        System.out.println("left angle [" + leftAngle + "] Right angle [" + rightAngle + "]");
+        double leftPosition = m_leftServo.getPosition();
+        double rightPosition = m_rightServo.getPosition();
+        System.out.println("left angle [" + leftPosition + "] Right angle [" + rightPosition + "]");
     }
 
     /**
-     * Sets the servo positions to retract. This allows backfeed on the climber. 
+     * Sets the servo positions to retract. This allows backfeed on the climber. Positions are 0 and 0.
      */
     public void unlockClimb() {
         m_leftServo.setPosition(RobotMap.ClimberConstants.LEFT_SERVO_UNLOCK_POS);
@@ -65,10 +65,52 @@ public class Climber {
     }
 
     /**
-     * Sets the servo positions to extend. This restricts backfeed on the climber. 
+     * Sets the servo positions to extend. This restricts backfeed on the climber. Positions are 1 and 1.
      */
     public void lockClimb() {
         m_leftServo.setPosition(RobotMap.ClimberConstants.LEFT_SERVO_LOCK_POS);
         m_rightServo.setPosition(RobotMap.ClimberConstants.RIGHT_SERVO_LOCK_POS);
+    }
+
+    /**
+     * Method to set the left climb motor to the climbing speed (0.5)
+     */
+    public void leftExtend() {
+        this.setLeftSpeed(RobotMap.ClimberConstants.LEFT_SPEED);
+    }
+
+    /**
+     * Method to set the right climb motor to the climbing speed (0.5)
+     */
+    public void rightExtend() {
+        this.setRightSpeed(RobotMap.ClimberConstants.RIGHT_SPEED);
+    }
+
+    /**
+     * Method to set the left climb motor to the negative climbing speed (-0.5)
+     */
+    public void leftRetract() {
+        this.setLeftSpeed(-RobotMap.ClimberConstants.LEFT_SPEED);
+    }
+
+    /**
+     * Method to set the right climb motor to the negative climbing speed (-0.5)
+     */
+    public void rightRetract() {
+        this.setRightSpeed(-RobotMap.ClimberConstants.RIGHT_SPEED);
+    }
+
+    /**
+     * Method to set the left climb motor to 0
+     */
+    public void leftStop() {
+        this.setLeftSpeed(0.0);
+    }
+
+    /**
+     * Method to set the right climb motor to 0
+     */
+    public void rightStop() {
+        this.setRightSpeed(0.0);
     }
 }
