@@ -33,6 +33,7 @@ public class PilotController {
     public double getDriverSpeed() {
         double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
         speed = m_accelFilter.calculate(speed);
+        speed = speed * 0.8;
         return adjustForDeadband(speed);
     }
 

@@ -5,10 +5,12 @@
 package frc.robot;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.cameraserver.CameraServer;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -23,14 +25,13 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_drivetrain;
   private PilotController m_pilotController;
-  private CopilotController m_copilotController;
   private Intake m_intake;
   private Launcher m_launcher;
   private Indexer m_indexer;
   private GamePad m_gamePad;
   private Climber m_climber;
   private Auton m_auton;
-
+  private UsbCamera m_camera;
   private boolean m_currentlyLaunching;
 
   private int m_launchCounter = 0;
@@ -50,7 +51,6 @@ public class Robot extends TimedRobot {
 
     m_drivetrain = new Drivetrain(m_pigeon);
     m_pilotController = new PilotController();
-    m_copilotController = new CopilotController();
     m_intake = new Intake();
     m_launcher = new Launcher();
     m_indexer = new Indexer();
@@ -61,6 +61,17 @@ public class Robot extends TimedRobot {
     m_currentlyLaunching = false;
 
     m_drivetrain.initDrivetrain();
+
+    try {
+      m_camera = CameraServer.startAutomaticCapture();
+
+      m_camera.setResolution(160,120);
+      m_camera.setFPS(10);
+
+    } catch (Exception e){
+      System.out.println("Camera failed to instantiate");
+    }
+
   }
 
   /**
@@ -116,6 +127,7 @@ public class Robot extends TimedRobot {
     double curSpeed = 0.0;
     double curTurn = 0.0;
 
+    //Setting our controller buttons to false initially.
     boolean intakeOn = false;
     boolean ampLauncherOn = false;
     boolean speakerLauncherOn = false;
@@ -128,12 +140,9 @@ public class Robot extends TimedRobot {
     boolean lockClimbButton = false;
     boolean unlockClimbButton = false;
 
-    // Speaker speeds are offset for a more predictable flight pattern.
-
     PilotController.DesiredDirection desiredDirection = PilotController.DesiredDirection.NoChange;
 
-    CodriveInput coDriveInput = m_copilotController.getCodriveInput();
-
+    //Sets our variables for each action to our buttons/controls
     curSpeed = m_pilotController.getDriverSpeed();
     curTurn = m_pilotController.getDriverTurn();
 
@@ -142,7 +151,7 @@ public class Robot extends TimedRobot {
     ampLauncherOn = m_gamePad.getAmpLaunch();
     speakerLauncherOn = m_gamePad.getSpeakerLaunch();
     haveNote = m_indexer.readIndexSensor();
-    expelOn = m_indexer.readIndexSensor();
+    expelOn = m_gamePad.getExpel();
 
     m_drivetrain.setDesiredDirection(desiredDirection);
 
@@ -155,26 +164,29 @@ public class Robot extends TimedRobot {
     unlockClimbButton = m_gamePad.getUnlockRatchet();
     lockClimbButton = m_gamePad.getLockRatchet();
 
+    //left climber controls
     if (leftClimberExtending) {
-      m_climber.setLeftSpeed(coDriveInput.m_leftClimber);
+      m_climber.leftExtend();
     }
     else if (leftClimberRetracting) {
-      m_climber.setLeftSpeed(coDriveInput.m_leftClimber);
+      m_climber.leftRetract();
     }
     else {
-      m_climber.setLeftSpeed(0.0);
+      m_climber.leftStop();
     }
 
+    //Right climber controls
     if (rightClimberExtending) {
-      m_climber.setRightSpeed(coDriveInput.m_rightClimber);
+      m_climber.rightExtend();
     }
     else if (rightClimberRetracting) {
-      m_climber.setRightSpeed(coDriveInput.m_rightClimber);
+      m_climber.rightRetract();
     }
     else {
-      m_climber.setRightSpeed(0.0);
+      m_climber.rightStop();
     }
 
+    //Climber lock controls
     if (unlockClimbButton) {
       m_climber.unlockClimb();
     }
@@ -182,11 +194,10 @@ public class Robot extends TimedRobot {
       m_climber.lockClimb();
     }
 
-
     if (m_currentlyLaunching) {
       // If we want to launch to the amp, set the launcher to amp speed and feed a note from the indexer.
       if (ampLauncherOn) {
-        m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+        m_launcher.ampLaunch();
         m_indexer.feedNote();
       }
       // If we want to launch to the speaker, wait 25 cycles (0.5 seconds), then set the launcher to speaker speed and feed a note from the indexer.
@@ -197,11 +208,11 @@ public class Robot extends TimedRobot {
         else {
         m_indexer.stop();
         }
-        m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+        m_launcher.speakerLaunch();
       }
       // If we don't want to launch, set the launcher and indexer speeds to 0 and set currentlyLaunching to false.
       else {
-        m_launcher.setSpeed(0.0, 0.0);
+        m_launcher.stop();
         m_currentlyLaunching = false;
         m_indexer.stop();
       }
@@ -211,9 +222,9 @@ public class Robot extends TimedRobot {
         // If currentlyLaunching is false and we have a note we want to launch to the amp,
         // set the launcher to amp speed, feed a note from the the indexer, set the intake speed to 0, and set currentlyLaunching to true.
         if (ampLauncherOn) {
-          m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+          m_launcher.ampLaunch();
           m_indexer.feedNote();
-          m_intake.setSpeed(0.0);
+          m_intake.stop();
           m_currentlyLaunching = true;
         }
         // If currentlyLaunching is false and we have a note we want to launch to the speaker,
@@ -225,41 +236,41 @@ public class Robot extends TimedRobot {
           else {
             m_indexer.stop();
           }
-          m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+          m_launcher.speakerLaunch();
           m_currentlyLaunching = true;
         }
         // If currentlyLaunching is false and we want to expel, set launcher, indexer, and intake to reversed speed.
         else if (expelOn) {
-          m_launcher.setSpeed(-coDriveInput.m_leftLauncher, -coDriveInput.m_rightLauncher);
+          m_launcher.expel();
           m_indexer.expelNote();
-          m_intake.setSpeed(-coDriveInput.m_intake);
+          m_intake.expel();
         }
         // If currentlyLaunching if false and we don't want to launch or expel, set launcher, indexer, and intake speeds to 0.
         else {
-          m_launcher.setSpeed(0.0, 0.0);
+          m_launcher.stop();
           m_currentlyLaunching = false;
           m_indexer.stop();
-          m_intake.setSpeed(0.0);
+          m_intake.stop();
         }
       }
       else {
         // If we don't have a note and we want to intake, set intake to intake speed, load a note to the indexer, and set launcher speed to 0.
         if (intakeOn) {
-          m_intake.setSpeed(coDriveInput.m_intake);
-          m_launcher.setSpeed(0.0, 0.0);
+          m_intake.intake();
+          m_launcher.stop();
           m_indexer.loadNote();
         }
         // If we don't have a note and we want to expel, set launcher, indexer, and intake to reversed speed.
         else if (expelOn) {
-          m_launcher.setSpeed(-coDriveInput.m_leftLauncher, -coDriveInput.m_rightLauncher);
+          m_launcher.expel();
           m_indexer.expelNote();
-          m_intake.setSpeed(-coDriveInput.m_intake);
+          m_intake.expel();
         }
         // If we don't have a note and we don't want to intake or expel, set launcher, indexer, and intake speeds to 0.
         else {
-          m_intake.setSpeed(0.0);
+          m_intake.stop();
           m_indexer.stop();
-          m_launcher.setSpeed(0.0, 0.0);
+          m_launcher.stop();
         }
       }
       m_launchCounter = 0;
