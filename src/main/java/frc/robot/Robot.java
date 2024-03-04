@@ -25,7 +25,6 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_drivetrain;
   private PilotController m_pilotController;
-  private CopilotController m_copilotController;
   private Intake m_intake;
   private Launcher m_launcher;
   private Indexer m_indexer;
@@ -52,7 +51,6 @@ public class Robot extends TimedRobot {
 
     m_drivetrain = new Drivetrain(m_pigeon);
     m_pilotController = new PilotController();
-    m_copilotController = new CopilotController();
     m_intake = new Intake();
     m_launcher = new Launcher();
     m_indexer = new Indexer();
@@ -129,6 +127,7 @@ public class Robot extends TimedRobot {
     double curSpeed = 0.0;
     double curTurn = 0.0;
 
+    //Setting our controller buttons to false initially.
     boolean intakeOn = false;
     boolean ampLauncherOn = false;
     boolean speakerLauncherOn = false;
@@ -141,12 +140,9 @@ public class Robot extends TimedRobot {
     boolean lockClimbButton = false;
     boolean unlockClimbButton = false;
 
-    // Speaker speeds are offset for a more predictable flight pattern.
-
     PilotController.DesiredDirection desiredDirection = PilotController.DesiredDirection.NoChange;
 
-    CodriveInput coDriveInput = m_copilotController.getCodriveInput();
-
+    //Sets our variables for each action to our buttons/controls
     curSpeed = m_pilotController.getDriverSpeed();
     curTurn = m_pilotController.getDriverTurn();
 
@@ -155,7 +151,7 @@ public class Robot extends TimedRobot {
     ampLauncherOn = m_gamePad.getAmpLaunch();
     speakerLauncherOn = m_gamePad.getSpeakerLaunch();
     haveNote = m_indexer.readIndexSensor();
-    expelOn = m_indexer.readIndexSensor();
+    expelOn = m_gamePad.getExpel();
 
     m_drivetrain.setDesiredDirection(desiredDirection);
 
@@ -168,33 +164,35 @@ public class Robot extends TimedRobot {
     unlockClimbButton = m_gamePad.getUnlockRatchet();
     lockClimbButton = m_gamePad.getLockRatchet();
 
+    //left climber controls
     if (leftClimberExtending) {
-      m_climber.setLeftSpeed(coDriveInput.m_leftClimber);
+      m_climber.leftExtend();
     }
     else if (leftClimberRetracting) {
-      m_climber.setLeftSpeed(coDriveInput.m_leftClimber);
+      m_climber.leftRetract();
     }
     else {
-      m_climber.setLeftSpeed(0.0);
+      m_climber.leftStop();
     }
 
+    //Right climber controls
     if (rightClimberExtending) {
-      m_climber.setRightSpeed(coDriveInput.m_rightClimber);
+      m_climber.rightExtend();
     }
     else if (rightClimberRetracting) {
-      m_climber.setRightSpeed(coDriveInput.m_rightClimber);
+      m_climber.rightRetract();
     }
     else {
-      m_climber.setRightSpeed(0.0);
+      m_climber.rightStop();
     }
 
+    //Climber lock controls
     if (unlockClimbButton) {
       m_climber.unlockClimb();
     }
     else if (lockClimbButton) {
       m_climber.lockClimb();
     }
-
 
     if (m_currentlyLaunching) {
       // If we want to launch to the amp, set the launcher to amp speed and feed a note from the indexer.

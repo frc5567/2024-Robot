@@ -22,21 +22,21 @@ public class Intake {
     }
 
     /**
-     * Method to stop the intake motor
+     * Method used to set the intake motor to 0.
      */
     public void stop() {
         this.setSpeed(0.0);
     }
 
     /**
-     * Method to set the intake motor to the intaking speed (0.5)
+     * Method used to set the intake motor to the intaking speed (0.5).
      */
     public void intake() {
         this.setSpeed(RobotMap.IntakeConstants.SPEED);
     }
 
     /**
-     * Method to reverse the intake motor (-0.5)
+     * Method to reverse the intake motor. Uses the negative intake speed (-0.5).
      */
     public void expel() {
         this.setSpeed(-RobotMap.IntakeConstants.SPEED);

@@ -106,58 +106,6 @@ public class RobotMap {
         public static final double ACCEL_SLEW_RATE = 1.6;
     }
 
-    public static class CopilotConstants {
-
-        /**
-         * Speed of the left climber.
-         */
-        public static final double LEFT_CLIMBER_SPEED = 0.5;
-
-        /**
-         * Speed of the right climber.
-         */
-        public static final double RIGHT_CLIMBER_SPEED = 0.5;
-
-        /**
-         * Speed of the intake.
-         */
-        public static final double INTAKE_SPEED = 0.5;
-
-        /**
-         * Speed of the indexer while loading from the intake.
-         */
-        public static final double LOAD_SPEED = 0.5;
-
-        /**
-         * Speed of the indexer while feeding to the launcher for the amp.
-         */
-        public static final double AMP_FEED_SPEED = 0.8;
-
-        /**
-         * Speed of the indexer while feeding to the launcher for the speaker.
-         */
-        public static final double SPEAKER_FEED_SPEED = 0.7;
-
-        /**
-         * Speed of the right launcher for the amp.
-         */
-        public static final double RIGHT_AMP_LAUNCH_SPEED = 0.5;
-
-        /**
-         * Speed of the left launcher for the amp.
-         */
-        public static final double LEFT_AMP_LAUNCH_SPEED = 0.5;
-
-        /**
-         * Speed of the right launcher for the speaker.
-         */
-        public static final double RIGHT_SPEAKER_LAUNCH_SPEED = 0.95;
-
-        /**
-         * Speed of the left launcher for the speaker.
-         */
-        public static final double LEFT_SPEAKER_LAUNCH_SPEED = 0.95;
-    }
 
     /**
      * All intake constants.
@@ -241,6 +189,9 @@ public class RobotMap {
     
     }
 
+    /**
+     * All Climber constants
+     */
     public static class ClimberConstants {
 
         /**
@@ -283,6 +234,16 @@ public class RobotMap {
          * The position of the left servo when retracted.
          */
         public static final double LEFT_SERVO_LOCK_POS = 1.0;
+
+        /**
+         * Speed set to the left climb when extending (positive) and retracting (negative)
+         */
+        public static final double LEFT_SPEED = 0.5;
+
+        /**
+         * Speed set to the right climb when extending (positive) and retracting (negative)
+         */
+        public static final double RIGHT_SPEED = 0.5;
     }
 
 
