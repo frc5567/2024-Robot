@@ -1,6 +1,15 @@
 package frc.robot;
 
 public class RobotMap {
+
+    public static final int LAUNCH_SPIN_UP_COUNT = 25;
+
+    public static final int ADDITIONAL_LAUNCH_COUNT = 25;
+
+    /**
+     * Constant for setting variables to 0 if there is not input value.
+     */
+    public static final double NO_INPUT = Double.NaN;
     
     /**
      * All drivetrain constants.
@@ -36,6 +45,39 @@ public class RobotMap {
          * The timeout in milliseconds of the CTRE methods.
          */
         public static final int TIMEOUT_MS = 30;
+
+        /**
+         * Drive Straight PID constants
+         */
+        public final static Gains DISTANCE_GAINS = new Gains( 50.0, 0.0,  0.0, 0.1);
+        
+        /**
+         * Turn to Angle PID constants
+         */
+        public final static Gains TURNING_GAINS = new Gains( 0.01, 0.0,  4.0, 0.0);
+
+        public final static int PID_PRIMARY = 0;
+        public final static int PID_TURN = 1;
+
+        public final static int GEAR_RATIO = 15;
+
+        /**
+         * This is a property of the Pigeon IMU, and should not be changed.
+         */
+        public final static int PIGEON_UNITS_PER_ROTATION = 8192;
+
+        public final static int SENSOR_UNITS_PER_ROTATION = 2048;
+
+        /**
+         * Encoder deadband used in driveStraight.
+         */
+        public static final int DRIVE_STRAIGHT_DEADBAND = 5000;
+
+        public static final double OPEN_RAMPS = 0.2;
+
+        public static final double UPDATE_FREQUENCY = 100;
+
+        public static final double DRIVE_ANGLE_DEADBAND = 0.8;
     }
 
     /**
@@ -62,6 +104,59 @@ public class RobotMap {
          * Rate limit for acceleration to prevent brownouts.
          */
         public static final double ACCEL_SLEW_RATE = 1.6;
+    }
+
+    public static class CopilotConstants {
+
+        /**
+         * Speed of the left climber.
+         */
+        public static final double LEFT_CLIMBER_SPEED = 0.5;
+
+        /**
+         * Speed of the right climber.
+         */
+        public static final double RIGHT_CLIMBER_SPEED = 0.5;
+
+        /**
+         * Speed of the intake.
+         */
+        public static final double INTAKE_SPEED = 0.5;
+
+        /**
+         * Speed of the indexer while loading from the intake.
+         */
+        public static final double LOAD_SPEED = 0.5;
+
+        /**
+         * Speed of the indexer while feeding to the launcher for the amp.
+         */
+        public static final double AMP_FEED_SPEED = 0.8;
+
+        /**
+         * Speed of the indexer while feeding to the launcher for the speaker.
+         */
+        public static final double SPEAKER_FEED_SPEED = 0.7;
+
+        /**
+         * Speed of the right launcher for the amp.
+         */
+        public static final double RIGHT_AMP_LAUNCH_SPEED = 0.5;
+
+        /**
+         * Speed of the left launcher for the amp.
+         */
+        public static final double LEFT_AMP_LAUNCH_SPEED = 0.5;
+
+        /**
+         * Speed of the right launcher for the speaker.
+         */
+        public static final double RIGHT_SPEAKER_LAUNCH_SPEED = 0.95;
+
+        /**
+         * Speed of the left launcher for the speaker.
+         */
+        public static final double LEFT_SPEAKER_LAUNCH_SPEED = 0.95;
     }
 
     /**
@@ -144,5 +239,94 @@ public class RobotMap {
         public static final double FEED_SPEED = 1.0;
 
     
+    }
+
+    public static class ClimberConstants {
+
+        /**
+         * CAN ID of the left climber motor.
+         */
+        public static final int LEFT_CLIMBER_CAN_ID = 8;
+
+        /**
+         * CAN ID of the right climber motor.
+         */
+
+        public static final int RIGHT_CLIMBER_CAN_ID = 9;
+
+        /**
+         * PWM Channel ID for the left climber servo.
+         */
+        public static final int LEFT_SERVO = 0;
+
+        /**
+        * PWM Channel ID for the right climber servo.
+        */
+        public static final int RIGHT_SERVO = 1;
+
+        /**
+         * The position of the right servo when unlocked.
+         */
+        public static final double RIGHT_SERVO_UNLOCK_POS = 0.0;
+
+        /**
+         * The position of the left servo when extended.
+         */
+        public static final double LEFT_SERVO_UNLOCK_POS = 0.0;
+
+        /**
+         * The position of the right servo when retracted.
+         */
+        public static final double RIGHT_SERVO_LOCK_POS = 1.0;
+
+        /**
+         * The position of the left servo when retracted.
+         */
+        public static final double LEFT_SERVO_LOCK_POS = 1.0;
+    }
+
+
+    public static class AutonConstants {
+
+        /**
+         * Path used when starting directly in front of the subwoofer, launching one note, and exiting community.
+         */
+        public static final String FRONT_ONE_NOTE_EXIT = "Front One Note Exit";
+
+        /**
+         * Path used when starting on the left side of the speaker. Turns left to launch and then exits community.
+         */
+        public static final String TURN_LEFT_ONE_NOTE_EXIT = "Turn Left One Note Exit";
+
+        /**
+         * Path used when starting on the right side of the speaker. Turns right to launch and then exits community.
+         */
+        public static final String TURN_RIGHT_ONE_NOTE_EXIT = "Turn Right One Note Exit";
+
+        /**
+         * The distance to exit the community when starting directly in front of the subwoofer. 
+         */
+        public static final double FRONT_SPEAKER_EXIT_DIST = 45.0;
+
+        /**
+         * The distance to back up enough to launch to the speaker when starting fully against the subwoofer.
+         */
+        public static final double LAUNCH_BACK_UP_DIST = 6.0;
+
+        /**
+         * The angle in degrees to turn to launch to the speaker when starting flush against the subwoofer.
+         */
+        public static final double TURN_TO_LAUNCH_ANGLE = 7.0;
+
+        /**
+         * The distance to back up after launching to the speaker to give enough clearance for turning the rest of the way.
+         */
+        public static final double BACK_UP_AFTER_LAUNCH_DIST = 15.0;
+
+        /**
+         * The angle of the subwoofer from the wall.
+         */
+        public static final double SUBWOOFER_ANGLE_FROM_WALL = 60.0;
+
     }
 }

@@ -46,4 +46,25 @@ public class Launcher {
         m_launcherLeft.setControl(m_motorOutput.withOutput(leftSpeed));
         m_launcherRight.setControl(m_motorOutput.withOutput(rightSpeed));
     }
+
+    /**
+     * Method that sets the launcher speeds to the amp speeds
+     */
+    public void ampLaunch() {
+        this.setSpeed(RobotMap.LauncherConstants.LEFT_AMP_SPEED, RobotMap.LauncherConstants.RIGHT_AMP_SPEED);
+    }
+
+    /**
+     * Method that sets the launcher speeds to the speaker speeds
+     */
+    public void speakerLaunch() {
+        this.setSpeed(RobotMap.LauncherConstants.LEFT_SPEAKER_SPEED, RobotMap.LauncherConstants.RIGHT_SPEAKER_SPEED);
+    }
+
+    /**
+     * Method to stop both launch motors
+     */
+    public void stop() {
+        this.setSpeed(0.0, 0.0);
+    }
 }

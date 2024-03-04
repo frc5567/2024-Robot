@@ -8,9 +8,6 @@ public class PilotController {
 
     private SlewRateLimiter m_accelFilter;
 
-    private SlewRateLimiter m_accelLTFilter;
-    private SlewRateLimiter m_accelRTFilter;
-
     /**
      * The possible values for DesiredDirection input.
      */
@@ -26,8 +23,6 @@ public class PilotController {
     public PilotController() {
         m_controller = new XboxController(RobotMap.PilotControllerConstants.XBOX_CONTROLLER_USB_PORT);
         m_accelFilter = new SlewRateLimiter(RobotMap.PilotControllerConstants.ACCEL_SLEW_RATE);
-        m_accelLTFilter = new SlewRateLimiter(RobotMap.PilotControllerConstants.ACCEL_SLEW_RATE);
-        m_accelRTFilter = new SlewRateLimiter(RobotMap.PilotControllerConstants.ACCEL_SLEW_RATE);
     }
 
     /**
