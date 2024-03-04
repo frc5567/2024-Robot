@@ -39,6 +39,14 @@ public class Auton {
             System.out.println("Setting Auton path to Front One Note Exit.");
             m_path = m_currentPath;
         }
+        else if (m_currentPath == RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT) {
+            System.out.println("Setting Auton path to Turn Left One Note Exit.");
+            m_path = m_currentPath;
+        }
+        else if (m_currentPath == RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT) {
+            System.out.println("Setting Auton path to Turn Right One Note Exit.");
+            m_path = m_currentPath;
+        }
         else {
             System.out.println("No path selected. Please restart auton and choose a path.");
         }
@@ -107,6 +115,165 @@ public class Auton {
                 }
                 break;
             }
+            case RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT:
+            {
+                switch (m_step) {
+                    case 1:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.LAUNCH_BACK_UP_DIST)) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 2:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 3:
+                    {
+                        if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                            System.out.println("Step complete: " + m_step);
+                            m_launchLoopCount = 0;
+                            launcher.stop();
+                            indexer.stop();
+                            m_step += 1;
+                        }
+                        else {
+                            launcher.speakerLaunch();
+                            if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                indexer.feedNote();
+                            }
+                            else {
+                                indexer.stop();
+                            }
+                        }
+                        drivetrain.arcadeDrive(0.0, 0.0);
+                        break;
+                    }
+                    case 4:
+                    {
+                        System.out.println("Step complete: " + m_step);
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.BACK_UP_AFTER_LAUNCH_DIST)) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 5:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 6:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST)) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 7:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        newInput.m_autonCompleted = true;
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT:
+            {
+                switch (m_step) {
+                    case 1:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.LAUNCH_BACK_UP_DIST)) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 2:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 3:
+                    {
+                        if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                            System.out.println("Step complete: " + m_step);
+                            m_launchLoopCount = 0;
+                            launcher.stop();
+                            indexer.stop();
+                            m_step += 1;
+                        }
+                        else {
+                            launcher.speakerLaunch();
+                            if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                indexer.feedNote();
+                            }
+                            else {
+                                indexer.stop();
+                            }
+                        }
+                        drivetrain.arcadeDrive(0.0, 0.0);
+                        break;    
+                    }
+                    case 4:
+                    {
+                        System.out.println("Step complete: " + m_step);
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.BACK_UP_AFTER_LAUNCH_DIST)) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 5:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.turnToAngle(-(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE))) {
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 6:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST)) {
+                            m_step += 1;
+                        }
+                        break;    
+                    }
+                    case 7:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        newInput.m_autonCompleted = true;
+                        break;
+                    }
+                }
+                break;
+            }
+
         }    
         return newInput;
     }
