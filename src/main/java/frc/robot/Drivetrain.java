@@ -180,7 +180,10 @@ public class Drivetrain {
      * @param distance a double passed for setting what magnitude of distance the robot must travel in inches
      * @return a boolean designating whether the target has been reached
      */
-    public boolean driveStraight(double rotations) {
+    public boolean driveStraight(double distance) {
+
+        double rotations = distance / 18.85;
+
         boolean reachedTarget = false;
 
         m_rightLeader.setControl(m_mmVoltage.withPosition(rotations));
@@ -189,13 +192,13 @@ public class Drivetrain {
         m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
         m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
 
-        if ((Math.abs(m_rightLeader.getPosition().getValueAsDouble() - rotations) < 1)) {
+        double currentRots = m_rightLeader.getPosition().getValueAsDouble();
+        double currentDistance = currentRots * 18.85;
+        if ((Math.abs(currentDistance - distance) < 0.5)) {
             reachedTarget = true;
         }
 
-        var output = m_rightLeader.getClosedLoopOutput();
-        var target = m_rightLeader.getClosedLoopReference();
-        System.out.println("Rotations[" + rotations + "] target?[" + target + "] Error[" + m_rightLeader.getClosedLoopError() + "] Output[" + output + "]");
+        System.out.println("Target distance[" + distance + "] current?[" + currentDistance + "]");
 
         return reachedTarget;
     }
