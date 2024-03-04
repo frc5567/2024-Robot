@@ -5,10 +5,12 @@
 package frc.robot;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.cameraserver.CameraServer;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -30,7 +32,7 @@ public class Robot extends TimedRobot {
   private GamePad m_gamePad;
   private Climber m_climber;
   private Auton m_auton;
-
+  private UsbCamera m_camera;
   private boolean m_currentlyLaunching;
 
   private int m_launchCounter = 0;
@@ -61,6 +63,17 @@ public class Robot extends TimedRobot {
     m_currentlyLaunching = false;
 
     m_drivetrain.initDrivetrain();
+
+    try {
+      m_camera = CameraServer.startAutomaticCapture();
+
+      m_camera.setResolution(160,120);
+      m_camera.setFPS(10);
+
+    } catch (Exception e){
+      System.out.println("Camera failed to instantiate");
+    }
+
   }
 
   /**
@@ -230,9 +243,9 @@ public class Robot extends TimedRobot {
         }
         // If currentlyLaunching is false and we want to expel, set launcher, indexer, and intake to reversed speed.
         else if (expelOn) {
-          m_launcher.setSpeed(-coDriveInput.m_leftLauncher, -coDriveInput.m_rightLauncher);
+          m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
           m_indexer.expelNote();
-          m_intake.setSpeed(-coDriveInput.m_intake);
+          m_intake.setSpeed(coDriveInput.m_intake);
         }
         // If currentlyLaunching if false and we don't want to launch or expel, set launcher, indexer, and intake speeds to 0.
         else {
@@ -251,9 +264,9 @@ public class Robot extends TimedRobot {
         }
         // If we don't have a note and we want to expel, set launcher, indexer, and intake to reversed speed.
         else if (expelOn) {
-          m_launcher.setSpeed(-coDriveInput.m_leftLauncher, -coDriveInput.m_rightLauncher);
+          m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
           m_indexer.expelNote();
-          m_intake.setSpeed(-coDriveInput.m_intake);
+          m_intake.setSpeed(coDriveInput.m_intake);
         }
         // If we don't have a note and we don't want to intake or expel, set launcher, indexer, and intake speeds to 0.
         else {
