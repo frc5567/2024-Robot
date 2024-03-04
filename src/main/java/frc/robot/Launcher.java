@@ -48,23 +48,30 @@ public class Launcher {
     }
 
     /**
-     * Method that sets the launcher speeds to the amp speeds
+     * Method that sets the launcher speeds to the amp speeds (0.4, 0.4)
      */
     public void ampLaunch() {
         this.setSpeed(RobotMap.LauncherConstants.LEFT_AMP_SPEED, RobotMap.LauncherConstants.RIGHT_AMP_SPEED);
     }
 
     /**
-     * Method that sets the launcher speeds to the speaker speeds
+     * Method that sets the launcher speeds to the speaker speeds (0.8, 0.95)
      */
     public void speakerLaunch() {
         this.setSpeed(RobotMap.LauncherConstants.LEFT_SPEAKER_SPEED, RobotMap.LauncherConstants.RIGHT_SPEAKER_SPEED);
     }
 
     /**
-     * Method to stop both launch motors
+     * Method to stop both launch motors 
      */
     public void stop() {
         this.setSpeed(0.0, 0.0);
+    }
+
+    /**
+     * Method to reverse both launch motors (-0.4, -0.4)
+     */
+    public void expel() {
+        this.setSpeed(-RobotMap.LauncherConstants.LEFT_AMP_SPEED, -RobotMap.LauncherConstants.RIGHT_AMP_SPEED);
     }
 }

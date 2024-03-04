@@ -20,5 +20,26 @@ public class Intake {
     public void setSpeed(double intakeSpeed) {
         m_intake.set(TalonSRXControlMode.PercentOutput, intakeSpeed);
     }
+
+    /**
+     * Method to stop the intake motor
+     */
+    public void stop() {
+        this.setSpeed(0.0);
+    }
+
+    /**
+     * Method to set the intake motor to the intaking speed (0.5)
+     */
+    public void intake() {
+        this.setSpeed(RobotMap.IntakeConstants.SPEED);
+    }
+
+    /**
+     * Method to reverse the intake motor (-0.5)
+     */
+    public void expel() {
+        this.setSpeed(-RobotMap.IntakeConstants.SPEED);
+    }
     
 }

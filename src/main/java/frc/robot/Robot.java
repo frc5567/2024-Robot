@@ -199,7 +199,7 @@ public class Robot extends TimedRobot {
     if (m_currentlyLaunching) {
       // If we want to launch to the amp, set the launcher to amp speed and feed a note from the indexer.
       if (ampLauncherOn) {
-        m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+        m_launcher.ampLaunch();
         m_indexer.feedNote();
       }
       // If we want to launch to the speaker, wait 25 cycles (0.5 seconds), then set the launcher to speaker speed and feed a note from the indexer.
@@ -210,11 +210,11 @@ public class Robot extends TimedRobot {
         else {
         m_indexer.stop();
         }
-        m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+        m_launcher.speakerLaunch();
       }
       // If we don't want to launch, set the launcher and indexer speeds to 0 and set currentlyLaunching to false.
       else {
-        m_launcher.setSpeed(0.0, 0.0);
+        m_launcher.stop();
         m_currentlyLaunching = false;
         m_indexer.stop();
       }
@@ -224,9 +224,9 @@ public class Robot extends TimedRobot {
         // If currentlyLaunching is false and we have a note we want to launch to the amp,
         // set the launcher to amp speed, feed a note from the the indexer, set the intake speed to 0, and set currentlyLaunching to true.
         if (ampLauncherOn) {
-          m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+          m_launcher.ampLaunch();
           m_indexer.feedNote();
-          m_intake.setSpeed(0.0);
+          m_intake.stop();
           m_currentlyLaunching = true;
         }
         // If currentlyLaunching is false and we have a note we want to launch to the speaker,
@@ -238,41 +238,41 @@ public class Robot extends TimedRobot {
           else {
             m_indexer.stop();
           }
-          m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+          m_launcher.speakerLaunch();
           m_currentlyLaunching = true;
         }
         // If currentlyLaunching is false and we want to expel, set launcher, indexer, and intake to reversed speed.
         else if (expelOn) {
-          m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+          m_launcher.expel();
           m_indexer.expelNote();
-          m_intake.setSpeed(coDriveInput.m_intake);
+          m_intake.expel();
         }
         // If currentlyLaunching if false and we don't want to launch or expel, set launcher, indexer, and intake speeds to 0.
         else {
-          m_launcher.setSpeed(0.0, 0.0);
+          m_launcher.stop();
           m_currentlyLaunching = false;
           m_indexer.stop();
-          m_intake.setSpeed(0.0);
+          m_intake.stop();
         }
       }
       else {
         // If we don't have a note and we want to intake, set intake to intake speed, load a note to the indexer, and set launcher speed to 0.
         if (intakeOn) {
-          m_intake.setSpeed(coDriveInput.m_intake);
-          m_launcher.setSpeed(0.0, 0.0);
+          m_intake.intake();
+          m_launcher.stop();
           m_indexer.loadNote();
         }
         // If we don't have a note and we want to expel, set launcher, indexer, and intake to reversed speed.
         else if (expelOn) {
-          m_launcher.setSpeed(coDriveInput.m_leftLauncher, coDriveInput.m_rightLauncher);
+          m_launcher.expel();
           m_indexer.expelNote();
-          m_intake.setSpeed(coDriveInput.m_intake);
+          m_intake.expel();
         }
         // If we don't have a note and we don't want to intake or expel, set launcher, indexer, and intake speeds to 0.
         else {
-          m_intake.setSpeed(0.0);
+          m_intake.stop();
           m_indexer.stop();
-          m_launcher.setSpeed(0.0, 0.0);
+          m_launcher.stop();
         }
       }
       m_launchCounter = 0;
