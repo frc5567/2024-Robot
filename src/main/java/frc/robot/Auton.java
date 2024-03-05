@@ -123,6 +123,7 @@ public class Auton {
                         System.out.println("Step: " + m_step);
 
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.LAUNCH_BACK_UP_DIST)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -132,6 +133,7 @@ public class Auton {
                         System.out.println("Step: " + m_step);
 
                         if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -162,6 +164,7 @@ public class Auton {
                         System.out.println("Step complete: " + m_step);
 
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.BACK_UP_AFTER_LAUNCH_DIST)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -171,6 +174,7 @@ public class Auton {
                         System.out.println("Step: " + m_step);
 
                         if (drivetrain.turnToAngle(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -179,7 +183,9 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST)) {
+                        //TODO: make new robot map constant for this
+                        if (drivetrain.driveStraight(55)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -202,6 +208,7 @@ public class Auton {
                         System.out.println("Step: " + m_step);
 
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.LAUNCH_BACK_UP_DIST)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -211,6 +218,7 @@ public class Auton {
                         System.out.println("Step: " + m_step);
 
                         if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -241,6 +249,7 @@ public class Auton {
                         System.out.println("Step complete: " + m_step);
 
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.BACK_UP_AFTER_LAUNCH_DIST)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -250,6 +259,7 @@ public class Auton {
                         System.out.println("Step: " + m_step);
 
                         if (drivetrain.turnToAngle(-(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE))) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
@@ -257,8 +267,9 @@ public class Auton {
                     case 6:
                     {
                         System.out.println("Step: " + m_step);
-
-                        if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST)) {
+                        //TODO: make a robot map constant for this
+                        if (drivetrain.driveStraight(55)) {
+                            drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;    

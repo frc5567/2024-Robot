@@ -106,6 +106,7 @@ public class Robot extends TimedRobot {
     System.out.println("Auto selected: " + m_autoSelected);
     m_auton.init();
     m_auton.selectPath(m_autoSelected);
+    m_drivetrain.zeroSensors();
   }
 
   /** This function is called periodically during autonomous. */
