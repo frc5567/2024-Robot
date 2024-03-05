@@ -255,9 +255,39 @@ public class RobotMap {
         public static final String FRONT_ONE_NOTE_EXIT = "Front One Note Exit";
 
         /**
+         * Path used when starting on the left side of the speaker. Turns left to launch and then exits community.
+         */
+        public static final String TURN_LEFT_ONE_NOTE_EXIT = "Turn Left One Note Exit";
+
+        /**
+         * Path used when starting on the right side of the speaker. Turns right to launch and then exits community.
+         */
+        public static final String TURN_RIGHT_ONE_NOTE_EXIT = "Turn Right One Note Exit";
+
+        /**
          * The distance to exit the community when starting directly in front of the subwoofer. 
          */
         public static final double FRONT_SPEAKER_EXIT_DIST = 45.0;
+
+        /**
+         * The distance to back up enough to launch to the speaker when starting fully against the subwoofer.
+         */
+        public static final double LAUNCH_BACK_UP_DIST = 6.0;
+
+        /**
+         * The angle in degrees to turn to launch to the speaker when starting flush against the subwoofer.
+         */
+        public static final double TURN_TO_LAUNCH_ANGLE = 7.0;
+
+        /**
+         * The distance to back up after launching to the speaker to give enough clearance for turning the rest of the way.
+         */
+        public static final double BACK_UP_AFTER_LAUNCH_DIST = 15.0;
+
+        /**
+         * The angle of the subwoofer from the wall.
+         */
+        public static final double SUBWOOFER_ANGLE_FROM_WALL = 60.0;
 
     }
 }
