@@ -15,7 +15,8 @@ public class Climber {
     Servo m_rightServo;
 
     /**
-     * Constructor that instantiates and sets the inversion on the left and right climber motors. Instantiates the left and right servos and sets their bounds. 
+     * Constructor that instantiates and sets the inversion on the left and right climber motors.
+     * Instantiates the left and right servos and sets their bounds. 
      */
     Climber() {
         m_leftClimber = new TalonSRX(RobotMap.ClimberConstants.LEFT_CLIMBER_CAN_ID);

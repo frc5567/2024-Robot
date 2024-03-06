@@ -24,8 +24,6 @@ public class Drivetrain {
 
     private Pigeon2 m_pigeon;
 
-    // private DifferentialDrive m_drive;
-
     private MotionMagicVoltage m_mmVoltage;
 
     /**
@@ -38,7 +36,7 @@ public class Drivetrain {
     private TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
 
     /**
-     * Constructor for the drivetrain class
+     * Constructor for the drivetrain class. Instantiates the drivetrain motors and pigeon.
      */
     public Drivetrain(Pigeon2 pigeon) {
         // Sets the corresponding CAN IDs to each of the drivetrain motors.
@@ -49,15 +47,13 @@ public class Drivetrain {
 
         m_pigeon = pigeon;
 
-        // m_drive = new DifferentialDrive(m_leftLeader, m_rightLeader);
-
         m_mmVoltage = new MotionMagicVoltage(0.0);
 
         m_isDrivetrainForward = true;
     }
 
     /**
-     * Function to initalize the drivetrain
+     * Function to initalize the drivetrain and set configurations.
      */
     public void initDrivetrain() {
 
@@ -91,8 +87,7 @@ public class Drivetrain {
         m_rightLeader.getPosition().setUpdateFrequency(RobotMap.DrivetrainConstants.UPDATE_FREQUENCY);
         m_leftLeader.getPosition().setUpdateFrequency(RobotMap.DrivetrainConstants.UPDATE_FREQUENCY);
 
-        // Applies the corresponding configurations to each drivetrain motor and the
-        // Pigeon.
+        // Applies the corresponding configurations to each drivetrain motor and the pigeon.
         m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_leftFollower.getConfigurator().apply(m_leftConfig);
         m_rightLeader.getConfigurator().apply(m_rightConfig);
@@ -107,8 +102,7 @@ public class Drivetrain {
     }
 
     /**
-     * Method that makes the drivetrain move foreward/backwards and turn.
-     * 
+     * Method that makes the drivetrain move forward/backwards and turn.
      * @param speed Value between -1 and 1 for robot speed.
      * @param turn  Value between -1 and 1 for turning.
      */
@@ -117,18 +111,42 @@ public class Drivetrain {
         DutyCycleOut rightOut = new DutyCycleOut(0); // Initialize with 0% output
 
         if (m_isDrivetrainForward) {
-            // m_drive.arcadeDrive(speed, turn);
             leftOut.Output = speed - turn;
             rightOut.Output = speed + turn;
             m_leftLeader.setControl(leftOut);
             m_rightLeader.setControl(rightOut);
         } else {
-            // m_drive.arcadeDrive(-speed, turn);
             leftOut.Output = -speed - turn;
             rightOut.Output = -speed + turn;
             m_leftLeader.setControl(leftOut);
             m_rightLeader.setControl(rightOut);
         }
+    }
+
+    /**
+     * Sets coast mode on the drivetrain motors.
+     */
+    public void coastMode() {
+        m_leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        m_rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
+    }
+
+    /**
+     * Sets brake mode on the drivetrain motors.
+     */
+    public void brakeMode() {
+        m_leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        m_rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
     }
 
     /**
@@ -148,8 +166,7 @@ public class Drivetrain {
     }
 
     /**
-     * Gets the encoder positions of the left drivetrain motors. Units are
-     * rotations.
+     * Gets the encoder positions of the left drivetrain motors. Units are rotations.
      */
     public double getLeftDrivePos() {
         double leftPos = m_leftLeader.getPosition().getValueAsDouble();
@@ -157,8 +174,7 @@ public class Drivetrain {
     }
 
     /**
-     * Gets the encoder positions of the right drivetrain motors. Units are
-     * rotations.
+     * Gets the encoder positions of the right drivetrain motors. Units are rotations.
      */
     public double getRightDrivePos() {
         double rightPos = m_rightLeader.getPosition().getValueAsDouble();
@@ -167,9 +183,7 @@ public class Drivetrain {
 
     /**
      * Method used to set motor directions while driving.
-     * 
-     * @param desiredDirection true represents the initial direction, false
-     *                         represents the reversed controls.
+     * @param desiredDirection true represents the initial direction, false represents the reversed controls.
      */
     public void setDesiredDirection(PilotController.DesiredDirection desiredDirection) {
 
@@ -181,12 +195,9 @@ public class Drivetrain {
     }
 
     /**
-     * Drive straight forward (or backward for negative distance) a set number of
-     * inches
-     * 
-     * @param distance a double passed for setting what magnitude of distance the
-     *                 robot must travel in inches
-     * @return a boolean designating whether the target has been reached
+     * Drive straight forward (or backward for negative distance) a set number of inches.
+     * @param distance a double passed for setting what magnitude of distance the robot must travel in inches.
+     * @return a boolean designating whether the target has been reached.
      */
     public boolean driveStraight(double distance) {
 
@@ -212,11 +223,9 @@ public class Drivetrain {
     }
 
     /**
-     * Method for turning to a target angle relative to robot starting position
-     * 
-     * @param angle Target angle to turn to - 0 is straight ahead at start, left is
-     *              positive, right is negative
-     * @return a boolean designating whether the target has been reached
+     * Method for turning to a target angle relative to robot starting position.
+     * @param angle Target angle to turn to - 0 is straight ahead at start, left is positive, right is negative.
+     * @return a boolean designating whether the target has been reached.
      */
     public boolean turnToAngle(double angle) {
         boolean reachedTarget = false;
@@ -226,77 +235,63 @@ public class Drivetrain {
         System.out.println("current yaw [" + currentYaw + "]");
 
         if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 10))) {
-            m_rightLeader.setControl(new DutyCycleOut(-0.15));
-            m_leftLeader.setControl(new DutyCycleOut(0.15));
+            m_rightLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.LARGEST_ANGLE_SPEED));
+            m_leftLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.LARGEST_ANGLE_SPEED));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
             System.out.println("furthest deadband");
-        } else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 5))) {
-            /*
-             * Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon
-             */
-            m_rightLeader.setControl(new DutyCycleOut(-0.1));
-            m_leftLeader.setControl(new DutyCycleOut(0.1));
+        } 
+        else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 5))) {
+            m_rightLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.LARGER_MIDDLE_ANGLE_SPEED));
+            m_leftLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.LARGER_MIDDLE_ANGLE_SPEED));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
             System.out.println("second deadband");
-        } else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 3))) {
-            /*
-             * Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon
-             */
-            m_rightLeader.setControl(new DutyCycleOut(-0.04));
-            m_leftLeader.setControl(new DutyCycleOut(0.04));
+        }
+        else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 3))) {
+            m_rightLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.SMALLER_MIDDLE_ANGLE_SPEED));
+            m_leftLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.SMALLER_MIDDLE_ANGLE_SPEED));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
-        } else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND))) {
-            /*
-             * Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon
-             */
-            m_rightLeader.setControl(new DutyCycleOut(-0.035));
-            m_leftLeader.setControl(new DutyCycleOut(0.035));
+        }
+        else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND))) {
+            m_rightLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.SMALLEST_ANGLE_SPEED));
+            m_leftLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.SMALLEST_ANGLE_SPEED));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
-        } else if (target_turn > (currentYaw + (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 10))) {
-            /*
-             * Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon
-             */
-            m_rightLeader.setControl(new DutyCycleOut(0.15));
-            m_leftLeader.setControl(new DutyCycleOut(-0.15));
+        }
+        else if (target_turn > (currentYaw + (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 10))) {
+            m_rightLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.LARGEST_ANGLE_SPEED));
+            m_leftLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.LARGEST_ANGLE_SPEED));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
-        } else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 5)) {
-            /*
-             * Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon
-             */
-            m_rightLeader.setControl(new DutyCycleOut(0.1));
-            m_leftLeader.setControl(new DutyCycleOut(-0.1));
+        }
+        else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 5)) {
+            m_rightLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.LARGER_MIDDLE_ANGLE_SPEED));
+            m_leftLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.LARGER_MIDDLE_ANGLE_SPEED));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
-        } else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 3)) {
-            /*
-             * Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon
-             */
-            m_rightLeader.setControl(new DutyCycleOut(0.04));
-            m_leftLeader.setControl(new DutyCycleOut(-0.04));
+        }
+        else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 3)) {
+            m_rightLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.SMALLER_MIDDLE_ANGLE_SPEED));
+            m_leftLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.SMALLER_MIDDLE_ANGLE_SPEED));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
-        } else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND)) {
-            /*
-             * Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon
-             */
-            m_rightLeader.setControl(new DutyCycleOut(0.035));
-            m_leftLeader.setControl(new DutyCycleOut(-0.035));
+        }
+        else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND)) {
+            m_rightLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.SMALLEST_ANGLE_SPEED));
+            m_leftLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.SMALLEST_ANGLE_SPEED));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
-        } else {
+        }
+        else {
             m_rightLeader.setControl(new DutyCycleOut(0.0));
             m_leftLeader.setControl(new DutyCycleOut(0.0));
             m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
             m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
         }
 
-        if ((Math.abs(m_pigeon.getYaw().getValueAsDouble() - angle) < (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND
-                * 2))) {
+        if ((Math.abs(m_pigeon.getYaw().getValueAsDouble() - angle) < (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 2))) {
             System.out.println("TurnToAngle completed!!!!!!!!");
             reachedTarget = true;
         }

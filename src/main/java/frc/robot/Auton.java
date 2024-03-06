@@ -2,15 +2,14 @@ package frc.robot;
 
 public class Auton {
     int m_step;
+    boolean m_autonStart = false;
 
     private String m_path = "";
 
-    boolean m_autonStart = false;
-
+    // Sets the default path to Front One Note Exit.
     private String m_currentPath = RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT;
 
     private int m_feedLoopCount = 0;
-
     private int m_launchLoopCount = 0;
 
     /**
@@ -18,9 +17,11 @@ public class Auton {
      */
     public Auton() {
         m_step = 0;
-
     }
 
+    /**
+     * Sets counts to zero, resets steps, and autonStart to true.
+     */
     public void init() {
         m_step = 0;
         m_autonStart = true;
@@ -53,6 +54,13 @@ public class Auton {
 
     }
 
+    /**
+     * Encapsulates all auton paths.
+     * @param launcher passed in to utilize launch methods.
+     * @param indexer passed in to utilize indexer methods.
+     * @param drivetrain passed in to utilize driveStraight and turnToAngle.
+     * @return true if we have completed auton.
+     */
     public AutonInput periodic(Launcher launcher, Indexer indexer, Drivetrain drivetrain) {
         AutonInput newInput = new AutonInput();
 
@@ -62,16 +70,22 @@ public class Auton {
             m_autonStart = false;
         }
 
-        // if (stepCompleted) {
-        //     System.out.println(m_step + "Step Completed!");
-        //     m_step += 1;
-        // }
-
         switch(m_path) {
             case RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT:
             {
                 switch(m_step) {
                     case 1:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_LAUNCH_BACK_UP_DIST)) {
+                            drivetrain.zeroDistance();
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    
+                    case 2:
                     {
                         if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
                             System.out.println("Step complete: " + m_step);
@@ -94,19 +108,19 @@ public class Auton {
                         drivetrain.arcadeDrive(0.0, 0.0);
                         break;
                     }
-                    case 2:
+                    case 3:
                     {
                         System.out.println("Step: " + m_step);
 
                         //newInput.m_driveTarget = RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST;
-                        if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST)) {
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_SPEAKER_EXIT_DIST - RobotMap.AutonConstants.FRONT_LAUNCH_BACK_UP_DIST)) {
                             m_step += 1;
                         }
                         launcher.stop();
                         indexer.stop();
                         break;
                     }
-                    case 3:
+                    case 4:
                     {
                         System.out.println("Step: " + m_step);
                         newInput.m_autonCompleted = true;
@@ -132,7 +146,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -173,7 +187,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -182,9 +196,8 @@ public class Auton {
                     case 6:
                     {
                         System.out.println("Step: " + m_step);
-
-                        //TODO: make new robot map constant for this
-                        if (drivetrain.driveStraight(55)) {
+               
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.SIDE_SPEAKER_EXIT_DIST)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -217,7 +230,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -258,7 +271,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(-(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_TO_LAUNCH_ANGLE))) {
+                        if (drivetrain.turnToAngle(-(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE))) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -267,8 +280,8 @@ public class Auton {
                     case 6:
                     {
                         System.out.println("Step: " + m_step);
-                        //TODO: make a robot map constant for this
-                        if (drivetrain.driveStraight(55)) {
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.SIDE_SPEAKER_EXIT_DIST)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }

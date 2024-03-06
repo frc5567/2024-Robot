@@ -25,8 +25,8 @@ public class Launcher {
         TalonFXConfiguration rightConfiguration = new TalonFXConfiguration();
 
         // Sets brake mode to both motors.
-        leftConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        rightConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        leftConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        rightConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         // Sets inversion to both motors
         leftConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -53,7 +53,7 @@ public class Launcher {
     }
 
     /**
-     * Method that sets the launcher speeds to the amp speeds (left 0.4, right 0.4)
+     * Method that sets the launcher speeds to the amp speeds (left 0.3, right 0.3)
      */
     public void ampLaunch() {
         this.setSpeed(RobotMap.LauncherConstants.LEFT_AMP_SPEED, RobotMap.LauncherConstants.RIGHT_AMP_SPEED);

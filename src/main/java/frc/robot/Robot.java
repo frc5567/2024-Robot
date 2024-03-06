@@ -74,6 +74,8 @@ public class Robot extends TimedRobot {
       System.out.println("Camera failed to instantiate");
     }
 
+    m_climber.unlockClimb();
+
   }
 
   /**
@@ -107,6 +109,7 @@ public class Robot extends TimedRobot {
     m_auton.init();
     m_auton.selectPath(m_autoSelected);
     m_drivetrain.zeroSensors();
+    m_drivetrain.brakeMode();
   }
 
   /** This function is called periodically during autonomous. */
@@ -122,7 +125,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    m_drivetrain.brakeMode();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
@@ -205,7 +210,7 @@ public class Robot extends TimedRobot {
       }
       // If we want to launch to the speaker, wait 25 cycles (0.5 seconds), then set the launcher to speaker speed and feed a note from the indexer.
       else if (speakerLauncherOn) {
-        if (++m_launchCounter > 25) {
+        if (++m_launchCounter > RobotMap.LAUNCH_SPIN_UP_COUNT) {
           m_indexer.feedNote();
         }
         else {
@@ -233,7 +238,7 @@ public class Robot extends TimedRobot {
         // If currentlyLaunching is false and we have a note we want to launch to the speaker,
         // set the launcher to speaker speed, feed a note from the the indexer, set the intake speed to 0, and set currentlyLaunching to true.
         else if (speakerLauncherOn) {
-          if (++m_launchCounter > 25) {
+          if (++m_launchCounter > RobotMap.LAUNCH_SPIN_UP_COUNT) {
             m_indexer.feedNote();
           }
           else {
@@ -282,7 +287,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_drivetrain.coastMode();
+  }
 
   /** This function is called periodically when disabled. */
   @Override

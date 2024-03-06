@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -11,6 +12,7 @@ public class Intake {
      */
     Intake() {
         m_intake = new TalonSRX(RobotMap.IntakeConstants.INTAKE_CAN_ID);
+        m_intake.setNeutralMode(NeutralMode.Coast);
     }
 
     /**
