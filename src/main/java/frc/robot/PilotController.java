@@ -45,7 +45,7 @@ public class PilotController {
      */
     public double getDriverTurn() {
         double turnInput = -m_controller.getLeftX();
-        double squaredTurnInput = turnInput * turnInput;
+        double squaredTurnInput = turnInput * turnInput * turnInput * turnInput;
         squaredTurnInput = Math.copySign(squaredTurnInput, turnInput);
 
         double scaledTurnInput = (squaredTurnInput * RobotMap.PilotControllerConstants.TURN_SCALAR);
