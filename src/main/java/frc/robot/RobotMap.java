@@ -204,12 +204,12 @@ public class RobotMap {
         /**
          * Speed set to the left launcher motor when launching to the speaker.
          */
-        public static final double LEFT_SPEAKER_SPEED = 0.95;
+        public static final double LEFT_SPEAKER_SPEED = 0.9;
 
         /**
          * Speed set to the right launcher motor when launching to the speaker.
          */
-        public static final double RIGHT_SPEAKER_SPEED = 0.95;
+        public static final double RIGHT_SPEAKER_SPEED = 0.9;
 
         
     }
