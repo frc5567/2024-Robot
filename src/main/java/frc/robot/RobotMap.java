@@ -13,6 +13,11 @@ public class RobotMap {
     public static final int ADDITIONAL_LAUNCH_COUNT = 25;
 
     /**
+     * The number of cycles we wait during auton.
+     */
+    public static final int PAUSE_COUNT = 350;
+
+    /**
      * Constant for setting variables to 0 if there is not input value.
      */
     public static final double NO_INPUT = Double.NaN;
@@ -314,6 +319,16 @@ public class RobotMap {
          * Path used when starting on the right side of the speaker. Turns right to launch and then exits community.
          */
         public static final String TURN_RIGHT_ONE_NOTE_EXIT = "Turn Right One Note Exit";
+
+        /**
+         * Path used when starting on the right side of the speaker and pausing before exiting. Turns right to launch, pauses, and then exits community.
+         */
+        public static final String TURN_RIGHT_ONE_NOTE_PAUSE_EXIT = "Turn Right One Note Pause Exit";
+
+        /**
+         * Path used when starting on the left side of the speaker and pausing before exiting. Turns left to launch, pauses, and then exits community.
+         */
+        public static final String TURN_LEFT_ONE_NOTE_PAUSE_EXIT = "Turn Left One Note Pause Exit";
 
         /**
          * The distance to exit the community when starting directly in front of the subwoofer. 

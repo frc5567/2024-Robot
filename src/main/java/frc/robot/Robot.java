@@ -45,6 +45,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption(RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT, RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT);
+    m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT);
+    m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT);
     //m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
