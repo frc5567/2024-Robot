@@ -338,7 +338,7 @@ public class RobotMap {
         /**
          * The distance to back up enough to launch to the speaker when starting fully against the front of the subwoofer.
          */
-        public static final double FRONT_LAUNCH_BACK_UP_DIST = 8.0;
+        public static final double FRONT_LAUNCH_BACK_UP_DIST = 6.0;
 
         /**
          * The distance to exit the community when starting on the side of the subwoofer.

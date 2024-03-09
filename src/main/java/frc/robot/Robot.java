@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
       m_camera = CameraServer.startAutomaticCapture();
 
       m_camera.setResolution(160,120);
-      m_camera.setFPS(10);
+      m_camera.setFPS(30);
 
     } catch (Exception e){
       System.out.println("Camera failed to instantiate");
