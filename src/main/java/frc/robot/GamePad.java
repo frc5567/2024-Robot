@@ -17,7 +17,6 @@ public class GamePad extends Joystick{
      */
     public enum GamePadControls {
         
-        //TODO: update port numbers
         Left_Extend(10),
         Left_Retract(11),
         Right_Extend(1),

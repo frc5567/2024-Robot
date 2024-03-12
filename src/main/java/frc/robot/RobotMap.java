@@ -2,8 +2,14 @@ package frc.robot;
 
 public class RobotMap {
 
+    /**
+     * The number of cycles we allow our launcher speed to speed up.
+     */
     public static final int LAUNCH_SPIN_UP_COUNT = 25;
 
+    /**
+     * The number of cycles we allow our launcher to launch to the speaker.
+     */
     public static final int ADDITIONAL_LAUNCH_COUNT = 25;
 
     /**
@@ -56,9 +62,19 @@ public class RobotMap {
          */
         public final static Gains TURNING_GAINS = new Gains( 0.01, 0.0,  4.0, 0.0);
 
+        /**
+         * Driving PID slot.
+         */
         public final static int PID_PRIMARY = 0;
+
+        /**
+         * Turning PID slot.
+         */
         public final static int PID_TURN = 1;
 
+        /**
+         * Gear ratio on the drive motors.
+         */
         public final static int GEAR_RATIO = 15;
 
         /**
@@ -66,6 +82,9 @@ public class RobotMap {
          */
         public final static int PIGEON_UNITS_PER_ROTATION = 8192;
 
+        /**
+         * Encoder ticks per rotation on the drivetrain.
+         */
         public final static int SENSOR_UNITS_PER_ROTATION = 2048;
 
         /**
@@ -73,11 +92,40 @@ public class RobotMap {
          */
         public static final int DRIVE_STRAIGHT_DEADBAND = 5000;
 
+        /**
+         * Seconds it takes to speed up from 0% to 100% power for the drivetrain.
+         */
         public static final double OPEN_RAMPS = 0.2;
 
+        /**
+         * The rate at which the device will publish the pigeon and drivetrain signals.
+         */
         public static final double UPDATE_FREQUENCY = 100;
 
+        /**
+         * Used to differentiate turn speeds in turn to angle.
+         */
         public static final double DRIVE_ANGLE_DEADBAND = 0.8;
+
+        /**
+         * Percent output for turn to target when angle is greater than 8 degrees.
+         */
+        public static final double LARGEST_ANGLE_SPEED = 0.12;
+
+        /**
+         * Percent output for turn to target when angle is between 4 and 8 degrees.
+         */
+        public static final double LARGER_MIDDLE_ANGLE_SPEED = 0.08;
+
+        /**
+         * Percent output for turn to target when angle is between 2.4 and 4 degrees.
+         */
+        public static final double SMALLER_MIDDLE_ANGLE_SPEED = 0.06;
+
+        /**
+         * Percent output for turn to target when angle is between 0.8 and 2.4 degrees.
+         */
+        public static final double SMALLEST_ANGLE_SPEED = 0.06;
     }
 
     /**
@@ -141,20 +189,20 @@ public class RobotMap {
         /**
          * Speed set to the left launcher motor when launching to the amp.
          */
-        public static final double LEFT_AMP_SPEED = 0.4;
+        public static final double LEFT_AMP_SPEED = 0.3;
 
         /**
          * Speed set to the right launcher motor when launching to the amp.
          */
-        public static final double RIGHT_AMP_SPEED = 0.4;
+        public static final double RIGHT_AMP_SPEED = 0.3;
 
         /**
-         * Speed set to the left launcher motor when launching to the speaker. TODO: make sure this value is up to date with testing changes.
+         * Speed set to the left launcher motor when launching to the speaker.
          */
-        public static final double LEFT_SPEAKER_SPEED = 0.8;
+        public static final double LEFT_SPEAKER_SPEED = 0.95;
 
         /**
-         * Speed set to the right launcher motor when launching to the speaker.TODO: make sure this value is up to date with testing changes.
+         * Speed set to the right launcher motor when launching to the speaker.
          */
         public static final double RIGHT_SPEAKER_SPEED = 0.95;
 
@@ -247,6 +295,9 @@ public class RobotMap {
     }
 
 
+    /**
+     * All Auton constants.
+     */
     public static class AutonConstants {
 
         /**
@@ -270,19 +321,34 @@ public class RobotMap {
         public static final double FRONT_SPEAKER_EXIT_DIST = 45.0;
 
         /**
-         * The distance to back up enough to launch to the speaker when starting fully against the subwoofer.
+         * The distance to back up enough to launch to the speaker when starting fully against the front of the subwoofer.
+         */
+        public static final double FRONT_LAUNCH_BACK_UP_DIST = 8.0;
+
+        /**
+         * The distance to exit the community when starting on the side of the subwoofer.
+         */
+        public static final double SIDE_SPEAKER_EXIT_DIST = 60.0;
+
+        /**
+         * The distance to back up enough to launch to the speaker when starting fully against the side of the subwoofer.
          */
         public static final double LAUNCH_BACK_UP_DIST = 6.0;
 
         /**
-         * The angle in degrees to turn to launch to the speaker when starting flush against the subwoofer.
+         * The angle in degrees to turn left to launch to the speaker when starting flush against the subwoofer.
          */
-        public static final double TURN_TO_LAUNCH_ANGLE = 7.0;
+        public static final double TURN_LEFT_TO_LAUNCH_ANGLE = 10.0;
+
+        /**
+         * The angle in degrees to turn right to launch to the speaker when starting flush against the subwoofer.
+         */
+        public static final double TURN_RIGHT_TO_LAUNCH_ANGLE = 9.0;
 
         /**
          * The distance to back up after launching to the speaker to give enough clearance for turning the rest of the way.
          */
-        public static final double BACK_UP_AFTER_LAUNCH_DIST = 15.0;
+        public static final double BACK_UP_AFTER_LAUNCH_DIST = 18.0;
 
         /**
          * The angle of the subwoofer from the wall.
