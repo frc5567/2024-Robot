@@ -7,6 +7,9 @@ package frc.robot;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,8 +36,12 @@ public class Robot extends TimedRobot {
   private Auton m_auton;
   private UsbCamera m_camera;
   private boolean m_currentlyLaunching;
+  private boolean m_haveNote = false;
 
   private int m_launchCounter = 0;
+
+  private Sendable m_sensorValue;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -45,6 +52,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption(RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT, RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT);
+    m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT);
+    m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT);
     //m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
@@ -68,13 +77,17 @@ public class Robot extends TimedRobot {
       m_camera = CameraServer.startAutomaticCapture();
 
       m_camera.setResolution(160,120);
-      m_camera.setFPS(10);
+      m_camera.setFPS(30);
 
     } catch (Exception e){
       System.out.println("Camera failed to instantiate");
     }
 
     m_climber.unlockClimb();
+
+
+
+    
 
   }
 
@@ -88,6 +101,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     m_autoSelected = m_chooser.getSelected();
+    m_haveNote = m_indexer.readIndexSensor();
+    SmartDashboard.putBoolean("HaveNote", m_haveNote);
     m_drivetrain.periodic();
   }
 
@@ -139,7 +154,6 @@ public class Robot extends TimedRobot {
     boolean intakeOn = false;
     boolean ampLauncherOn = false;
     boolean speakerLauncherOn = false;
-    boolean haveNote = false;
     boolean expelOn = false;
     boolean leftClimberExtending = false;
     boolean rightClimberExtending = false;
@@ -158,8 +172,10 @@ public class Robot extends TimedRobot {
     intakeOn = m_gamePad.getIntake();
     ampLauncherOn = m_gamePad.getAmpLaunch();
     speakerLauncherOn = m_gamePad.getSpeakerLaunch();
-    haveNote = m_indexer.readIndexSensor();
+
     expelOn = m_gamePad.getExpel();
+
+    SmartDashboard.updateValues();
 
     m_drivetrain.setDesiredDirection(desiredDirection);
 
@@ -226,7 +242,7 @@ public class Robot extends TimedRobot {
       }
     }
     else {
-      if (haveNote) {
+      if (m_haveNote) {
         // If currentlyLaunching is false and we have a note we want to launch to the amp,
         // set the launcher to amp speed, feed a note from the the indexer, set the intake speed to 0, and set currentlyLaunching to true.
         if (ampLauncherOn) {

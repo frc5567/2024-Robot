@@ -13,6 +13,11 @@ public class RobotMap {
     public static final int ADDITIONAL_LAUNCH_COUNT = 25;
 
     /**
+     * The number of cycles we wait during auton.
+     */
+    public static final int PAUSE_COUNT = 350;
+
+    /**
      * Constant for setting variables to 0 if there is not input value.
      */
     public static final double NO_INPUT = Double.NaN;
@@ -146,7 +151,7 @@ public class RobotMap {
         /**
          * Adjusts output of turns to tone down the final output.
          */
-        public static final double TURN_SCALAR = 0.7;
+        public static final double TURN_SCALAR = 0.6;
 
         /**
          * Rate limit for acceleration to prevent brownouts.
@@ -199,12 +204,12 @@ public class RobotMap {
         /**
          * Speed set to the left launcher motor when launching to the speaker.
          */
-        public static final double LEFT_SPEAKER_SPEED = 0.95;
+        public static final double LEFT_SPEAKER_SPEED = 0.9;
 
         /**
          * Speed set to the right launcher motor when launching to the speaker.
          */
-        public static final double RIGHT_SPEAKER_SPEED = 0.95;
+        public static final double RIGHT_SPEAKER_SPEED = 0.9;
 
         
     }
@@ -316,6 +321,16 @@ public class RobotMap {
         public static final String TURN_RIGHT_ONE_NOTE_EXIT = "Turn Right One Note Exit";
 
         /**
+         * Path used when starting on the right side of the speaker and pausing before exiting. Turns right to launch, pauses, and then exits community.
+         */
+        public static final String TURN_RIGHT_ONE_NOTE_PAUSE_EXIT = "Turn Right One Note Pause Exit";
+
+        /**
+         * Path used when starting on the left side of the speaker and pausing before exiting. Turns left to launch, pauses, and then exits community.
+         */
+        public static final String TURN_LEFT_ONE_NOTE_PAUSE_EXIT = "Turn Left One Note Pause Exit";
+
+        /**
          * The distance to exit the community when starting directly in front of the subwoofer. 
          */
         public static final double FRONT_SPEAKER_EXIT_DIST = 45.0;
@@ -323,7 +338,7 @@ public class RobotMap {
         /**
          * The distance to back up enough to launch to the speaker when starting fully against the front of the subwoofer.
          */
-        public static final double FRONT_LAUNCH_BACK_UP_DIST = 8.0;
+        public static final double FRONT_LAUNCH_BACK_UP_DIST = 6.0;
 
         /**
          * The distance to exit the community when starting on the side of the subwoofer.
