@@ -28,6 +28,7 @@ public class PilotController {
     /**
      * Sets the robot speed to the difference of the left and right triggers.
      * Applies a slew rate limiter. This caps the max rate of change.
+     * Sets max output to 80%.
      * @return the speed adjusted for deadband.
      */
     public double getDriverSpeed() {

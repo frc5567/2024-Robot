@@ -18,8 +18,6 @@ import edu.wpi.first.cameraserver.CameraServer;
  * project.
  */
 public class Robot extends TimedRobot {
-  // private static final String kDefaultAuto = "Default";
-  // private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -47,7 +45,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT);
-    //m_chooser.addOption("My Auto", kCustomAuto);
+
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
 
@@ -118,7 +116,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
     m_auton.init();
     m_auton.selectPath(m_autoSelected);
@@ -176,8 +173,6 @@ public class Robot extends TimedRobot {
 
     expelOn = m_gamePad.getExpel();
 
-    SmartDashboard.updateValues();
-
     m_drivetrain.setDesiredDirection(desiredDirection);
 
     m_drivetrain.arcadeDrive(curSpeed, curTurn);
@@ -186,8 +181,11 @@ public class Robot extends TimedRobot {
     rightClimberExtending = m_gamePad.getRightExtend();
     leftClimberRetracting = m_gamePad.getLeftRetract();
     rightClimberRetracting = m_gamePad.getRightRetract();
+    
     unlockClimbButton = m_gamePad.getUnlockRatchet();
     lockClimbButton = m_gamePad.getLockRatchet();
+
+    SmartDashboard.updateValues();
 
     //left climber controls
     if (leftClimberExtending) {

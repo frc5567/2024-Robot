@@ -71,8 +71,7 @@ public class Drivetrain {
         m_leftFollower.setControl(new Follower(m_leftLeader.getDeviceID(), false));
         m_rightFollower.setControl(new Follower(m_rightLeader.getDeviceID(), false));
 
-        // Enables safety mode which requires input to the motors every cycle or it will
-        // set them to 0.
+        // Enables safety mode which requires input to the motors every cycle or it will set them to 0.
         m_leftLeader.setSafetyEnabled(true);
         m_rightLeader.setSafetyEnabled(true);
 
@@ -234,6 +233,7 @@ public class Drivetrain {
         double target_turn = angle;
         System.out.println("current yaw [" + currentYaw + "]");
 
+        // Checks if current yaw (angle) is within a certain deadband and adjusts turn speed accordingly.
         if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 10))) {
             m_rightLeader.setControl(new DutyCycleOut(-RobotMap.DrivetrainConstants.LARGEST_ANGLE_SPEED));
             m_leftLeader.setControl(new DutyCycleOut(RobotMap.DrivetrainConstants.LARGEST_ANGLE_SPEED));

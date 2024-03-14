@@ -11,7 +11,7 @@ public class Indexer {
     private DigitalInput m_indexSensor;
     
     /**
-     * Constructor that instantiates the index motor and sensor objects.
+     * Constructor that instantiates the index motor and sensor objects and sets coast mode.
      */
     public Indexer() {
         m_indexMotor = new WPI_TalonSRX(RobotMap.IndexerConstants.INDEXER_CAN_ID);

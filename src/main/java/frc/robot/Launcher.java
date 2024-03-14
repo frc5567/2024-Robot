@@ -60,7 +60,7 @@ public class Launcher {
     }
 
     /**
-     * Method that sets the launcher speeds to the speaker speeds (left 0.8, right 0.95)
+     * Method that sets the launcher speeds to the speaker speeds (left 0.9, right 0.9)
      */
     public void speakerLaunch() {
         this.setSpeed(RobotMap.LauncherConstants.LEFT_SPEAKER_SPEED, RobotMap.LauncherConstants.RIGHT_SPEAKER_SPEED);
@@ -74,7 +74,7 @@ public class Launcher {
     }
 
     /**
-     * Method to reverse both launch motors. Uses negative amp speeds (left -0.4, right -0.4)
+     * Method to reverse both launch motors. Uses negative amp speeds (left -0.3, right -0.3)
      */
     public void expel() {
         this.setSpeed(-RobotMap.LauncherConstants.LEFT_AMP_SPEED, -RobotMap.LauncherConstants.RIGHT_AMP_SPEED);
