@@ -27,8 +27,8 @@ public class GamePad extends Joystick{
         Intake(12),
         Amp_Launch(5),
         Speaker_Launch(3),
-        Drive_Forward(6),
-        Turn_To_Target(9);
+        Spin_Up(6),
+        Test(9);
 
         public final int portNum;
 
@@ -118,19 +118,11 @@ public class GamePad extends Joystick{
     }
 
     /**
-     * Checks if the manual Drive Straight button is pressed.
-     * @return true if the manual Drive Straight button is pressed, false if not.
+     * Checks if the Spin Up button is pressed.
+     * @return true if the Spin Up button is pressed, false if not.
      */
-    public boolean getManualDriveStraight() {
-        return super.getRawButton(GamePadControls.Drive_Forward.portNum);
-    }
-
-    /**
-     * Checks if the manual Turn To Target button is pressed.
-     * @return true if the manual Turn To Target button is pressed, false if not.
-     */
-    public boolean getManualTurnToTarget() {
-        return super.getRawButton(GamePadControls.Turn_To_Target.portNum);
+    public boolean getSpinUp() {
+        return super.getRawButton(GamePadControls.Spin_Up.portNum);
     }
 
 }

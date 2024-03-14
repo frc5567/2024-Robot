@@ -154,6 +154,7 @@ public class Robot extends TimedRobot {
     boolean intakeOn = false;
     boolean ampLauncherOn = false;
     boolean speakerLauncherOn = false;
+    boolean spinningUp = false;
     boolean expelOn = false;
     boolean leftClimberExtending = false;
     boolean rightClimberExtending = false;
@@ -172,6 +173,7 @@ public class Robot extends TimedRobot {
     intakeOn = m_gamePad.getIntake();
     ampLauncherOn = m_gamePad.getAmpLaunch();
     speakerLauncherOn = m_gamePad.getSpeakerLaunch();
+    spinningUp = m_gamePad.getSpinUp();
 
     expelOn = m_gamePad.getExpel();
 
@@ -224,15 +226,17 @@ public class Robot extends TimedRobot {
         m_launcher.ampLaunch();
         m_indexer.feedNote();
       }
-      // If we want to launch to the speaker, wait 25 cycles (0.5 seconds), then set the launcher to speaker speed and feed a note from the indexer.
-      else if (speakerLauncherOn) {
-        if (++m_launchCounter > RobotMap.LAUNCH_SPIN_UP_COUNT) {
+      // If we want to spin the launcher up to speed, set the launcher to speaker speed.
+      // Then when we want to launch, feed a note from the indexer.
+      else if (spinningUp) {
+        m_launcher.speakerLaunch();
+
+        if (speakerLauncherOn) {
           m_indexer.feedNote();
         }
         else {
-        m_indexer.stop();
+          m_indexer.stop();
         }
-        m_launcher.speakerLaunch();
       }
       // If we don't want to launch, set the launcher and indexer speeds to 0 and set currentlyLaunching to false.
       else {
@@ -251,17 +255,17 @@ public class Robot extends TimedRobot {
           m_intake.stop();
           m_currentlyLaunching = true;
         }
-        // If currentlyLaunching is false and we have a note we want to launch to the speaker,
-        // set the launcher to speaker speed, feed a note from the the indexer, set the intake speed to 0, and set currentlyLaunching to true.
-        else if (speakerLauncherOn) {
-          if (++m_launchCounter > RobotMap.LAUNCH_SPIN_UP_COUNT) {
+        // If we want to spin the launcher up to speed, set the launcher to speaker speed.
+        // Then when we want to launch, feed a note from the indexer.
+        else if (spinningUp) {
+          m_launcher.speakerLaunch();
+
+          if (speakerLauncherOn) {
             m_indexer.feedNote();
           }
           else {
             m_indexer.stop();
           }
-          m_launcher.speakerLaunch();
-          m_currentlyLaunching = true;
         }
         // If currentlyLaunching is false and we want to expel, set launcher, indexer, and intake to reversed speed.
         else if (expelOn) {
@@ -322,28 +326,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {
-    boolean driveForward = false;
-    boolean isTurning = false;
-
-    driveForward = m_gamePad.getManualDriveStraight();
-    isTurning = m_gamePad.getManualTurnToTarget();
-
-    //System.out.print("Right Encoder Pos [ " + m_drivetrain.getRightDrivePos() + " ]");
-
-    if (driveForward) {
-      //System.out.print("A BUTTON PRESSED");
-      m_drivetrain.driveStraight(10.0);
-    }
-    else if (isTurning) {
-      m_drivetrain.turnToAngle(-30.0);
-    }
-    else {
-      m_drivetrain.arcadeDrive(0.0, 0.0);
-    }
-    
-    
-  }
+  public void testPeriodic() {}
 
   /** This function is called once when the robot is first started up. */
   @Override

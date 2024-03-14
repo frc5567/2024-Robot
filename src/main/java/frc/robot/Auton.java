@@ -9,8 +9,7 @@ public class Auton {
     // Sets the default path to Front One Note Exit.
     private String m_currentPath = RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT;
 
-    private int m_feedLoopCount = 0;
-    private int m_launchLoopCount = 0;
+    private int m_loopCount = 0;
     private int m_pauseLoopCount = 0;
 
     /**
@@ -26,8 +25,7 @@ public class Auton {
     public void init() {
         m_step = 0;
         m_autonStart = true;
-        m_feedLoopCount = 0;
-        m_launchLoopCount = 0;
+        m_loopCount = 0;
         m_pauseLoopCount = 0;
     }
 
@@ -88,31 +86,34 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Begins spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_LAUNCH_BACK_UP_DIST)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
                         break;
                     }
-                    
                     case 2:
                     {
-                        if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                        if (++m_loopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
                             System.out.println("Step complete: " + m_step);
-                            m_launchLoopCount = 0;
+                            m_loopCount = 0;
                             launcher.stop();
                             indexer.stop();
                             m_step += 1;
                         }
                         else {
                             launcher.speakerLaunch();
-                            if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                            if (++m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
                                 indexer.feedNote();
-                                System.out.println("Step feeding: " + m_step + " loopcount:" + m_feedLoopCount + " - " + m_launchLoopCount);
+                                System.out.println("Step feeding: " + m_step + " loopcount:" + m_loopCount + " - " + m_loopCount);
                             }
                             else {
                                 indexer.stop();
-                                System.out.println("Step not feeding: " + m_step + " loopcount:" + m_feedLoopCount + " - " + m_launchLoopCount);
+                                System.out.println("Step not feeding: " + m_step + " loopcount:" + m_loopCount + " - " + m_loopCount);
                             }
                         }
                         drivetrain.arcadeDrive(0.0, 0.0);
@@ -146,6 +147,10 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Begins spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.LAUNCH_BACK_UP_DIST)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
@@ -156,6 +161,10 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Continues spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
                         if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
@@ -164,16 +173,16 @@ public class Auton {
                     }
                     case 3:
                     {
-                        if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                        if (++m_loopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
                             System.out.println("Step complete: " + m_step);
-                            m_launchLoopCount = 0;
+                            m_loopCount = 0;
                             launcher.stop();
                             indexer.stop();
                             m_step += 1;
                         }
                         else {
                             launcher.speakerLaunch();
-                            if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                            if (++m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
                                 indexer.feedNote();
                             }
                             else {
@@ -230,6 +239,10 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Begins spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.LAUNCH_BACK_UP_DIST)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
@@ -240,6 +253,10 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Continues spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
                         if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
@@ -248,16 +265,16 @@ public class Auton {
                     }
                     case 3:
                     {
-                        if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                        if (++m_loopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
                             System.out.println("Step complete: " + m_step);
-                            m_launchLoopCount = 0;
+                            m_loopCount = 0;
                             launcher.stop();
                             indexer.stop();
                             m_step += 1;
                         }
                         else {
                             launcher.speakerLaunch();
-                            if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                            if (++m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
                                 indexer.feedNote();
                             }
                             else {
@@ -314,6 +331,10 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Begins spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.LAUNCH_BACK_UP_DIST)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
@@ -324,6 +345,10 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Continues spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
                         if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
@@ -332,16 +357,16 @@ public class Auton {
                     }
                     case 3:
                     {
-                        if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                        if (++m_loopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
                             System.out.println("Step complete: " + m_step);
-                            m_launchLoopCount = 0;
+                            m_loopCount = 0;
                             launcher.stop();
                             indexer.stop();
                             m_step += 1;
                         }
                         else {
                             launcher.speakerLaunch();
-                            if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                            if (++m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
                                 indexer.feedNote();
                             }
                             else {
@@ -407,6 +432,10 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Begins spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.LAUNCH_BACK_UP_DIST)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
@@ -417,6 +446,9 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        // Continues spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+
                         if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
@@ -425,16 +457,16 @@ public class Auton {
                     }
                     case 3:
                     {
-                        if (++m_launchLoopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                        if (++m_loopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
                             System.out.println("Step complete: " + m_step);
-                            m_launchLoopCount = 0;
+                            m_loopCount = 0;
                             launcher.stop();
                             indexer.stop();
                             m_step += 1;
                         }
                         else {
                             launcher.speakerLaunch();
-                            if (++m_feedLoopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                            if (++m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
                                 indexer.feedNote();
                             }
                             else {
