@@ -7,9 +7,6 @@ package frc.robot;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,8 +18,6 @@ import edu.wpi.first.cameraserver.CameraServer;
  * project.
  */
 public class Robot extends TimedRobot {
-  // private static final String kDefaultAuto = "Default";
-  // private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -39,11 +34,6 @@ public class Robot extends TimedRobot {
   private boolean m_currentlyLaunching;
   private boolean m_haveNote = false;
 
-  private int m_launchCounter = 0;
-
-  private Sendable m_sensorValue;
-
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -55,7 +45,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT);
-    //m_chooser.addOption("My Auto", kCustomAuto);
+
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
 
@@ -126,7 +116,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
     m_auton.init();
     m_auton.selectPath(m_autoSelected);
@@ -184,8 +173,6 @@ public class Robot extends TimedRobot {
 
     expelOn = m_gamePad.getExpel();
 
-    SmartDashboard.updateValues();
-
     m_drivetrain.setDesiredDirection(desiredDirection);
 
     m_drivetrain.arcadeDrive(curSpeed, curTurn);
@@ -194,8 +181,11 @@ public class Robot extends TimedRobot {
     rightClimberExtending = m_gamePad.getRightExtend();
     leftClimberRetracting = m_gamePad.getLeftRetract();
     rightClimberRetracting = m_gamePad.getRightRetract();
+    
     unlockClimbButton = m_gamePad.getUnlockRatchet();
     lockClimbButton = m_gamePad.getLockRatchet();
+
+    SmartDashboard.updateValues();
 
     //left climber controls
     if (leftClimberExtending) {
@@ -308,7 +298,6 @@ public class Robot extends TimedRobot {
           m_launcher.stop();
         }
       }
-      m_launchCounter = 0;
     }
   }
 

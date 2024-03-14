@@ -8,7 +8,7 @@ public class Intake {
     TalonSRX m_intake;
 
     /**
-     * Contructor method that instantiates the intake motor. 
+     * Contructor method that instantiates the intake motor and sets coast mode.
      */
     Intake() {
         m_intake = new TalonSRX(RobotMap.IntakeConstants.INTAKE_CAN_ID);

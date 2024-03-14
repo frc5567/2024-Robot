@@ -114,7 +114,7 @@ public class RobotMap {
         public static final int XBOX_CONTROLLER_USB_PORT = 0;
 
         /**
-         * Absolute value of the deadband reange for stick input.
+         * Absolute value of the deadband range for stick input.
          */
         public static final double STICK_DEADBAND = 0.09;
 
@@ -128,7 +128,6 @@ public class RobotMap {
          */
         public static final double ACCEL_SLEW_RATE = 1.6;
     }
-
 
     /**
      * All intake constants.
@@ -206,8 +205,6 @@ public class RobotMap {
          * Speed set to the index motor for feeding note into launcher.
          */
         public static final double FEED_SPEED = 1.0;
-
-    
     }
 
     /**
@@ -237,22 +234,22 @@ public class RobotMap {
         public static final int RIGHT_SERVO = 1;
 
         /**
-         * The position of the right servo when unlocked.
+         * The position of the right servo when unlocked (extended).
          */
         public static final double RIGHT_SERVO_UNLOCK_POS = 0.0;
 
         /**
-         * The position of the left servo when extended.
+         * The position of the left servo when unlocked (extended).
          */
         public static final double LEFT_SERVO_UNLOCK_POS = 0.0;
 
         /**
-         * The position of the right servo when retracted.
+         * The position of the right servo when locked (retracted).
          */
         public static final double RIGHT_SERVO_LOCK_POS = 1.0;
 
         /**
-         * The position of the left servo when retracted.
+         * The position of the left servo when locked (retracted).
          */
         public static final double LEFT_SERVO_LOCK_POS = 1.0;
 
@@ -266,7 +263,6 @@ public class RobotMap {
          */
         public static final double RIGHT_SPEED = 0.5;
     }
-
 
     /**
      * All Auton constants.
