@@ -31,7 +31,8 @@ public class Robot extends TimedRobot {
   private GamePad m_gamePad;
   private Climber m_climber;
   private Auton m_auton;
-  private UsbCamera m_camera;
+  private UsbCamera m_frontCamera;
+  private UsbCamera m_backCamera;
   private boolean m_currentlyLaunching;
   private boolean m_haveNote = false;
 
@@ -66,20 +67,26 @@ public class Robot extends TimedRobot {
     m_drivetrain.initDrivetrain();
 
     try {
-      m_camera = CameraServer.startAutomaticCapture();
+      m_frontCamera = CameraServer.startAutomaticCapture(RobotMap.FRONT_CAMERA_ID);
 
-      m_camera.setResolution(160,120);
-      m_camera.setFPS(30);
+      m_frontCamera.setResolution(160,120);
+      m_frontCamera.setFPS(30);
 
     } catch (Exception e){
-      System.out.println("Camera failed to instantiate");
+      System.out.println("Front camera failed to instantiate");
+    }
+
+    try {
+      m_backCamera = CameraServer.startAutomaticCapture(RobotMap.BACK_CAMERA_ID);
+
+      m_backCamera.setResolution(160,120);
+      m_backCamera.setFPS(30);
+
+    } catch (Exception e){
+      System.out.println("Back camera failed to instantiate");
     }
 
     m_climber.unlockClimb();
-
-
-
-    
 
   }
 
