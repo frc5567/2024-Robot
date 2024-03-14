@@ -45,6 +45,11 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT);
+    m_chooser.addOption(RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT, RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT);
+    m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT, RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT);
+    m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT);
+    m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS, RobotMap.AutonConstants.RED_EVIL_GENIUS);
+    m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS, RobotMap.AutonConstants.BLUE_EVIL_GENIUS);
 
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
@@ -127,7 +132,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     AutonInput currentInput;
-    currentInput = m_auton.periodic(m_launcher, m_indexer, m_drivetrain);
+    currentInput = m_auton.periodic(m_launcher, m_indexer, m_drivetrain, m_intake);
     
     if (currentInput.m_autonCompleted) {
       m_drivetrain.arcadeDrive(0.0, 0.0);
@@ -181,7 +186,7 @@ public class Robot extends TimedRobot {
     rightClimberExtending = m_gamePad.getRightExtend();
     leftClimberRetracting = m_gamePad.getLeftRetract();
     rightClimberRetracting = m_gamePad.getRightRetract();
-    
+
     unlockClimbButton = m_gamePad.getUnlockRatchet();
     lockClimbButton = m_gamePad.getLockRatchet();
 
