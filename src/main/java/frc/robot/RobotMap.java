@@ -275,24 +275,49 @@ public class RobotMap {
         public static final String FRONT_ONE_NOTE_EXIT = "Front One Note Exit";
 
         /**
-         * Path used when starting on the left side of the speaker. Turns left to launch and then exits community.
+         * Path used when starting on the left side of the subwoofer. Turns left to launch and then exits community.
          */
         public static final String TURN_LEFT_ONE_NOTE_EXIT = "Turn Left One Note Exit";
 
         /**
-         * Path used when starting on the right side of the speaker. Turns right to launch and then exits community.
+         * Path used when starting on the right side of the subwoofer. Turns right to launch and then exits community.
          */
         public static final String TURN_RIGHT_ONE_NOTE_EXIT = "Turn Right One Note Exit";
 
         /**
-         * Path used when starting on the right side of the speaker and pausing before exiting. Turns right to launch, pauses, and then exits community.
+         * Path used when starting on the right side of the subwoofer and pausing before exiting. Turns right to launch, pauses, and then exits community.
          */
         public static final String TURN_RIGHT_ONE_NOTE_PAUSE_EXIT = "Turn Right One Note Pause Exit";
 
         /**
-         * Path used when starting on the left side of the speaker and pausing before exiting. Turns left to launch, pauses, and then exits community.
+         * Path used when starting on the left side of the subwoofer and pausing before exiting. Turns left to launch, pauses, and then exits community.
          */
         public static final String TURN_LEFT_ONE_NOTE_PAUSE_EXIT = "Turn Left One Note Pause Exit";
+
+        /**
+         * Path used when starting on the front of the subwoofer, launching a note, exiting community, and intaking.
+         */
+        public static final String FRONT_TWO_NOTE_EXIT = "Front Two Note Exit";
+
+        /**
+         * Path used when starting on the left side of the subwoofer. Turns left to launch, exits community, and intakes a note.
+         */
+        public static final String TURN_LEFT_TWO_NOTE_EXIT = "Turn Left Two Note Exit";
+
+        /**
+         * Path used when starting on the right side of the subwoofer. Turns right to launch, exits community, and intakes a note.
+         */
+        public static final String TURN_RIGHT_TWO_NOTE_EXIT = "Turn Right Two Note Exit";
+
+        /**
+         * Path used when starting on the long wall on the red side, exiting the community, turning right, and moving middle notes >:D
+         */
+        public static final String RED_EVIL_GENIUS = "Red Evil Genius";
+
+        /**
+         * Path used when starting on the long wall on the blue side, exiting the community, turning left, and moving middle notes >:D
+         */
+        public static final String BLUE_EVIL_GENIUS = "Blue Evil Genius";
 
         /**
          * The distance to exit the community when starting directly in front of the subwoofer. 
@@ -333,6 +358,21 @@ public class RobotMap {
          * The angle of the subwoofer from the wall.
          */
         public static final double SUBWOOFER_ANGLE_FROM_WALL = 60.0;
+
+        /**
+         * The distance to travel to the middle of the field when starting against the back wall.
+         */
+        public static final double DIST_TO_MID = 308.6;
+
+        /**
+         * 90 degree turning angle.
+         */
+        public static final double RIGHT_ANGLE = 90.0;
+
+        /**
+         * The distance to travel across the middle of the field to push notes.
+         */
+        public static final double PUSH_DIST = 198.0;
 
     }
 }
