@@ -16,6 +16,16 @@ public class RobotMap {
      * The number of cycles we wait during auton.
      */
     public static final int PAUSE_COUNT = 350;
+
+    /**
+     * The device number of the front camera.
+     */
+    public static final int FRONT_CAMERA_ID = 0;
+
+    /**
+     * The device number of the back camera.
+     */
+    public static final int BACK_CAMERA_ID = 1;
     
     /**
      * All drivetrain constants.
