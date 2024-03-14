@@ -229,13 +229,14 @@ public class Robot extends TimedRobot {
       // If we want to spin the launcher up to speed, set the launcher to speaker speed.
       // Then when we want to launch, feed a note from the indexer.
       else if (spinningUp) {
+        m_launcher.speakerLaunch();
+
         if (speakerLauncherOn) {
           m_indexer.feedNote();
         }
         else {
           m_indexer.stop();
         }
-        m_launcher.speakerLaunch();
       }
       // If we don't want to launch, set the launcher and indexer speeds to 0 and set currentlyLaunching to false.
       else {
@@ -257,13 +258,14 @@ public class Robot extends TimedRobot {
         // If we want to spin the launcher up to speed, set the launcher to speaker speed.
         // Then when we want to launch, feed a note from the indexer.
         else if (spinningUp) {
+          m_launcher.speakerLaunch();
+
           if (speakerLauncherOn) {
             m_indexer.feedNote();
           }
           else {
             m_indexer.stop();
           }
-          m_launcher.speakerLaunch();
         }
         // If currentlyLaunching is false and we want to expel, set launcher, indexer, and intake to reversed speed.
         else if (expelOn) {
