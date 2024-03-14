@@ -7,9 +7,6 @@ package frc.robot;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,11 +34,6 @@ public class Robot extends TimedRobot {
   private UsbCamera m_camera;
   private boolean m_currentlyLaunching;
   private boolean m_haveNote = false;
-
-  private int m_launchCounter = 0;
-
-  private Sendable m_sensorValue;
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -301,7 +293,6 @@ public class Robot extends TimedRobot {
           m_launcher.stop();
         }
       }
-      m_launchCounter = 0;
     }
   }
 
