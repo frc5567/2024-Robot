@@ -16,11 +16,6 @@ public class RobotMap {
      * The number of cycles we wait during auton.
      */
     public static final int PAUSE_COUNT = 350;
-
-    /**
-     * Constant for setting variables to 0 if there is not input value.
-     */
-    public static final double NO_INPUT = Double.NaN;
     
     /**
      * All drivetrain constants.
@@ -53,11 +48,6 @@ public class RobotMap {
         public static final int PIGEON_CAN_ID = 3;
 
         /**
-         * The timeout in milliseconds of the CTRE methods.
-         */
-        public static final int TIMEOUT_MS = 30;
-
-        /**
          * Drive Straight PID constants
          */
         public final static Gains DISTANCE_GAINS = new Gains( 50.0, 0.0,  0.0, 0.1);
@@ -66,36 +56,6 @@ public class RobotMap {
          * Turn to Angle PID constants
          */
         public final static Gains TURNING_GAINS = new Gains( 0.01, 0.0,  4.0, 0.0);
-
-        /**
-         * Driving PID slot.
-         */
-        public final static int PID_PRIMARY = 0;
-
-        /**
-         * Turning PID slot.
-         */
-        public final static int PID_TURN = 1;
-
-        /**
-         * Gear ratio on the drive motors.
-         */
-        public final static int GEAR_RATIO = 15;
-
-        /**
-         * This is a property of the Pigeon IMU, and should not be changed.
-         */
-        public final static int PIGEON_UNITS_PER_ROTATION = 8192;
-
-        /**
-         * Encoder ticks per rotation on the drivetrain.
-         */
-        public final static int SENSOR_UNITS_PER_ROTATION = 2048;
-
-        /**
-         * Encoder deadband used in driveStraight.
-         */
-        public static final int DRIVE_STRAIGHT_DEADBAND = 5000;
 
         /**
          * Seconds it takes to speed up from 0% to 100% power for the drivetrain.
@@ -151,7 +111,7 @@ public class RobotMap {
         /**
          * Adjusts output of turns to tone down the final output.
          */
-        public static final double TURN_SCALAR = 0.6;
+        public static final double TURN_SCALAR = 0.7;
 
         /**
          * Rate limit for acceleration to prevent brownouts.
@@ -210,8 +170,6 @@ public class RobotMap {
          * Speed set to the right launcher motor when launching to the speaker.
          */
         public static final double RIGHT_SPEAKER_SPEED = 0.9;
-
-        
     }
 
     /**
