@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
   private boolean m_currentlyLaunching;
   private boolean m_haveNote = false;
 
+  private double m_dashAmpLaunch = RobotMap.LauncherConstants.LEFT_AMP_SPEED;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -53,6 +55,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
+
+    SmartDashboard.putNumber("Amp Launch Speed", m_dashAmpLaunch);
 
     Pigeon2 m_pigeon = new Pigeon2(RobotMap.DrivetrainConstants.PIGEON_CAN_ID);
 
@@ -106,6 +110,7 @@ public class Robot extends TimedRobot {
     m_haveNote = m_indexer.readIndexSensor();
     SmartDashboard.putBoolean("HaveNote", m_haveNote);
     m_drivetrain.periodic();
+    m_dashAmpLaunch = SmartDashboard.getNumber("Amp Launch Speed", m_dashAmpLaunch);
   }
 
   /**

@@ -10,6 +10,8 @@ public class Launcher {
     TalonFX m_launcherLeft;
     TalonFX m_launcherRight;
 
+    private double m_currentAmpLaunchSpeed = RobotMap.LauncherConstants.LEFT_AMP_SPEED;
+
     final DutyCycleOut m_motorOutput = new DutyCycleOut(0.0);
 
     /**
@@ -56,7 +58,7 @@ public class Launcher {
      * Method that sets the launcher speeds to the amp speeds (left 0.3, right 0.3)
      */
     public void ampLaunch() {
-        this.setSpeed(RobotMap.LauncherConstants.LEFT_AMP_SPEED, RobotMap.LauncherConstants.RIGHT_AMP_SPEED);
+        this.setSpeed(m_currentAmpLaunchSpeed, m_currentAmpLaunchSpeed);
     }
 
     /**
@@ -78,5 +80,9 @@ public class Launcher {
      */
     public void expel() {
         this.setSpeed(-RobotMap.LauncherConstants.LEFT_AMP_SPEED, -RobotMap.LauncherConstants.RIGHT_AMP_SPEED);
+    }
+
+    public void setAmpLaunchSpeed( double newAmpLaunchSpeed ) {
+        m_currentAmpLaunchSpeed = newAmpLaunchSpeed;
     }
 }
