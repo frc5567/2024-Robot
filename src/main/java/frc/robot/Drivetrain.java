@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
@@ -15,6 +14,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.controller.PIDController;
+
 public class Drivetrain {
 
     private TalonFX m_leftLeader;
@@ -25,6 +26,10 @@ public class Drivetrain {
     private Pigeon2 m_pigeon;
 
     private MotionMagicVoltage m_mmVoltage;
+
+    private boolean m_firstPIDcall;
+    private int m_PIDcounter;
+    private PIDController m_rotController;
 
     /**
      * The variable that keeps track of current drivetrain direction.
@@ -50,6 +55,10 @@ public class Drivetrain {
         m_mmVoltage = new MotionMagicVoltage(0.0);
 
         m_isDrivetrainForward = true;
+
+        m_rotController = new PIDController(RobotMap.DrivetrainConstants.TURNING_GAINS.kP, 
+                                            RobotMap.DrivetrainConstants.TURNING_GAINS.kI, 
+                                            RobotMap.DrivetrainConstants.TURNING_GAINS.kD);
     }
 
     /**
@@ -94,6 +103,8 @@ public class Drivetrain {
         m_pigeon.getConfigurator().apply(pigeonConfiguration);
 
         this.zeroSensors();
+        m_firstPIDcall = true;
+        m_PIDcounter = 0;
     }
 
     public void periodic() {
@@ -228,8 +239,7 @@ public class Drivetrain {
      */
     public boolean turnToAngle(double angle) {
         boolean reachedTarget = false;
-        StatusSignal yaw = m_pigeon.getYaw();
-        double currentYaw = yaw.getValueAsDouble();
+        double currentYaw = m_pigeon.getYaw().getValueAsDouble();
         double target_turn = angle;
         System.out.println("current yaw [" + currentYaw + "]");
 
@@ -298,6 +308,62 @@ public class Drivetrain {
 
         return reachedTarget;
     }
+
+    /**
+     * Rotates to a set angle without moving forward utilizing the PID and current yaw from the pigeon
+     * 
+     * @param targetAngle The angle you want the robot to rotate to
+     * @return Returns true if the PID returns a value low enough that the robot
+     *         doesn't move (thus finished)
+     */
+    public boolean turnToAnglePID(double targetAngle) {
+        // Flag for checking if the method is finished
+        boolean isFinished = false;
+        double currentAngle = m_pigeon.getYaw().getValueAsDouble();
+
+        // Resets the PID only on first entry
+        if (m_firstPIDcall) {
+            // Resets the error
+            m_rotController.reset();
+
+            // Sets the target to our target angle
+            m_rotController.setSetpoint(targetAngle);
+
+            // Prevents us from repeating the reset until we run the method again seperately
+            m_firstPIDcall = false;
+
+            m_PIDcounter = 0;
+        }
+
+        // Sets our rotate speed to the return of the PID
+        // TODO: May need to reverse signs!!
+        // TODO: Need to potentially consider a feed-forward to make sure we don't stall way too early
+        double returnedRotate = m_rotController.calculate(currentAngle);
+
+        // Output the target, current angle, and the output calculated by the PID
+        // TODO: This should be removed or at least commented out after debugging
+        System.out.println(" TTAPID: Target:[" + targetAngle + "] Current Angle:[" + currentAngle + "] Rotation Duty Cycle:[" + returnedRotate + "]");
+
+        // Runs the drivetrain with 0 speed and the rotate speed set by the PID
+        arcadeDrive(0, returnedRotate);
+
+        // Checks to see if the the PID is finished or close enough
+        // TODO: TUNE TURN_COMPLETE_SPEED and TURN_PID_CYCLE_COUNT
+        if ( ((returnedRotate < RobotMap.DrivetrainConstants.TURN_COMPLETE_SPEED) && 
+              (returnedRotate > -RobotMap.DrivetrainConstants.TURN_COMPLETE_SPEED)) && 
+              (m_PIDcounter++ > RobotMap.DrivetrainConstants.TURN_PID_CYCLE_COUNT)) {
+            isFinished = true;
+            m_firstPIDcall = true;
+            System.out.println("turnToAnglePID: FINISHED");
+        }
+
+        if (isFinished) {
+            m_PIDcounter = 0;
+        }
+
+        return isFinished;
+    }
+
 
     /**
      * Sets up the PID configuration for drive straight (or turn)
