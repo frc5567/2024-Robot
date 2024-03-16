@@ -111,6 +111,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("HaveNote", m_haveNote);
     m_drivetrain.periodic();
     m_dashAmpLaunch = SmartDashboard.getNumber("Amp Launch Speed", m_dashAmpLaunch);
+    m_launcher.setAmpLaunchSpeed(m_dashAmpLaunch);
   }
 
   /**
