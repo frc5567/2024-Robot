@@ -65,7 +65,7 @@ public class RobotMap {
         /**
          * Turn to Angle PID constants
          */
-        public final static Gains TURNING_GAINS = new Gains( 0.01, 0.0,  4.0, 0.0);
+        public final static Gains TURNING_GAINS = new Gains( 0.0175, 0.0,  0.00135, 0.0);
 
         /**
          * Seconds it takes to speed up from 0% to 100% power for the drivetrain.

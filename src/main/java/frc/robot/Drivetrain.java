@@ -103,6 +103,9 @@ public class Drivetrain {
         m_rightFollower.getConfigurator().apply(m_rightConfig);
         m_pigeon.getConfigurator().apply(pigeonConfiguration);
 
+        m_rotController.reset();
+        m_PIDCounter = 0;
+
         this.zeroSensors();
     }
 
@@ -320,28 +323,20 @@ public class Drivetrain {
         boolean isFinished = false;
         double currentAngle = m_pigeon.getYaw().getValueAsDouble();
 
-        //resets the PID only on first entry.
-        if(m_firstPIDCall) {
-            //resets the error.
-            m_rotController.reset();
-
-            //Sets the target to our target angle.
-            m_rotController.setSetpoint(targetAngle);
-
-            // Prevents us from repeating the reset until we run the method again separately.
-            m_firstPIDCall = false;
-
-            m_PIDCounter = 0;
-        }
+        //Sets the target to our target angle.
+        m_rotController.setSetpoint(targetAngle);
 
         // Sets our rotate speed to the return of the PID
         // TODO: May need to reverse signs
         // TODO: Need to potentially consider a feed-forward to make sure we don't stall too early.
         double returnedRotate = m_rotController.calculate(currentAngle);
 
+        if (returnedRotate < 0.06) {
+            returnedRotate = returnedRotate + 0.03;
+        }
+
         // Output the target, current angle, and the output calculated by the PID
-        // TODO: This should be removed or at least commented out after debugging.
-        System.out.println("TTAPID: Target:[" + targetAngle + "] Current Angle: [" + currentAngle + "] Rotation Duty Cycle:[" + returnedRotate + "]");
+        
 
         // Runs the drivetrain with 0 speed and the rotate speed set by the PID.
         this.arcadeDrive(0, returnedRotate);
@@ -357,8 +352,14 @@ public class Drivetrain {
         }
 
         if (isFinished) {
-           m_PIDCounter = 0;
+            m_PIDCounter = 0;
+            m_rotController.reset();
+
         }
+
+        
+        // TODO: This should be removed or at least commented out after debugging.
+        System.out.println("TTAPID: Target:[" + targetAngle + "] Current Angle: [" + currentAngle + "] Rotation Duty Cycle:[" + returnedRotate + "] Finished [" + isFinished + "]");
 
         return isFinished;
 
