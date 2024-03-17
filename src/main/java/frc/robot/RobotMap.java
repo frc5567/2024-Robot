@@ -322,17 +322,27 @@ public class RobotMap {
         /**
          * Path used when starting on the long wall on the red side, exiting the community, turning right, and moving middle notes >:D
          */
-        public static final String RED_EVIL_GENIUS = "Red Evil Genius";
+        public static final String RED_EVIL_GENIUS_PUSH = "Red Evil Genius Push";
 
         /**
          * Path used when starting on the long wall on the blue side, exiting the community, turning left, and moving middle notes >:D
          */
-        public static final String BLUE_EVIL_GENIUS = "Blue Evil Genius";
+        public static final String BLUE_EVIL_GENIUS_PUSH = "Blue Evil Genius Push";
+
+        /**
+         * Path used when starting on the long wall on the red side, exiting the community, turning right, and moving middle notes >:D
+         */
+        public static final String RED_EVIL_GENIUS_SPIT = "Red Evil Genius Spit";
+
+        /**
+         * Path used when starting on the long wall on the blue side, exiting the community, turning left, and moving middle notes >:D
+         */
+        public static final String BLUE_EVIL_GENIUS_SPIT = "Blue Evil Genius Spit";
 
         /**
          * The distance to exit the community when starting directly in front of the subwoofer. 
          */
-        public static final double FRONT_SPEAKER_EXIT_DIST = 45.0;
+        public static final double FRONT_SPEAKER_EXIT_DIST = 50.0;
 
         /**
          * The distance to back up enough to launch to the speaker when starting fully against the front of the subwoofer.
@@ -372,7 +382,7 @@ public class RobotMap {
         /**
          * The distance to travel to the middle of the field when starting against the back wall.
          */
-        public static final double DIST_TO_MID = 308.6;
+        public static final double DIST_TO_MID = 292.6;
 
         /**
          * 90 degree turning angle.
@@ -382,7 +392,7 @@ public class RobotMap {
         /**
          * The distance to travel across the middle of the field to push notes.
          */
-        public static final double PUSH_DIST = 198.0;
+        public static final double PUSH_DIST = 223.0;
 
     }
 }

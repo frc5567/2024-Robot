@@ -51,8 +51,10 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT, RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT, RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT);
-    m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS, RobotMap.AutonConstants.RED_EVIL_GENIUS);
-    m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS, RobotMap.AutonConstants.BLUE_EVIL_GENIUS);
+    m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS_PUSH, RobotMap.AutonConstants.RED_EVIL_GENIUS_PUSH);
+    m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS_PUSH, RobotMap.AutonConstants.BLUE_EVIL_GENIUS_PUSH);
+    m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS_SPIT, RobotMap.AutonConstants.RED_EVIL_GENIUS_SPIT);
+    m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS_SPIT, RobotMap.AutonConstants.BLUE_EVIL_GENIUS_SPIT);
 
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
@@ -137,6 +139,7 @@ public class Robot extends TimedRobot {
     m_auton.selectPath(m_autoSelected);
     m_drivetrain.zeroSensors();
     m_drivetrain.brakeMode();
+    m_drivetrain.configPID();
   }
 
   /** This function is called periodically during autonomous. */
@@ -321,7 +324,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    m_drivetrain.coastMode();
+    m_drivetrain.brakeMode();
   }
 
   /** This function is called periodically when disabled. */

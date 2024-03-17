@@ -28,7 +28,6 @@ public class Drivetrain {
 
     private MotionMagicVoltage m_mmVoltage;
     
-    private boolean m_firstPIDCall;
     private int m_PIDCounter;
     private PIDController m_rotController;
 
@@ -40,6 +39,8 @@ public class Drivetrain {
 
     private TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
     private TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
+
+    MotionMagicConfigs mm = m_rightConfig.MotionMagic;
 
     /**
      * Constructor for the drivetrain class. Instantiates the drivetrain motors and pigeon.
@@ -344,7 +345,6 @@ public class Drivetrain {
         if ( (Math.abs(currentAngle - targetAngle) < RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND) &&
               (m_PIDCounter++ > RobotMap.DrivetrainConstants.TURN_PID_CYCLE_COUNT)) {
             isFinished = true;
-            m_firstPIDCall = true;
             System.out.println("turnToAnglePID: FINISHED");
         }
 
@@ -393,11 +393,9 @@ public class Drivetrain {
 
         m_leftConfig.Slot1 = slot1;
 
-        MotionMagicConfigs mm = m_rightConfig.MotionMagic;
-
         mm.MotionMagicCruiseVelocity = 10.0;
-        mm.MotionMagicAcceleration = 20.0;
-        mm.MotionMagicJerk = 25.0;
+        mm.MotionMagicAcceleration = 10.0;
+        mm.MotionMagicJerk = 50.0;
 
         m_leftConfig.MotionMagic = mm;
 
@@ -406,5 +404,22 @@ public class Drivetrain {
 
         m_leftConfig.Feedback = fdb;
 
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
+
+    }
+
+    /**
+     * Helper method to change motion magic config for auton.
+     */
+    public void slowEvilGenius() {
+        mm.MotionMagicCruiseVelocity = 4.0;
+        m_leftConfig.MotionMagic = mm;
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
     }
 }

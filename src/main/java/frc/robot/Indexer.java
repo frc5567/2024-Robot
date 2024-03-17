@@ -23,7 +23,7 @@ public class Indexer {
      * Sets the speed of the index motor.
      * @param speed input speed of the motor in percent from -1 to 1.
      */
-    private void setIndexSpeed(double speed) {
+    public void setIndexSpeed(double speed) {
         m_indexMotor.set(speed);
     }
 
