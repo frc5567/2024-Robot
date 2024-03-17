@@ -96,7 +96,11 @@ public class Auton {
 
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_LAUNCH_BACK_UP_DIST)) {
                             drivetrain.zeroDistance();
-                            m_step += 1;
+                            if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                m_loopCount = 25;
+                                m_step +=1;
+                            }
+                                
                         }
                         break;
                     }
@@ -171,7 +175,10 @@ public class Auton {
 
                         if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
-                            m_step += 1;
+                            if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                m_loopCount = 25;
+                                m_step +=1;
+                            }
                         }
                         break;
                     }

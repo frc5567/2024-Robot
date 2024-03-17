@@ -260,6 +260,7 @@ public class Robot extends TimedRobot {
         // If we want to spin the launcher up to speed, set the launcher to speaker speed.
         // Then when we want to launch, feed a note from the indexer.
         else if (spinningUp) {
+          m_currentlyLaunching = true;
           m_launcher.speakerLaunch();
 
           if (speakerLauncherOn) {
