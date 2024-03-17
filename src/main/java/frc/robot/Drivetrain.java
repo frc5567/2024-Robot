@@ -15,6 +15,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.controller.PIDController;
+
 public class Drivetrain {
 
     private TalonFX m_leftLeader;
@@ -25,6 +27,10 @@ public class Drivetrain {
     private Pigeon2 m_pigeon;
 
     private MotionMagicVoltage m_mmVoltage;
+    
+    private boolean m_firstPIDCall;
+    private int m_PIDCounter;
+    private PIDController m_rotController;
 
     /**
      * The variable that keeps track of current drivetrain direction.
@@ -48,6 +54,10 @@ public class Drivetrain {
         m_pigeon = pigeon;
 
         m_mmVoltage = new MotionMagicVoltage(0.0);
+
+        m_rotController = new PIDController(RobotMap.DrivetrainConstants.TURNING_GAINS.kP,
+                                            RobotMap.DrivetrainConstants.TURNING_GAINS.kI,
+                                            RobotMap.DrivetrainConstants.TURNING_GAINS.kD);
 
         m_isDrivetrainForward = true;
     }
@@ -300,6 +310,68 @@ public class Drivetrain {
     }
 
     /**
+     * Rotates to a set angle without moving forward utilizing the PID and current yaw from the pigeon.
+     * 
+     * @param targetAngle THe angle you want the robot to rotate to
+     * @return Returns true if the PID returns a value low enought that the robot doesn't move (thus finished)
+     */
+    public boolean turnToAnglePID(double targetAngle) {
+        //Flag for checking if the method is finished.
+        boolean isFinished = false;
+        double currentAngle = m_pigeon.getYaw().getValueAsDouble();
+
+        //resets the PID only on first entry.
+        if(m_firstPIDCall) {
+            //resets the error.
+            m_rotController.reset();
+
+            //Sets the target to our target angle.
+            m_rotController.setSetpoint(targetAngle);
+
+            // Prevents us from repeating the reset until we run the method again separately.
+            m_firstPIDCall = false;
+
+            m_PIDCounter = 0;
+        }
+
+        // Sets our rotate speed to the return of the PID
+        // TODO: May need to reverse signs
+        // TODO: Need to potentially consider a feed-forward to make sure we don't stall too early.
+        double returnedRotate = m_rotController.calculate(currentAngle);
+
+        // Output the target, current angle, and the output calculated by the PID
+        // TODO: This should be removed or at least commented out after debugging.
+        System.out.println("TTAPID: Target:[" + targetAngle + "] Current Angle: [" + currentAngle + "] Rotation Duty Cycle:[" + returnedRotate + "]");
+
+        // Runs the drivetrain with 0 speed and the rotate speed set by the PID.
+        this.arcadeDrive(0, returnedRotate);
+
+        //Checks to see if the PID is finished or close enough
+        // TODO: Tune TURN_COMPLETE_SPEED and TURN_PID_CYCLE_COUNT
+        if ( ((returnedRotate < RobotMap.DrivetrainConstants.TURN_COMPLETE_SPEED) &&
+              (returnedRotate > -RobotMap.DrivetrainConstants.TURN_COMPLETE_SPEED)) &&
+              (m_PIDCounter++ > RobotMap.DrivetrainConstants.TURN_PID_CYCLE_COUNT)) {
+            isFinished = true;
+            m_firstPIDCall = true;
+            System.out.println("turnToAnglePID: FINISHED");
+        }
+
+        if (isFinished) {
+           m_PIDCounter = 0;
+        }
+
+        return isFinished;
+
+    }
+    
+    /**
+     * Sets PID values from shuffleboard.
+     */
+    public void setPID(double p, double i, double d) {
+        m_rotController.setPID(p, i, d);
+    }
+
+    /**
      * Sets up the PID configuration for drive straight (or turn)
      */
     public void configPID() {
@@ -325,8 +397,8 @@ public class Drivetrain {
 
         MotionMagicConfigs mm = m_rightConfig.MotionMagic;
 
-        mm.MotionMagicCruiseVelocity = 7.0;
-        mm.MotionMagicAcceleration = 10.0;
+        mm.MotionMagicCruiseVelocity = 10.0;
+        mm.MotionMagicAcceleration = 20.0;
         mm.MotionMagicJerk = 25.0;
 
         m_leftConfig.MotionMagic = mm;

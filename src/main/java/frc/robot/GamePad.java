@@ -125,4 +125,12 @@ public class GamePad extends Joystick{
         return super.getRawButton(GamePadControls.Spin_Up.portNum);
     }
 
+    /**
+     * Checks if the test button is pressed
+     * @return true if pressed, false if not pressed.
+     */
+    public boolean getTest() {
+        return super.getRawButton(GamePadControls.Test.portNum);
+    }
+
 }

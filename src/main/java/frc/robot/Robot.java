@@ -33,6 +33,8 @@ public class Robot extends TimedRobot {
   private UsbCamera m_backCamera;
   private boolean m_currentlyLaunching;
   private boolean m_haveNote = false;
+  private double m_kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
+  private double m_kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -53,6 +55,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
+    SmartDashboard.putNumber("kP", m_kP);
+    SmartDashboard.putNumber("kD", m_kD);
 
     Pigeon2 m_pigeon = new Pigeon2(RobotMap.DrivetrainConstants.PIGEON_CAN_ID);
 
@@ -105,6 +109,10 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     m_haveNote = m_indexer.readIndexSensor();
     SmartDashboard.putBoolean("HaveNote", m_haveNote);
+    m_kP = SmartDashboard.getNumber("kP", m_kP);
+    m_kD = SmartDashboard.getNumber("kD", m_kD);
+    m_drivetrain.setPID(m_kP, 0.0, m_kD);
+
     m_drivetrain.periodic();
   }
 
@@ -328,7 +336,17 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    boolean turnPIDOn = false;
+    turnPIDOn = m_gamePad.getTest();
+
+    if (turnPIDOn) {
+      m_drivetrain.turnToAnglePID(30.0);
+    }
+    else {
+      m_drivetrain.arcadeDrive(0.0, 0.0);
+    }
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override

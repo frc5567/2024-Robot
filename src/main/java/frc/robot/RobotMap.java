@@ -101,6 +101,16 @@ public class RobotMap {
          * Percent output for turn to target when angle is between 0.8 and 2.4 degrees.
          */
         public static final double SMALLEST_ANGLE_SPEED = 0.06;
+
+        /**
+         * Percent output for turn to target at which the bot won't turn
+         */
+        public static final double TURN_COMPLETE_SPEED = 0.03;
+
+        /**
+         * Number of cycles to watch for completed turn.
+         */
+        public static final int TURN_PID_CYCLE_COUNT = 5;
     }
 
     /**
