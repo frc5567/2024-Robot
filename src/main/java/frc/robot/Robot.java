@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
   private boolean m_haveNote = false;
   private double m_kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
   private double m_kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
+  private double m_dashAmpLaunch = RobotMap.LauncherConstants.LEFT_AMP_SPEED;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -57,6 +58,7 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     SmartDashboard.putNumber("kP", m_kP);
     SmartDashboard.putNumber("kD", m_kD);
+    SmartDashboard.putNumber("Amp Launch Speed", m_dashAmpLaunch);
 
     Pigeon2 m_pigeon = new Pigeon2(RobotMap.DrivetrainConstants.PIGEON_CAN_ID);
 
@@ -112,7 +114,8 @@ public class Robot extends TimedRobot {
     m_kP = SmartDashboard.getNumber("kP", m_kP);
     m_kD = SmartDashboard.getNumber("kD", m_kD);
     m_drivetrain.setPID(m_kP, 0.0, m_kD);
-
+    m_dashAmpLaunch = SmartDashboard.getNumber("Amp Launch Speed", m_dashAmpLaunch);
+    m_launcher.setAmpLaunchSpeed(m_dashAmpLaunch);
     m_drivetrain.periodic();
   }
 
