@@ -327,12 +327,10 @@ public class Drivetrain {
         m_rotController.setSetpoint(targetAngle);
 
         // Sets our rotate speed to the return of the PID
-        // TODO: May need to reverse signs
-        // TODO: Need to potentially consider a feed-forward to make sure we don't stall too early.
         double returnedRotate = m_rotController.calculate(currentAngle);
 
-        if (returnedRotate < 0.06) {
-            returnedRotate = returnedRotate + 0.03;
+        if (Math.abs(returnedRotate) < 0.06) {
+            returnedRotate = returnedRotate + Math.copySign(0.03, returnedRotate);
         }
 
         // Output the target, current angle, and the output calculated by the PID
@@ -343,8 +341,7 @@ public class Drivetrain {
 
         //Checks to see if the PID is finished or close enough
         // TODO: Tune TURN_COMPLETE_SPEED and TURN_PID_CYCLE_COUNT
-        if ( ((returnedRotate < RobotMap.DrivetrainConstants.TURN_COMPLETE_SPEED) &&
-              (returnedRotate > -RobotMap.DrivetrainConstants.TURN_COMPLETE_SPEED)) &&
+        if ( (Math.abs(currentAngle - targetAngle) < RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND) &&
               (m_PIDCounter++ > RobotMap.DrivetrainConstants.TURN_PID_CYCLE_COUNT)) {
             isFinished = true;
             m_firstPIDCall = true;

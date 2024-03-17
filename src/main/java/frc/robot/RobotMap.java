@@ -362,7 +362,7 @@ public class RobotMap {
         /**
          * The distance to back up after launching to the speaker to give enough clearance for turning the rest of the way.
          */
-        public static final double BACK_UP_AFTER_LAUNCH_DIST = 18.0;
+        public static final double BACK_UP_AFTER_LAUNCH_DIST = 10.0;
 
         /**
          * The angle of the subwoofer from the wall.

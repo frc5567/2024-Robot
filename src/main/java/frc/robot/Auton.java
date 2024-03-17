@@ -60,6 +60,22 @@ public class Auton {
             System.out.println("Setting Auton path to Front Two Note Exit.");
             m_path = m_currentPath;
         }
+        else if (m_currentPath == RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT) {
+            System.out.println("Setting Auton path to Turn Left Two Note Exit.");
+            m_path = m_currentPath;
+        }
+        else if (m_currentPath == RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT) {
+            System.out.println("Setting Auton path to Turn Right Two Note Exit.");
+            m_path = m_currentPath;
+        }
+        else if (m_currentPath == RobotMap.AutonConstants.BLUE_EVIL_GENIUS) {
+            System.out.println("Setting Auton path to Blue Evil Genius. >:D");
+            m_path = m_currentPath;
+        }
+        else if (m_currentPath == RobotMap.AutonConstants.RED_EVIL_GENIUS) {
+            System.out.println("Setting Auton path to Red Evil Genius. >:D");
+            m_path = m_currentPath;
+        }
         else {
             System.out.println("No path selected. Please restart auton and choose a path.");
         }
@@ -97,10 +113,9 @@ public class Auton {
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_LAUNCH_BACK_UP_DIST)) {
                             drivetrain.zeroDistance();
                             if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                m_loopCount = 25;
-                                m_step +=1;
+                                m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
                             }
-                                
+                            m_step +=1;  
                         }
                         break;
                     }
@@ -176,9 +191,9 @@ public class Auton {
                         if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                m_loopCount = 25;
-                                m_step +=1;
+                                m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
                             }
+                            m_step +=1;
                         }
                         break;
                     }
@@ -217,7 +232,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -227,8 +242,19 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
                
-                        if (drivetrain.driveStraight(RobotMap.AutonConstants.SIDE_SPEAKER_EXIT_DIST)) {
+                        if (indexer.readIndexSensor()) {
+                            indexer.stop();
+                            intake.stop();
+                        }
+                        else {
+                            indexer.loadNote();
+                            intake.intake();
+                        }
+
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.SIDE_SPEAKER_EXIT_DIST) && indexer.readIndexSensor()) {
                             drivetrain.zeroDistance();
+                            indexer.stop();
+                            intake.stop();
                             m_step += 1;
                         }
                         break;
@@ -268,9 +294,12 @@ public class Auton {
                         ++m_loopCount;
                         launcher.speakerLaunch();
 
-                        if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
-                            m_step += 1;
+                            if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
+                            }
+                            m_step +=1;
                         }
                         break;
                     }
@@ -309,7 +338,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(-(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE))) {
+                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -360,7 +389,7 @@ public class Auton {
                         ++m_loopCount;
                         launcher.speakerLaunch();
 
-                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -410,7 +439,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -460,7 +489,7 @@ public class Auton {
                         // Continues spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
                         ++m_loopCount;
 
-                        if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -510,7 +539,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(-(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE))) {
+                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -549,7 +578,10 @@ public class Auton {
 
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.FRONT_LAUNCH_BACK_UP_DIST)) {
                             drivetrain.zeroDistance();
-                            m_step += 1;
+                            if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
+                            }
+                            m_step +=1;
                         }
                         break;
                     }
@@ -629,9 +661,12 @@ public class Auton {
                         ++m_loopCount;
                         launcher.speakerLaunch();
 
-                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
-                            m_step += 1;
+                            if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
+                            }
+                            m_step +=1;
                         }
                         break;
                     }
@@ -658,7 +693,7 @@ public class Auton {
                     }
                     case 4:
                     {
-                        System.out.println("Step complete: " + m_step);
+                        System.out.println("Step: " + m_step);
 
                         if (drivetrain.driveStraight(RobotMap.AutonConstants.BACK_UP_AFTER_LAUNCH_DIST)) {
                             drivetrain.zeroDistance();
@@ -670,7 +705,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -689,13 +724,75 @@ public class Auton {
                             intake.intake();
                         }
 
-                        if (drivetrain.driveStraight(RobotMap.AutonConstants.SIDE_SPEAKER_EXIT_DIST)) {
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.SIDE_SPEAKER_EXIT_DIST) && indexer.readIndexSensor()) {
                             drivetrain.zeroDistance();
+                            indexer.stop();
+                            intake.stop();
                             m_step += 1;
                         }
                         break;
                     }
                     case 7:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.driveStraight(-57.0)) {
+                            drivetrain.zeroDistance();
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 8:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.TURN_LEFT_TO_LAUNCH_ANGLE)) {
+                            drivetrain.zeroDistance();
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 9:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        // Continues spinning launcher up to speed for speaker launch to decrease launch time and increments loop count.
+                        ++m_loopCount;
+                        launcher.speakerLaunch();
+
+                        if (drivetrain.driveStraight(-RobotMap.AutonConstants.BACK_UP_AFTER_LAUNCH_DIST)) {
+                            drivetrain.zeroDistance();
+                            if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
+                            }
+                            m_step +=1;
+                        }
+                        break;
+                    }
+                    case 10:
+                    {
+                        System.out.println("Step: " + m_step);
+
+                        if (++m_loopCount >= (RobotMap.LAUNCH_SPIN_UP_COUNT + RobotMap.ADDITIONAL_LAUNCH_COUNT)) {
+                            System.out.println("Step complete: " + m_step);
+                            m_loopCount = 0;
+                            launcher.stop();
+                            indexer.stop();
+                            m_step += 1;
+                        }
+                        else {
+                            launcher.speakerLaunch();
+                            if (++m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                indexer.feedNote();
+                            }
+                            else {
+                                indexer.stop();
+                            }
+                        }
+                        drivetrain.arcadeDrive(0.0, 0.0);
+                        break;
+                    }
+                    case 11:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -730,9 +827,12 @@ public class Auton {
                         ++m_loopCount;
                         launcher.speakerLaunch();
 
-                        if (drivetrain.turnToAngle(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE)) {
                             drivetrain.zeroDistance();
-                            m_step += 1;
+                            if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
+                                m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
+                            }
+                            m_step +=1;
                         }
                         break;
                     }
@@ -771,7 +871,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(-(RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL - RobotMap.AutonConstants.TURN_RIGHT_TO_LAUNCH_ANGLE))) {
+                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.SUBWOOFER_ANGLE_FROM_WALL)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -823,7 +923,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(-RobotMap.AutonConstants.RIGHT_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.RIGHT_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -868,7 +968,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAngle(RobotMap.AutonConstants.RIGHT_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.RIGHT_ANGLE)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
