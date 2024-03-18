@@ -65,7 +65,7 @@ public class RobotMap {
         /**
          * Turn to Angle PID constants
          */
-        public final static Gains TURNING_GAINS = new Gains( 0.01, 0.0,  4.0, 0.0);
+        public final static Gains TURNING_GAINS = new Gains( 0.0175, 0.0,  0.00135, 0.0);
 
         /**
          * Seconds it takes to speed up from 0% to 100% power for the drivetrain.
@@ -101,6 +101,16 @@ public class RobotMap {
          * Percent output for turn to target when angle is between 0.8 and 2.4 degrees.
          */
         public static final double SMALLEST_ANGLE_SPEED = 0.06;
+
+        /**
+         * Percent output for turn to target at which the bot won't turn
+         */
+        public static final double TURN_COMPLETE_SPEED = 0.03;
+
+        /**
+         * Number of cycles to watch for completed turn.
+         */
+        public static final int TURN_PID_CYCLE_COUNT = 5;
     }
 
     /**
@@ -312,17 +322,27 @@ public class RobotMap {
         /**
          * Path used when starting on the long wall on the red side, exiting the community, turning right, and moving middle notes >:D
          */
-        public static final String RED_EVIL_GENIUS = "Red Evil Genius";
+        public static final String RED_EVIL_GENIUS_PUSH = "Red Evil Genius Push";
 
         /**
          * Path used when starting on the long wall on the blue side, exiting the community, turning left, and moving middle notes >:D
          */
-        public static final String BLUE_EVIL_GENIUS = "Blue Evil Genius";
+        public static final String BLUE_EVIL_GENIUS_PUSH = "Blue Evil Genius Push";
+
+        /**
+         * Path used when starting on the long wall on the red side, exiting the community, turning right, and moving middle notes >:D
+         */
+        public static final String RED_EVIL_GENIUS_SPIT = "Red Evil Genius Spit";
+
+        /**
+         * Path used when starting on the long wall on the blue side, exiting the community, turning left, and moving middle notes >:D
+         */
+        public static final String BLUE_EVIL_GENIUS_SPIT = "Blue Evil Genius Spit";
 
         /**
          * The distance to exit the community when starting directly in front of the subwoofer. 
          */
-        public static final double FRONT_SPEAKER_EXIT_DIST = 45.0;
+        public static final double FRONT_SPEAKER_EXIT_DIST = 50.0;
 
         /**
          * The distance to back up enough to launch to the speaker when starting fully against the front of the subwoofer.
@@ -352,7 +372,7 @@ public class RobotMap {
         /**
          * The distance to back up after launching to the speaker to give enough clearance for turning the rest of the way.
          */
-        public static final double BACK_UP_AFTER_LAUNCH_DIST = 18.0;
+        public static final double BACK_UP_AFTER_LAUNCH_DIST = 10.0;
 
         /**
          * The angle of the subwoofer from the wall.
@@ -362,7 +382,7 @@ public class RobotMap {
         /**
          * The distance to travel to the middle of the field when starting against the back wall.
          */
-        public static final double DIST_TO_MID = 308.6;
+        public static final double DIST_TO_MID = 292.6;
 
         /**
          * 90 degree turning angle.
@@ -372,7 +392,7 @@ public class RobotMap {
         /**
          * The distance to travel across the middle of the field to push notes.
          */
-        public static final double PUSH_DIST = 198.0;
+        public static final double PUSH_DIST = 223.0;
 
     }
 }

@@ -33,6 +33,9 @@ public class Robot extends TimedRobot {
   private UsbCamera m_backCamera;
   private boolean m_currentlyLaunching;
   private boolean m_haveNote = false;
+  private double m_kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
+  private double m_kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
+  private double m_dashAmpLaunch = RobotMap.LauncherConstants.LEFT_AMP_SPEED;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -48,11 +51,16 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT, RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT, RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT);
-    m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS, RobotMap.AutonConstants.RED_EVIL_GENIUS);
-    m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS, RobotMap.AutonConstants.BLUE_EVIL_GENIUS);
+    m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS_PUSH, RobotMap.AutonConstants.RED_EVIL_GENIUS_PUSH);
+    m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS_PUSH, RobotMap.AutonConstants.BLUE_EVIL_GENIUS_PUSH);
+    m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS_SPIT, RobotMap.AutonConstants.RED_EVIL_GENIUS_SPIT);
+    m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS_SPIT, RobotMap.AutonConstants.BLUE_EVIL_GENIUS_SPIT);
 
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
+    SmartDashboard.putNumber("kP", m_kP);
+    SmartDashboard.putNumber("kD", m_kD);
+    SmartDashboard.putNumber("Amp Launch Speed", m_dashAmpLaunch);
 
     Pigeon2 m_pigeon = new Pigeon2(RobotMap.DrivetrainConstants.PIGEON_CAN_ID);
 
@@ -105,6 +113,11 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     m_haveNote = m_indexer.readIndexSensor();
     SmartDashboard.putBoolean("HaveNote", m_haveNote);
+    m_kP = SmartDashboard.getNumber("kP", m_kP);
+    m_kD = SmartDashboard.getNumber("kD", m_kD);
+    m_drivetrain.setPID(m_kP, 0.0, m_kD);
+    m_dashAmpLaunch = SmartDashboard.getNumber("Amp Launch Speed", m_dashAmpLaunch);
+    m_launcher.setAmpLaunchSpeed(m_dashAmpLaunch);
     m_drivetrain.periodic();
   }
 
@@ -126,6 +139,7 @@ public class Robot extends TimedRobot {
     m_auton.selectPath(m_autoSelected);
     m_drivetrain.zeroSensors();
     m_drivetrain.brakeMode();
+    m_drivetrain.configPID();
   }
 
   /** This function is called periodically during autonomous. */
@@ -260,6 +274,7 @@ public class Robot extends TimedRobot {
         // If we want to spin the launcher up to speed, set the launcher to speaker speed.
         // Then when we want to launch, feed a note from the indexer.
         else if (spinningUp) {
+          m_currentlyLaunching = true;
           m_launcher.speakerLaunch();
 
           if (speakerLauncherOn) {
@@ -309,7 +324,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    m_drivetrain.coastMode();
+    m_drivetrain.brakeMode();
   }
 
   /** This function is called periodically when disabled. */
@@ -327,7 +342,17 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    boolean turnPIDOn = false;
+    turnPIDOn = m_gamePad.getTest();
+
+    if (turnPIDOn) {
+      m_drivetrain.turnToAnglePID(30.0);
+    }
+    else {
+      m_drivetrain.arcadeDrive(0.0, 0.0);
+    }
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override

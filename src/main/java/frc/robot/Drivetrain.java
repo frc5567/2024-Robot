@@ -15,6 +15,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.controller.PIDController;
+
 public class Drivetrain {
 
     private TalonFX m_leftLeader;
@@ -25,6 +27,9 @@ public class Drivetrain {
     private Pigeon2 m_pigeon;
 
     private MotionMagicVoltage m_mmVoltage;
+    
+    private int m_PIDCounter;
+    private PIDController m_rotController;
 
     /**
      * The variable that keeps track of current drivetrain direction.
@@ -34,6 +39,8 @@ public class Drivetrain {
 
     private TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
     private TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
+
+    MotionMagicConfigs mm = m_rightConfig.MotionMagic;
 
     /**
      * Constructor for the drivetrain class. Instantiates the drivetrain motors and pigeon.
@@ -48,6 +55,10 @@ public class Drivetrain {
         m_pigeon = pigeon;
 
         m_mmVoltage = new MotionMagicVoltage(0.0);
+
+        m_rotController = new PIDController(RobotMap.DrivetrainConstants.TURNING_GAINS.kP,
+                                            RobotMap.DrivetrainConstants.TURNING_GAINS.kI,
+                                            RobotMap.DrivetrainConstants.TURNING_GAINS.kD);
 
         m_isDrivetrainForward = true;
     }
@@ -92,6 +103,9 @@ public class Drivetrain {
         m_rightLeader.getConfigurator().apply(m_rightConfig);
         m_rightFollower.getConfigurator().apply(m_rightConfig);
         m_pigeon.getConfigurator().apply(pigeonConfiguration);
+
+        m_rotController.reset();
+        m_PIDCounter = 0;
 
         this.zeroSensors();
     }
@@ -300,6 +314,62 @@ public class Drivetrain {
     }
 
     /**
+     * Rotates to a set angle without moving forward utilizing the PID and current yaw from the pigeon.
+     * 
+     * @param targetAngle THe angle you want the robot to rotate to
+     * @return Returns true if the PID returns a value low enought that the robot doesn't move (thus finished)
+     */
+    public boolean turnToAnglePID(double targetAngle) {
+        //Flag for checking if the method is finished.
+        boolean isFinished = false;
+        double currentAngle = m_pigeon.getYaw().getValueAsDouble();
+
+        //Sets the target to our target angle.
+        m_rotController.setSetpoint(targetAngle);
+
+        // Sets our rotate speed to the return of the PID
+        double returnedRotate = m_rotController.calculate(currentAngle);
+
+        if (Math.abs(returnedRotate) < 0.06) {
+            returnedRotate = returnedRotate + Math.copySign(0.03, returnedRotate);
+        }
+
+        // Output the target, current angle, and the output calculated by the PID
+        
+
+        // Runs the drivetrain with 0 speed and the rotate speed set by the PID.
+        this.arcadeDrive(0, returnedRotate);
+
+        //Checks to see if the PID is finished or close enough
+        // TODO: Tune TURN_COMPLETE_SPEED and TURN_PID_CYCLE_COUNT
+        if ( (Math.abs(currentAngle - targetAngle) < RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND) &&
+              (m_PIDCounter++ > RobotMap.DrivetrainConstants.TURN_PID_CYCLE_COUNT)) {
+            isFinished = true;
+            System.out.println("turnToAnglePID: FINISHED");
+        }
+
+        if (isFinished) {
+            m_PIDCounter = 0;
+            m_rotController.reset();
+
+        }
+
+        
+        // TODO: This should be removed or at least commented out after debugging.
+        System.out.println("TTAPID: Target:[" + targetAngle + "] Current Angle: [" + currentAngle + "] Rotation Duty Cycle:[" + returnedRotate + "] Finished [" + isFinished + "]");
+
+        return isFinished;
+
+    }
+    
+    /**
+     * Sets PID values from shuffleboard.
+     */
+    public void setPID(double p, double i, double d) {
+        m_rotController.setPID(p, i, d);
+    }
+
+    /**
      * Sets up the PID configuration for drive straight (or turn)
      */
     public void configPID() {
@@ -323,11 +393,9 @@ public class Drivetrain {
 
         m_leftConfig.Slot1 = slot1;
 
-        MotionMagicConfigs mm = m_rightConfig.MotionMagic;
-
-        mm.MotionMagicCruiseVelocity = 7.0;
+        mm.MotionMagicCruiseVelocity = 10.0;
         mm.MotionMagicAcceleration = 10.0;
-        mm.MotionMagicJerk = 25.0;
+        mm.MotionMagicJerk = 50.0;
 
         m_leftConfig.MotionMagic = mm;
 
@@ -336,5 +404,22 @@ public class Drivetrain {
 
         m_leftConfig.Feedback = fdb;
 
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
+
+    }
+
+    /**
+     * Helper method to change motion magic config for auton.
+     */
+    public void slowEvilGenius() {
+        mm.MotionMagicCruiseVelocity = 4.0;
+        m_leftConfig.MotionMagic = mm;
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
     }
 }
