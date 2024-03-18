@@ -339,6 +339,14 @@ public class RobotMap {
          */
         public static final String BLUE_EVIL_GENIUS_SPIT = "Blue Evil Genius Spit";
 
+        public static final String RIGHT_THREE_NOTE = "Right Three Note";
+
+        public static final String LEFT_THREE_NOTE = "Left Three Note";
+
+        public static final String RIGHT_THREE_PLUS_NOTE = "Right Three Plus Note";
+
+        public static final String LEFT_THREE_PLUS_NOTE = "Left Three Plus Note";
+
         /**
          * The distance to exit the community when starting directly in front of the subwoofer. 
          */
@@ -393,6 +401,41 @@ public class RobotMap {
          * The distance to travel across the middle of the field to push notes.
          */
         public static final double PUSH_DIST = 223.0;
+
+        /**
+         * Safety distance to clear subwoofer before turning to the third note.
+         */
+        public static final double THIRD_NOTE_BACKUP = 10.0;
+
+        /**
+         * Angle to the third note
+         */
+        public static final double THIRD_NOTE_ANGLE = 47.0;
+
+        /**
+         * Distance to intake the third note.
+         */
+        public static final double THIRD_NOTE_DRIVE_FORWARD = 56.0;
+
+        /**
+         * Angle to subwoofer needed to launch the third note.
+         */
+        public static final double THIRD_NOTE_LAUNCH_ANGLE = 20.0;
+
+        /**
+         * Distance to subwoofer when launching the third note
+         */
+        public static final double THIRD_NOTE_LAUNCH_DIST = 44.0;
+
+        /**
+         * The angle to the fourth note.
+         */
+        public static final double FOURTH_NOTE_ANGLE = 52.0;
+
+        /**
+         * The distance to intake the fourth note.
+         */
+        public static final double FOURTH_NOTE_DIST = 84.0;
 
     }
 }
