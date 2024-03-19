@@ -121,7 +121,8 @@ public class Drivetrain {
      * @param turn  Value between -1 and 1 for turning.
      */
     public void arcadeDrive(double speed, double turn) {
-        if (speed < 0.3) {
+        if (speed < 0.1) {
+            turn = turn * 0.5;
             arcadeDrive(speed, turn, true);
         }
         else {

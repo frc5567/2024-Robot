@@ -136,7 +136,7 @@ public class RobotMap {
         /**
          * Rate limit for acceleration to prevent brownouts.
          */
-        public static final double ACCEL_SLEW_RATE = 1.6;
+        public static final double ACCEL_SLEW_RATE = 3.0;
     }
 
     /**
