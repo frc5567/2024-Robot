@@ -131,12 +131,12 @@ public class RobotMap {
         /**
          * Adjusts output of turns to tone down the final output.
          */
-        public static final double TURN_SCALAR = 0.7;
+        public static final double TURN_SCALAR = 1.0;
 
         /**
          * Rate limit for acceleration to prevent brownouts.
          */
-        public static final double ACCEL_SLEW_RATE = 1.6;
+        public static final double ACCEL_SLEW_RATE = 3.0;
     }
 
     /**

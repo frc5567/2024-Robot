@@ -15,6 +15,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
 public class Drivetrain {
@@ -120,20 +121,47 @@ public class Drivetrain {
      * @param turn  Value between -1 and 1 for turning.
      */
     public void arcadeDrive(double speed, double turn) {
-        DutyCycleOut leftOut = new DutyCycleOut(0); // Initialize with 0% output
-        DutyCycleOut rightOut = new DutyCycleOut(0); // Initialize with 0% output
-
-        if (m_isDrivetrainForward) {
-            leftOut.Output = speed - turn;
-            rightOut.Output = speed + turn;
-            m_leftLeader.setControl(leftOut);
-            m_rightLeader.setControl(rightOut);
-        } else {
-            leftOut.Output = -speed - turn;
-            rightOut.Output = -speed + turn;
-            m_leftLeader.setControl(leftOut);
-            m_rightLeader.setControl(rightOut);
+        if (Math.abs(speed) < 0.1) {
+            turn = turn * 0.5;
+            arcadeDrive(speed, turn, true);
         }
+        else {
+            arcadeDrive(speed, turn, false);
+        }
+    }
+
+    public void arcadeDrive(double speed, double turn, boolean allowTurnInPlace) {
+
+        if (!m_isDrivetrainForward) {
+            speed = -speed;
+        }
+        
+        speed = MathUtil.clamp(speed, -1.0, 1.0);
+        turn = MathUtil.clamp(turn, -1.0, 1.0);
+
+        double leftSpeed;
+        double rightSpeed;
+
+        if (allowTurnInPlace) {
+            leftSpeed = speed - turn;
+            rightSpeed = speed + turn;
+        } else {
+            leftSpeed = speed - Math.abs(speed) * turn;
+            rightSpeed = speed + Math.abs(speed) * turn;
+        }
+
+        // Desaturate wheel speeds
+        double maxMagnitude = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+        if (maxMagnitude > 1.0) {
+        leftSpeed /= maxMagnitude;
+        rightSpeed /= maxMagnitude;
+        }
+
+        DutyCycleOut leftOut = new DutyCycleOut(leftSpeed);
+        DutyCycleOut rightOut = new DutyCycleOut(rightSpeed);
+        
+        m_leftLeader.setControl(leftOut);
+        m_rightLeader.setControl(rightOut);
     }
 
     /**

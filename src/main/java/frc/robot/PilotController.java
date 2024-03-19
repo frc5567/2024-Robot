@@ -33,8 +33,7 @@ public class PilotController {
      */
     public double getDriverSpeed() {
         double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
-        speed = m_accelFilter.calculate(speed);
-        speed = speed * 0.8;
+        speed = m_accelFilter.calculate(speed);;
         return adjustForDeadband(speed);
     }
 
@@ -46,7 +45,7 @@ public class PilotController {
      */
     public double getDriverTurn() {
         double turnInput = -m_controller.getLeftX();
-        double squaredTurnInput = turnInput * turnInput * turnInput * turnInput;
+        double squaredTurnInput = turnInput * turnInput;
         squaredTurnInput = Math.copySign(squaredTurnInput, turnInput);
 
         double scaledTurnInput = (squaredTurnInput * RobotMap.PilotControllerConstants.TURN_SCALAR);
