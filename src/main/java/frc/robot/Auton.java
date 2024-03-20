@@ -1494,11 +1494,26 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        intake.stop();
+                        indexer.stop();
+                        launcher.stop();
+                        drivetrain.arcadeDrive(0.0, 0.0);
+
+                        if (++m_loopCount >= 2) {
+                            drivetrain.zeroDistance();
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 12:
+                    {
+                        System.out.println("Step: " + m_step);
+
                         ++m_loopCount;
                         launcher.speakerLaunch();
                         indexer.stop();
                         intake.stop();
-                        if (drivetrain.driveStraight(RobotMap.AutonConstants.THIRD_NOTE_LAUNCH_DIST)) {
+                        if (drivetrain.driveStraight(-RobotMap.AutonConstants.THIRD_NOTE_LAUNCH_DIST)) {
                             drivetrain.zeroDistance();
                             if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
                                 m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
@@ -1507,7 +1522,7 @@ public class Auton {
                         }
                         break;  
                     }
-                    case 12:
+                    case 13:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -1530,7 +1545,7 @@ public class Auton {
                         drivetrain.arcadeDrive(0.0, 0.0);
                         break;
                     }
-                    case 16:
+                    case 14:
                     {
                         indexer.stop();
                         intake.stop();
@@ -1718,6 +1733,21 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        intake.stop();
+                        indexer.stop();
+                        launcher.stop();
+                        drivetrain.arcadeDrive(0.0, 0.0);
+
+                        if (++m_loopCount >= 2) {
+                            drivetrain.zeroDistance();
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 12:
+                    {
+                        System.out.println("Step: " + m_step);
+
                         ++m_loopCount;
                         launcher.speakerLaunch();
                         indexer.stop();
@@ -1731,7 +1761,7 @@ public class Auton {
                         }
                         break;  
                     }
-                    case 12:
+                    case 13:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -1754,7 +1784,7 @@ public class Auton {
                         drivetrain.arcadeDrive(0.0, 0.0);
                         break;
                     }
-                    case 16:
+                    case 14:
                     {
                         indexer.stop();
                         intake.stop();
@@ -1942,6 +1972,21 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        intake.stop();
+                        indexer.stop();
+                        launcher.stop();
+                        drivetrain.arcadeDrive(0.0, 0.0);
+
+                        if (++m_loopCount >= 2) {
+                            drivetrain.zeroDistance();
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 12:
+                    {
+                        System.out.println("Step: " + m_step);
+
                         ++m_loopCount;
                         launcher.speakerLaunch();
                         indexer.stop();
@@ -1955,7 +2000,7 @@ public class Auton {
                         }
                         break;  
                     }
-                    case 12:
+                    case 13:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -1978,7 +2023,7 @@ public class Auton {
                         drivetrain.arcadeDrive(0.0, 0.0);
                         break;
                     }
-                    case 13:
+                    case 14:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -1988,7 +2033,7 @@ public class Auton {
                         }
                         break;
                     }
-                    case 14:
+                    case 15:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -2003,7 +2048,7 @@ public class Auton {
                         }
                         break;
                     }
-                    case 15:
+                    case 16:
                     {
                         System.out.println("Step: " + m_step);
                         if (indexer.readIndexSensor()) {
@@ -2021,7 +2066,7 @@ public class Auton {
                         }
                         break; 
                     }
-                    case 16:
+                    case 17:
                     {
                         indexer.stop();
                         intake.stop();
@@ -2209,6 +2254,21 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
+                        intake.stop();
+                        indexer.stop();
+                        launcher.stop();
+                        drivetrain.arcadeDrive(0.0, 0.0);
+
+                        if (++m_loopCount >= 2) {
+                            drivetrain.zeroDistance();
+                            m_step += 1;
+                        }
+                        break;
+                    }
+                    case 12:
+                    {
+                        System.out.println("Step: " + m_step);
+
                         ++m_loopCount;
                         launcher.speakerLaunch();
                         indexer.stop();
@@ -2222,7 +2282,7 @@ public class Auton {
                         }
                         break;  
                     }
-                    case 12:
+                    case 13:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -2245,7 +2305,7 @@ public class Auton {
                         drivetrain.arcadeDrive(0.0, 0.0);
                         break;
                     }
-                    case 13:
+                    case 14:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -2255,7 +2315,7 @@ public class Auton {
                         }
                         break;
                     }
-                    case 14:
+                    case 15:
                     {
                         System.out.println("Step: " + m_step);
 
@@ -2270,7 +2330,7 @@ public class Auton {
                         }
                         break;
                     }
-                    case 15:
+                    case 16:
                     {
                         System.out.println("Step: " + m_step);
                         if (indexer.readIndexSensor()) {
@@ -2288,7 +2348,7 @@ public class Auton {
                         }
                         break; 
                     }
-                    case 16:
+                    case 17:
                     {
                         indexer.stop();
                         intake.stop();

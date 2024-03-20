@@ -339,12 +339,24 @@ public class RobotMap {
          */
         public static final String BLUE_EVIL_GENIUS_SPIT = "Blue Evil Genius Spit";
 
+        /**
+         * Path used when starting on the front of the subwoofer, launches two notes, turns right to pickup and launch third note at an angle.
+         */
         public static final String RIGHT_THREE_NOTE = "Right Three Note";
 
+        /**
+         * Path used when starting on the front of the subwoofer, launches two notes, turns left to pickup and launch third note at an angle.
+         */
         public static final String LEFT_THREE_NOTE = "Left Three Note";
 
+        /**
+         * Path used when turning right to pickup and launch third note, then turns left to drive towards fourth note.
+         */
         public static final String RIGHT_THREE_PLUS_NOTE = "Right Three Plus Note";
 
+        /**
+         * Path used when turning left to pickup and launch third note, then turns right to drive towards fourth note.
+         */
         public static final String LEFT_THREE_PLUS_NOTE = "Left Three Plus Note";
 
         /**

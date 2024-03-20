@@ -270,8 +270,7 @@ public class Drivetrain {
      */
     public boolean turnToAngle(double angle) {
         boolean reachedTarget = false;
-        StatusSignal yaw = m_pigeon.getYaw();
-        double currentYaw = yaw.getValueAsDouble();
+        double currentYaw = m_pigeon.getYaw().getValueAsDouble();
         double target_turn = angle;
         System.out.println("current yaw [" + currentYaw + "]");
 
@@ -362,11 +361,23 @@ public class Drivetrain {
             returnedRotate = returnedRotate + Math.copySign(0.03, returnedRotate);
         }
 
-        // Output the target, current angle, and the output calculated by the PID
-        
-
         // Runs the drivetrain with 0 speed and the rotate speed set by the PID.
-        this.arcadeDrive(0, returnedRotate);
+        // Can't just use our arcade drive because that is tuned for manual driver input
+        // START arcadeDrive code
+        returnedRotate = MathUtil.clamp(returnedRotate, -1.0, 1.0);
+
+        double leftSpeed;
+        double rightSpeed;
+
+        leftSpeed = 0.0 - returnedRotate;
+        rightSpeed = 0.0 + returnedRotate;
+
+        DutyCycleOut leftOut = new DutyCycleOut(leftSpeed);
+        DutyCycleOut rightOut = new DutyCycleOut(rightSpeed);
+        
+        m_leftLeader.setControl(leftOut);
+        m_rightLeader.setControl(rightOut);
+        // END arcadeDrive code
 
         //Checks to see if the PID is finished or close enough
         // TODO: Tune TURN_COMPLETE_SPEED and TURN_PID_CYCLE_COUNT
@@ -382,7 +393,7 @@ public class Drivetrain {
 
         }
 
-        
+        // Output the target, current angle, and the output calculated by the PID
         // TODO: This should be removed or at least commented out after debugging.
         System.out.println("TTAPID: Target:[" + targetAngle + "] Current Angle: [" + currentAngle + "] Rotation Duty Cycle:[" + returnedRotate + "] Finished [" + isFinished + "]");
 
