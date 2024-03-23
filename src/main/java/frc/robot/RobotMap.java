@@ -173,12 +173,12 @@ public class RobotMap {
         /**
          * Speed set to the left launcher motor when launching to the amp.
          */
-        public static final double LEFT_AMP_SPEED = 0.3;
+        public static final double LEFT_AMP_SPEED = 0.09;
 
         /**
          * Speed set to the right launcher motor when launching to the amp.
          */
-        public static final double RIGHT_AMP_SPEED = 0.3;
+        public static final double RIGHT_AMP_SPEED = 0.09;
 
         /**
          * Speed set to the left launcher motor when launching to the speaker.
@@ -230,8 +230,17 @@ public class RobotMap {
         /**
          * CAN ID of the right climber motor.
          */
-
         public static final int RIGHT_CLIMBER_CAN_ID = 9;
+
+        /**
+         * DIO port of the left climber sensor.
+         */
+        public static final int LEFT_SENSOR_PORT = 1;
+
+        /**
+         * DIO port of the right climber sensor.
+         */
+        public static final int RIGHT_SENSOR_PORT = 2;
 
         /**
          * PWM Channel ID for the left climber servo.
@@ -360,6 +369,21 @@ public class RobotMap {
         public static final String LEFT_THREE_PLUS_NOTE = "Left Three Plus Note";
 
         /**
+         * Path used when starting on the red source side, launches starting note, drives to center of field, and intakes.
+         */
+        public static final String RED_MID_FIELD = "Red Mid Field";
+
+        /**
+         * Path used when starting on the blue source side, launches starting note, drives to center of field, and intakes.
+         */
+        public static final String BLUE_MID_FIELD = "Blue Mid Field";
+
+        /**
+         * Path used when starting on the blue source side, launches starting note, drives to center of field, intakes note, drives back, and launches.
+         */
+        public static final String BLUE_MID_FIELD_TWO = "Blue Mid Field Two";
+
+        /**
          * The distance to exit the community when starting directly in front of the subwoofer. 
          */
         public static final double FRONT_SPEAKER_EXIT_DIST = 50.0;
@@ -415,6 +439,11 @@ public class RobotMap {
         public static final double PUSH_DIST = 223.0;
 
         /**
+         * Distance back to subwoofer when launching from the side.
+         */
+        public static final double SECOND_NOTE_LAUNCH_DIST = 54;
+
+        /**
          * Safety distance to clear subwoofer before turning to the third note.
          */
         public static final double THIRD_NOTE_BACKUP = 10.0;
@@ -427,7 +456,7 @@ public class RobotMap {
         /**
          * Distance to intake the third note.
          */
-        public static final double THIRD_NOTE_DRIVE_FORWARD = 56.0;
+        public static final double THIRD_NOTE_DRIVE_FORWARD = 58.0;
 
         /**
          * Angle to subwoofer needed to launch the third note.
@@ -437,17 +466,27 @@ public class RobotMap {
         /**
          * Distance to subwoofer when launching the third note
          */
-        public static final double THIRD_NOTE_LAUNCH_DIST = 44.0;
+        public static final double THIRD_NOTE_LAUNCH_DIST = 46.0;
 
         /**
          * The angle to the fourth note.
          */
-        public static final double FOURTH_NOTE_ANGLE = 52.0;
+        public static final double FOURTH_NOTE_ANGLE = 59.0;
 
         /**
          * The distance to intake the fourth note.
          */
         public static final double FOURTH_NOTE_DIST = 84.0;
+
+        /**
+         * The distance to exit the community after launching to the side in the mid field auton.
+         */
+        public static final double MID_EXIT_ZONE = 175.0;
+
+        /**
+         * The distance to the middle of the field after leaving on source side.
+         */
+        public static final double MID_FINISH_DIST = 160.0;
 
     }
 }

@@ -33,6 +33,8 @@ public class Robot extends TimedRobot {
   private UsbCamera m_backCamera;
   private boolean m_currentlyLaunching;
   private boolean m_haveNote = false;
+  private boolean m_leftClimbDown = false;
+  private boolean m_rightClimbDown = false;
   private double m_kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
   private double m_kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
   private double m_dashAmpLaunch = RobotMap.LauncherConstants.LEFT_AMP_SPEED;
@@ -43,22 +45,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption(RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT, RobotMap.AutonConstants.FRONT_ONE_NOTE_EXIT);
-    m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT);
-    m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT);
+    m_chooser.setDefaultOption(RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT, RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT);
+    // m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_EXIT);
+    // m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_ONE_NOTE_PAUSE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT, RobotMap.AutonConstants.TURN_LEFT_ONE_NOTE_PAUSE_EXIT);
-    m_chooser.addOption(RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT, RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT);
+    //m_chooser.addOption(RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT, RobotMap.AutonConstants.FRONT_TWO_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT, RobotMap.AutonConstants.TURN_LEFT_TWO_NOTE_EXIT);
     m_chooser.addOption(RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT, RobotMap.AutonConstants.TURN_RIGHT_TWO_NOTE_EXIT);
-    m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS_PUSH, RobotMap.AutonConstants.RED_EVIL_GENIUS_PUSH);
-    m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS_PUSH, RobotMap.AutonConstants.BLUE_EVIL_GENIUS_PUSH);
+    // m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS_PUSH, RobotMap.AutonConstants.RED_EVIL_GENIUS_PUSH);
+    // m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS_PUSH, RobotMap.AutonConstants.BLUE_EVIL_GENIUS_PUSH);
     m_chooser.addOption(RobotMap.AutonConstants.RED_EVIL_GENIUS_SPIT, RobotMap.AutonConstants.RED_EVIL_GENIUS_SPIT);
     m_chooser.addOption(RobotMap.AutonConstants.BLUE_EVIL_GENIUS_SPIT, RobotMap.AutonConstants.BLUE_EVIL_GENIUS_SPIT);
     m_chooser.addOption(RobotMap.AutonConstants.RIGHT_THREE_NOTE, RobotMap.AutonConstants.RIGHT_THREE_NOTE);
     m_chooser.addOption(RobotMap.AutonConstants.LEFT_THREE_NOTE, RobotMap.AutonConstants.LEFT_THREE_NOTE);
     m_chooser.addOption(RobotMap.AutonConstants.RIGHT_THREE_PLUS_NOTE, RobotMap.AutonConstants.RIGHT_THREE_PLUS_NOTE);
     m_chooser.addOption(RobotMap.AutonConstants.LEFT_THREE_PLUS_NOTE, RobotMap.AutonConstants.LEFT_THREE_PLUS_NOTE);
+    m_chooser.addOption(RobotMap.AutonConstants.RED_MID_FIELD, RobotMap.AutonConstants.RED_MID_FIELD);
+    m_chooser.addOption(RobotMap.AutonConstants.BLUE_MID_FIELD, RobotMap.AutonConstants.BLUE_MID_FIELD);
+    m_chooser.addOption(RobotMap.AutonConstants.BLUE_MID_FIELD_TWO, RobotMap.AutonConstants.BLUE_MID_FIELD_TWO);
 
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
@@ -116,7 +121,11 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     m_autoSelected = m_chooser.getSelected();
     m_haveNote = m_indexer.readIndexSensor();
+    m_leftClimbDown = m_climber.getLeftSensor();
+    m_rightClimbDown = m_climber.getRightSensor();
     SmartDashboard.putBoolean("HaveNote", m_haveNote);
+    SmartDashboard.putBoolean("Left Climb", m_leftClimbDown);
+    SmartDashboard.putBoolean("Right Climb", m_rightClimbDown);
     m_kP = SmartDashboard.getNumber("kP", m_kP);
     m_kD = SmartDashboard.getNumber("kD", m_kD);
     m_drivetrain.setPID(m_kP, 0.0, m_kD);

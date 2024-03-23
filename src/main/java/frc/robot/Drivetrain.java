@@ -432,9 +432,11 @@ public class Drivetrain {
 
         m_leftConfig.Slot1 = slot1;
 
-        mm.MotionMagicCruiseVelocity = 10.0;
-        mm.MotionMagicAcceleration = 10.0;
-        mm.MotionMagicJerk = 50.0;
+        //TODO: make robot map constants
+        mm.MotionMagicCruiseVelocity = 7.5;
+        mm.MotionMagicAcceleration = 9.0;
+        mm.MotionMagicJerk = 25.0;
+    
 
         m_leftConfig.MotionMagic = mm;
 
@@ -455,6 +457,18 @@ public class Drivetrain {
      */
     public void slowEvilGenius() {
         mm.MotionMagicCruiseVelocity = 4.0;
+        m_leftConfig.MotionMagic = mm;
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
+    }
+
+    /**
+     * Helper method to change motion magic config for auton.
+     */
+    public void slowMidField() {
+        mm.MotionMagicAcceleration = 7.0;
         m_leftConfig.MotionMagic = mm;
         m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_leftFollower.getConfigurator().apply(m_leftConfig);

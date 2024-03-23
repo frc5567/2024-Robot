@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 
 /**
@@ -13,6 +14,8 @@ public class Climber {
     TalonSRX m_rightClimber;
     Servo m_leftServo;
     Servo m_rightServo;
+    DigitalInput m_rightSensor;
+    DigitalInput m_leftSensor;
 
     /**
      * Constructor that instantiates and sets the inversion on the left and right climber motors.
@@ -21,6 +24,9 @@ public class Climber {
     Climber() {
         m_leftClimber = new TalonSRX(RobotMap.ClimberConstants.LEFT_CLIMBER_CAN_ID);
         m_rightClimber = new TalonSRX(RobotMap.ClimberConstants.RIGHT_CLIMBER_CAN_ID);
+
+        m_leftSensor = new DigitalInput(RobotMap.ClimberConstants.LEFT_SENSOR_PORT);
+        m_rightSensor = new DigitalInput(RobotMap.ClimberConstants.RIGHT_SENSOR_PORT);
 
         m_leftServo = new Servo(RobotMap.ClimberConstants.LEFT_SERVO);
         m_rightServo = new Servo(RobotMap.ClimberConstants.RIGHT_SERVO);
@@ -46,6 +52,22 @@ public class Climber {
      */
     public void setRightSpeed(double speed) {
         m_rightClimber.set(TalonSRXControlMode.PercentOutput, speed);
+    }
+
+    /**
+     * Read the left sensor's current value (boolean).
+     * @return true if the left climber is retracted, false if it is extended.
+     */
+    public boolean getLeftSensor() {
+        return !m_leftSensor.get();
+    }
+
+    /**
+     * Read the right sensor's current value (boolean).
+     * @return true if the right climber is retracted, false if it is extended.
+     */
+    public boolean getRightSensor() {
+        return !m_rightSensor.get();
     }
 
     /**
