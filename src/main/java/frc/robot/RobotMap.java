@@ -456,17 +456,17 @@ public class RobotMap {
         /**
          * Distance to intake the third note.
          */
-        public static final double THIRD_NOTE_DRIVE_FORWARD = 58.0;
+        public static final double THIRD_NOTE_DRIVE_FORWARD = 60.0;
 
         /**
          * Angle to subwoofer needed to launch the third note.
          */
-        public static final double THIRD_NOTE_LAUNCH_ANGLE = 20.0;
+        public static final double THIRD_NOTE_LAUNCH_ANGLE = 22.0;
 
         /**
          * Distance to subwoofer when launching the third note
          */
-        public static final double THIRD_NOTE_LAUNCH_DIST = 46.0;
+        public static final double THIRD_NOTE_LAUNCH_DIST = 52.0;
 
         /**
          * The angle to the fourth note.
