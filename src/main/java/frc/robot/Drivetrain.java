@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
@@ -40,8 +39,6 @@ public class Drivetrain {
 
     private TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
     private TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
-
-    MotionMagicConfigs mm = m_rightConfig.MotionMagic;
 
     /**
      * Constructor for the drivetrain class. Instantiates the drivetrain motors and pigeon.
@@ -380,7 +377,6 @@ public class Drivetrain {
         // END arcadeDrive code
 
         //Checks to see if the PID is finished or close enough
-        // TODO: Tune TURN_COMPLETE_SPEED and TURN_PID_CYCLE_COUNT
         if ( (Math.abs(currentAngle - targetAngle) < RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND) &&
               (m_PIDCounter++ > RobotMap.DrivetrainConstants.TURN_PID_CYCLE_COUNT)) {
             isFinished = true;
@@ -432,14 +428,17 @@ public class Drivetrain {
 
         m_leftConfig.Slot1 = slot1;
 
-        mm.MotionMagicCruiseVelocity = 10.0;
-        mm.MotionMagicAcceleration = 10.0;
-        mm.MotionMagicJerk = 50.0;
+        MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
 
-        m_leftConfig.MotionMagic = mm;
+        rightMotionMagic.MotionMagicCruiseVelocity = RobotMap.DrivetrainConstants.MOT_MAG_VELOCITY;
+        rightMotionMagic.MotionMagicAcceleration = RobotMap.DrivetrainConstants.MOT_MAG_ACCEL;
+        rightMotionMagic.MotionMagicJerk = RobotMap.DrivetrainConstants.MOT_MAG_JERK;
+
+
+        m_leftConfig.MotionMagic = rightMotionMagic;
 
         FeedbackConfigs fdb = m_rightConfig.Feedback;
-        fdb.SensorToMechanismRatio = 9.82;
+        fdb.SensorToMechanismRatio = RobotMap.DrivetrainConstants.GEAR_RATIO;
 
         m_leftConfig.Feedback = fdb;
 
@@ -454,8 +453,25 @@ public class Drivetrain {
      * Helper method to change motion magic config for auton.
      */
     public void slowEvilGenius() {
-        mm.MotionMagicCruiseVelocity = 4.0;
-        m_leftConfig.MotionMagic = mm;
+        
+        MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
+        rightMotionMagic.MotionMagicCruiseVelocity = RobotMap.DrivetrainConstants.SLOW_EVIL_GENIUS_VELOCITY;
+        m_leftConfig.MotionMagic = rightMotionMagic;
+        m_leftLeader.getConfigurator().apply(m_leftConfig);
+        m_leftFollower.getConfigurator().apply(m_leftConfig);
+        m_rightLeader.getConfigurator().apply(m_rightConfig);
+        m_rightFollower.getConfigurator().apply(m_rightConfig);
+    }
+
+    /**
+     * Helper method to change motion magic config for auton.
+     */
+    public void slowMidField() {
+        
+        MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
+        rightMotionMagic.MotionMagicAcceleration = RobotMap.DrivetrainConstants.SLOW_MID_FIELD_ACCEL;
+        rightMotionMagic.MotionMagicCruiseVelocity = RobotMap.DrivetrainConstants.SLOW_MID_FIELD_VELOCITY;
+        m_leftConfig.MotionMagic = rightMotionMagic;
         m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_leftFollower.getConfigurator().apply(m_leftConfig);
         m_rightLeader.getConfigurator().apply(m_rightConfig);
