@@ -17,6 +17,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.constraint.TrajectoryConstraint.MinMax;
 
 public class Drivetrain {
 
@@ -40,8 +41,6 @@ public class Drivetrain {
 
     private TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
     private TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
-
-    MotionMagicConfigs mm = m_rightConfig.MotionMagic;
 
     /**
      * Constructor for the drivetrain class. Instantiates the drivetrain motors and pigeon.
@@ -432,13 +431,15 @@ public class Drivetrain {
 
         m_leftConfig.Slot1 = slot1;
 
-        //TODO: make robot map constants
-        mm.MotionMagicCruiseVelocity = 7.5;
-        mm.MotionMagicAcceleration = 9.0;
-        mm.MotionMagicJerk = 25.0;
-    
+        MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
 
-        m_leftConfig.MotionMagic = mm;
+        //TODO: make robot map constants
+        rightMotionMagic.MotionMagicCruiseVelocity = 7.5;
+        rightMotionMagic.MotionMagicAcceleration = 9.0;
+        rightMotionMagic.MotionMagicJerk = 25.0;
+
+
+        m_leftConfig.MotionMagic = rightMotionMagic;
 
         FeedbackConfigs fdb = m_rightConfig.Feedback;
         fdb.SensorToMechanismRatio = 9.82;
@@ -456,8 +457,10 @@ public class Drivetrain {
      * Helper method to change motion magic config for auton.
      */
     public void slowEvilGenius() {
-        mm.MotionMagicCruiseVelocity = 4.0;
-        m_leftConfig.MotionMagic = mm;
+        
+        MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
+        rightMotionMagic.MotionMagicCruiseVelocity = 4.0;
+        m_leftConfig.MotionMagic = rightMotionMagic;
         m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_leftFollower.getConfigurator().apply(m_leftConfig);
         m_rightLeader.getConfigurator().apply(m_rightConfig);
@@ -468,9 +471,11 @@ public class Drivetrain {
      * Helper method to change motion magic config for auton.
      */
     public void slowMidField() {
-        mm.MotionMagicAcceleration = 7.0;
-        mm.MotionMagicCruiseVelocity = 6.0;
-        m_leftConfig.MotionMagic = mm;
+        
+        MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
+        rightMotionMagic.MotionMagicAcceleration = 7.0;
+        rightMotionMagic.MotionMagicCruiseVelocity = 6.0;
+        m_leftConfig.MotionMagic = rightMotionMagic;
         m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_leftFollower.getConfigurator().apply(m_leftConfig);
         m_rightLeader.getConfigurator().apply(m_rightConfig);
