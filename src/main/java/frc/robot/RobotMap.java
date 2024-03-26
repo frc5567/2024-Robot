@@ -111,6 +111,41 @@ public class RobotMap {
          * Number of cycles to watch for completed turn.
          */
         public static final int TURN_PID_CYCLE_COUNT = 5;
+
+        /**
+         * ConfigPID sensor to mechanism ratio (gear ratio).
+         */
+        public static final double GEAR_RATIO = 9.82;
+
+        /**
+         * ConfigPID's motion magic cruise velocity. (The maximum velocity Motion Magic based control modes are allowed to use)
+         */
+        public static final double MOT_MAG_VELOCITY = 7.5;
+
+        /**
+         * ConfigPID's motion magic acceleration. (The target acceleration Motion Magic based control modes are allowed to use)
+         */
+        public static final double MOT_MAG_ACCEL = 9.0;
+
+        /**
+         * ConfigPID's motion magic jerk. (The target jerk (acceleration derivative) Motion Magic based control modes are allowed to use)
+         */
+        public static final double MOT_MAG_JERK = 25.0;
+
+        /**
+         * SlowEvilGenius's motion magic cruise velocity.
+         */
+        public static final double SLOW_EVIL_GENIUS_VELOCITY = 4.0;
+
+        /**
+         * SlowMidField's motion magic cruise velocity.
+         */
+        public static final double SLOW_MID_FIELD_VELOCITY = 6.0;
+
+        /**
+         * SlowMidField's motion magic cruise acceleration.
+         */
+        public static final double SLOW_MID_FIELD_ACCEL = 7.0;
     }
 
     /**

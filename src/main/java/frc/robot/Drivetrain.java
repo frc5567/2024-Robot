@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
@@ -17,7 +16,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.trajectory.constraint.TrajectoryConstraint.MinMax;
 
 public class Drivetrain {
 
@@ -379,7 +377,6 @@ public class Drivetrain {
         // END arcadeDrive code
 
         //Checks to see if the PID is finished or close enough
-        // TODO: Tune TURN_COMPLETE_SPEED and TURN_PID_CYCLE_COUNT
         if ( (Math.abs(currentAngle - targetAngle) < RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND) &&
               (m_PIDCounter++ > RobotMap.DrivetrainConstants.TURN_PID_CYCLE_COUNT)) {
             isFinished = true;
@@ -433,16 +430,15 @@ public class Drivetrain {
 
         MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
 
-        //TODO: make robot map constants
-        rightMotionMagic.MotionMagicCruiseVelocity = 7.5;
-        rightMotionMagic.MotionMagicAcceleration = 9.0;
-        rightMotionMagic.MotionMagicJerk = 25.0;
+        rightMotionMagic.MotionMagicCruiseVelocity = RobotMap.DrivetrainConstants.MOT_MAG_VELOCITY;
+        rightMotionMagic.MotionMagicAcceleration = RobotMap.DrivetrainConstants.MOT_MAG_ACCEL;
+        rightMotionMagic.MotionMagicJerk = RobotMap.DrivetrainConstants.MOT_MAG_JERK;
 
 
         m_leftConfig.MotionMagic = rightMotionMagic;
 
         FeedbackConfigs fdb = m_rightConfig.Feedback;
-        fdb.SensorToMechanismRatio = 9.82;
+        fdb.SensorToMechanismRatio = RobotMap.DrivetrainConstants.GEAR_RATIO;
 
         m_leftConfig.Feedback = fdb;
 
@@ -459,7 +455,7 @@ public class Drivetrain {
     public void slowEvilGenius() {
         
         MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
-        rightMotionMagic.MotionMagicCruiseVelocity = 4.0;
+        rightMotionMagic.MotionMagicCruiseVelocity = RobotMap.DrivetrainConstants.SLOW_EVIL_GENIUS_VELOCITY;
         m_leftConfig.MotionMagic = rightMotionMagic;
         m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_leftFollower.getConfigurator().apply(m_leftConfig);
@@ -473,8 +469,8 @@ public class Drivetrain {
     public void slowMidField() {
         
         MotionMagicConfigs rightMotionMagic = m_rightConfig.MotionMagic;
-        rightMotionMagic.MotionMagicAcceleration = 7.0;
-        rightMotionMagic.MotionMagicCruiseVelocity = 6.0;
+        rightMotionMagic.MotionMagicAcceleration = RobotMap.DrivetrainConstants.SLOW_MID_FIELD_ACCEL;
+        rightMotionMagic.MotionMagicCruiseVelocity = RobotMap.DrivetrainConstants.SLOW_MID_FIELD_VELOCITY;
         m_leftConfig.MotionMagic = rightMotionMagic;
         m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_leftFollower.getConfigurator().apply(m_leftConfig);
