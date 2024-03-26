@@ -168,7 +168,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                                 System.out.println("Step feeding: " + m_step + " loopcount:" + m_loopCount + " - " + m_loopCount);
                             }
                             else {
@@ -248,7 +248,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -368,7 +368,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -488,7 +488,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -628,7 +628,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -698,7 +698,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -828,7 +828,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -896,7 +896,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -1021,7 +1021,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -1135,7 +1135,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                                 System.out.println("Step feeding: " + m_step + " loopcount:" + m_loopCount + " - " + m_loopCount);
                             }
                             else {
@@ -1198,7 +1198,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -1264,7 +1264,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -1375,7 +1375,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -1444,7 +1444,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -1566,7 +1566,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -1885,7 +1885,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                                 System.out.println("Step feeding: " + m_step + " loopcount:" + m_loopCount + " - " + m_loopCount);
                             }
                             else {
@@ -1948,7 +1948,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -2070,7 +2070,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -2124,7 +2124,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                                 System.out.println("Step feeding: " + m_step + " loopcount:" + m_loopCount + " - " + m_loopCount);
                             }
                             else {
@@ -2187,7 +2187,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -2309,7 +2309,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -2363,7 +2363,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                                 System.out.println("Step feeding: " + m_step + " loopcount:" + m_loopCount + " - " + m_loopCount);
                             }
                             else {
@@ -2426,7 +2426,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -2548,7 +2548,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -2645,7 +2645,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                                 System.out.println("Step feeding: " + m_step + " loopcount:" + m_loopCount + " - " + m_loopCount);
                             }
                             else {
@@ -2708,7 +2708,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();
@@ -2830,7 +2830,7 @@ public class Auton {
                         else {
                             launcher.speakerLaunch();
                             if (m_loopCount > RobotMap.LAUNCH_SPIN_UP_COUNT){
-                                indexer.feedNote();
+                                indexer.speakerFeedNote();
                             }
                             else {
                                 indexer.stop();

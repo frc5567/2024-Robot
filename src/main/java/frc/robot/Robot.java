@@ -257,7 +257,7 @@ public class Robot extends TimedRobot {
       // If we want to launch to the amp, set the launcher to amp speed and feed a note from the indexer.
       if (ampLauncherOn) {
         m_launcher.ampLaunch();
-        m_indexer.feedNote();
+        m_indexer.ampFeedNote();
       }
       // If we want to spin the launcher up to speed, set the launcher to speaker speed.
       // Then when we want to launch, feed a note from the indexer.
@@ -265,7 +265,7 @@ public class Robot extends TimedRobot {
         m_launcher.speakerLaunch();
 
         if (speakerLauncherOn) {
-          m_indexer.feedNote();
+          m_indexer.speakerFeedNote();
         }
         else {
           m_indexer.stop();
@@ -284,7 +284,7 @@ public class Robot extends TimedRobot {
         // set the launcher to amp speed, feed a note from the the indexer, set the intake speed to 0, and set currentlyLaunching to true.
         if (ampLauncherOn) {
           m_launcher.ampLaunch();
-          m_indexer.feedNote();
+          m_indexer.ampFeedNote();
           m_intake.stop();
           m_currentlyLaunching = true;
         }
@@ -295,7 +295,7 @@ public class Robot extends TimedRobot {
           m_launcher.speakerLaunch();
 
           if (speakerLauncherOn) {
-            m_indexer.feedNote();
+            m_indexer.speakerFeedNote();
           }
           else {
             m_indexer.stop();
