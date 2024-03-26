@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
   private double m_kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
   private double m_kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
   private double m_dashAmpLaunch = RobotMap.LauncherConstants.LEFT_AMP_SPEED;
+  private boolean m_lockOn = false;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -126,6 +127,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("HaveNote", m_haveNote);
     SmartDashboard.putBoolean("Left Climb", m_leftClimbDown);
     SmartDashboard.putBoolean("Right Climb", m_rightClimbDown);
+    SmartDashboard.putBoolean("Climber Locked", m_lockOn);
     m_kP = SmartDashboard.getNumber("kP", m_kP);
     m_kD = SmartDashboard.getNumber("kD", m_kD);
     m_drivetrain.setPID(m_kP, 0.0, m_kD);
@@ -244,9 +246,11 @@ public class Robot extends TimedRobot {
     //Climber lock controls
     if (unlockClimbButton) {
       m_climber.unlockClimb();
+      m_lockOn = false;
     }
     else if (lockClimbButton) {
       m_climber.lockClimb();
+      m_lockOn = true;
     }
 
     if (m_currentlyLaunching) {
@@ -337,7 +341,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    m_drivetrain.coastMode();
+    m_drivetrain.brakeMode();
   }
 
   /** This function is called periodically when disabled. */

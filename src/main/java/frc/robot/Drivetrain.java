@@ -469,6 +469,7 @@ public class Drivetrain {
      */
     public void slowMidField() {
         mm.MotionMagicAcceleration = 7.0;
+        mm.MotionMagicCruiseVelocity = 6.0;
         m_leftConfig.MotionMagic = mm;
         m_leftLeader.getConfigurator().apply(m_leftConfig);
         m_leftFollower.getConfigurator().apply(m_leftConfig);

@@ -275,12 +275,12 @@ public class RobotMap {
         /**
          * Speed set to the left climb when extending (positive) and retracting (negative)
          */
-        public static final double LEFT_SPEED = 0.5;
+        public static final double LEFT_SPEED = 0.8;
 
         /**
          * Speed set to the right climb when extending (positive) and retracting (negative)
          */
-        public static final double RIGHT_SPEED = 0.5;
+        public static final double RIGHT_SPEED = 0.8;
     }
 
     /**
@@ -382,6 +382,11 @@ public class RobotMap {
          * Path used when starting on the blue source side, launches starting note, drives to center of field, intakes note, drives back, and launches.
          */
         public static final String BLUE_MID_FIELD_TWO = "Blue Mid Field Two";
+
+        /**
+         * Path used when starting on the red source side, launches starting note, drives to center of field, intakes note, drives back, and launches.
+         */
+        public static final String RED_MID_FIELD_TWO = "Red Mid Field Two";
 
         /**
          * The distance to exit the community when starting directly in front of the subwoofer. 
@@ -486,7 +491,12 @@ public class RobotMap {
         /**
          * The distance to the middle of the field after leaving on source side.
          */
-        public static final double MID_FINISH_DIST = 160.0;
+        public static final double MID_FINISH_DIST = 175.0;
+
+        /**
+         * The distance to the speaker after driving out to mid.
+         */
+        public static final double MID_LAUNCH_DIST = 175.0;
 
     }
 }
