@@ -591,7 +591,7 @@ public class Auton {
                         launcher.stop();
                         drivetrain.arcadeDrive(0.0, 0.0);
 
-                        if (++m_loopCount >= 15) {
+                        if (++m_loopCount >= 3) {
                             drivetrain.zeroDistance();
                             m_loopCount = 0;
                             m_step += 1;
@@ -791,7 +791,7 @@ public class Auton {
                         launcher.stop();
                         drivetrain.arcadeDrive(0.0, 0.0);
 
-                        if (++m_loopCount >= 15) {
+                        if (++m_loopCount >= 3) {
                             drivetrain.zeroDistance();
                             m_loopCount = 0;
                             m_step += 1;
