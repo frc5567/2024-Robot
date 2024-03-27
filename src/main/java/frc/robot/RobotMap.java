@@ -247,9 +247,14 @@ public class RobotMap {
         public static final double LOAD_SPEED = 0.5;
 
         /**
-         * Speed set to the index motor for feeding note into launcher.
+         * Speed set to the index motor for feeding note into launcher at speaker speeds.
          */
-        public static final double FEED_SPEED = 1.0;
+        public static final double SPEAKER_FEED_SPEED = 1.0;
+
+        /**
+         * Speed set to the index motor for feeding note into launcher at amp speeds.
+         */
+        public static final double AMP_FEED_SPEED = 0.8;
     }
 
     /**
