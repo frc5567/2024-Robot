@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(RobotMap.AutonConstants.RED_MID_FIELD, RobotMap.AutonConstants.RED_MID_FIELD);
     m_chooser.addOption(RobotMap.AutonConstants.BLUE_MID_FIELD, RobotMap.AutonConstants.BLUE_MID_FIELD);
     m_chooser.addOption(RobotMap.AutonConstants.BLUE_MID_FIELD_TWO, RobotMap.AutonConstants.BLUE_MID_FIELD_TWO);
+    m_chooser.addOption(RobotMap.AutonConstants.RED_MID_FIELD_TWO, RobotMap.AutonConstants.RED_MID_FIELD_TWO);
 
     SmartDashboard.putData("Auto choices", m_chooser);
     m_autoSelected = m_chooser.getSelected();
