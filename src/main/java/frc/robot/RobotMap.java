@@ -208,12 +208,12 @@ public class RobotMap {
         /**
          * Speed set to the left launcher motor when launching to the amp.
          */
-        public static final double LEFT_AMP_SPEED = 0.09;
+        public static final double LEFT_AMP_SPEED = 0.11;
 
         /**
          * Speed set to the right launcher motor when launching to the amp.
          */
-        public static final double RIGHT_AMP_SPEED = 0.09;
+        public static final double RIGHT_AMP_SPEED = 0.11;
 
         /**
          * Speed set to the left launcher motor when launching to the speaker.
@@ -471,7 +471,7 @@ public class RobotMap {
         /**
          * The distance to travel to the middle of the field when starting against the back wall.
          */
-        public static final double DIST_TO_MID = 292.6;
+        public static final double DIST_TO_MID = 300.0;
 
         /**
          * 90 degree turning angle.

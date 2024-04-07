@@ -113,6 +113,10 @@ public class Auton {
             System.out.println("Setting Auton path to Blue Mid Field Two");
             m_path = m_currentPath;
         }
+        else if (m_currentPath == RobotMap.AutonConstants.RED_MID_FIELD_TWO) {
+            System.out.println("Setting Auton path to Red Mid Field Two");
+            m_path = m_currentPath;
+        }
         else {
             System.out.println("No path selected. Please restart auton and choose a path.");
         }
@@ -1973,7 +1977,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.THIRD_NOTE_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(-RobotMap.AutonConstants.THIRD_NOTE_ANGLE - 1.5)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -2212,7 +2216,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.THIRD_NOTE_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.THIRD_NOTE_ANGLE + 1.5)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -2245,7 +2249,7 @@ public class Auton {
                             intake.intake();
                         }
 
-                        if (drivetrain.driveStraight(RobotMap.AutonConstants.THIRD_NOTE_DRIVE_FORWARD) && indexer.readIndexSensor()) {
+                        if (drivetrain.driveStraight(RobotMap.AutonConstants.THIRD_NOTE_DRIVE_FORWARD + 3) && indexer.readIndexSensor()) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
@@ -2286,7 +2290,7 @@ public class Auton {
                         launcher.speakerLaunch();
                         indexer.stop();
                         intake.stop();
-                        if (drivetrain.driveStraight(-RobotMap.AutonConstants.THIRD_NOTE_LAUNCH_DIST)) {
+                        if (drivetrain.driveStraight(-RobotMap.AutonConstants.THIRD_NOTE_LAUNCH_DIST - 3)) {
                             drivetrain.zeroDistance();
                             if (m_loopCount >= RobotMap.LAUNCH_SPIN_UP_COUNT){
                                 m_loopCount = RobotMap.LAUNCH_SPIN_UP_COUNT;
@@ -2733,7 +2737,7 @@ public class Auton {
                     {
                         System.out.println("Step: " + m_step);
 
-                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.THIRD_NOTE_ANGLE)) {
+                        if (drivetrain.turnToAnglePID(RobotMap.AutonConstants.THIRD_NOTE_ANGLE + 1.5)) {
                             drivetrain.zeroDistance();
                             m_step += 1;
                         }
